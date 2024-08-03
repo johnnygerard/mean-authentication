@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/mean-app-starter.iml" filepath="$PROJECT_DIR$/.idea/mean-app-starter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mean-authentication.iml" filepath="$PROJECT_DIR$/.idea/mean-authentication.iml" />
     </modules>
   </component>
 </project>
