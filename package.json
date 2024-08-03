@@ -1,0 +1,14 @@
+{
+  "engines": {
+    "node": "^20",
+    "npm": "^10"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "heroku-postbuild": "cd server && npm ci --include=dev && npm run build",
+    "lint": "eslint .",
+    "start": "cd server && npm start"
+  },
+  "type": "module"
+}
