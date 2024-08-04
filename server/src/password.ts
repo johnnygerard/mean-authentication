@@ -21,3 +21,16 @@ export const hashPassword = async (password: string): Promise<string> =>
     timeCost: 3,
     type: argon2.argon2id,
   });
+
+/**
+ * Verify a password against a digest
+ *
+ * The digest contains the salt and the parameters used to hash the password.
+ * @param digest - Hashed password
+ * @param password - Plain text password
+ * @returns Whether the password matches the digest
+ */
+export const verifyPassword = async (
+  digest: string,
+  password: string,
+): Promise<boolean> => argon2.verify(digest, password, { secret });
