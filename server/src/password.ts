@@ -1,3 +1,5 @@
+// Argon2 reference implementation: https://github.com/P-H-C/phc-winner-argon2
+// Argon2 Node.js bindings: https://github.com/ranisalt/node-argon2
 import { Buffer } from "node:buffer";
 import { env } from "node:process";
 import argon2 from "argon2";
