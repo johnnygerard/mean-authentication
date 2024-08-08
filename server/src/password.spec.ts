@@ -26,14 +26,14 @@ describe("password module", () => {
       const digest = await hashPassword(password);
       const matches = await verifyPassword(digest, password);
 
-      expect(matches).toBe(true);
+      expect(matches).toBeTrue();
     });
 
     it("should return false for a non-matching password", async () => {
       const digest = await hashPassword(password);
       const matches = await verifyPassword(digest, getRandomPassword());
 
-      expect(matches).toBe(false);
+      expect(matches).toBeFalse();
     });
   });
 });
