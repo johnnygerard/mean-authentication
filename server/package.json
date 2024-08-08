@@ -2,7 +2,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "start:dev": "tsc && node --watch --env-file=.env dist/server.js"
+    "start:dev": "tsc && node --watch --env-file=.env dist/server.js",
+    "test": ". ./.env && jasmine --config=jasmine.json"
   },
   "type": "module",
   "devDependencies": {
