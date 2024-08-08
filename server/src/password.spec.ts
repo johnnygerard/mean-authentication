@@ -19,6 +19,20 @@ describe("password module", () => {
 
       expect(typeof digest).toBe("string");
     });
+
+    it("should not produce the same digest for the same password", async () => {
+      // This is expected because a unique salt is stored in each digest
+      const digest1 = await hashPassword(password);
+      const digest2 = await hashPassword(password);
+
+      expect(digest1).not.toBe(digest2);
+    });
+
+    it("should produce a digest with Argon2id", async () => {
+      const digest = await hashPassword(password);
+
+      expect(digest).toContain("$argon2id$");
+    });
   });
 
   describe("verifyPassword", () => {
