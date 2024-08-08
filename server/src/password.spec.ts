@@ -6,23 +6,27 @@ const getRandomPassword = (): string => {
   return faker.internet.password({ length });
 };
 
-describe("Password", () => {
+describe("password module", () => {
   let password: string;
 
   beforeEach(() => {
     password = getRandomPassword();
   });
 
-  it("should hash a password", async () => {
-    const digest = await hashPassword(password);
+  describe("hashPassword", () => {
+    it("should produce a digest", async () => {
+      const digest = await hashPassword(password);
 
-    expect(typeof digest).toBe("string");
+      expect(typeof digest).toBe("string");
+    });
   });
 
-  it("should verify a password against a digest", async () => {
-    const digest = await hashPassword(password);
-    const matches = await verifyPassword(digest, password);
+  describe("verifyPassword", () => {
+    it("should return true for a matching password", async () => {
+      const digest = await hashPassword(password);
+      const matches = await verifyPassword(digest, password);
 
-    expect(matches).toBe(true);
+      expect(matches).toBe(true);
+    });
   });
 });
