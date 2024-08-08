@@ -28,5 +28,12 @@ describe("password module", () => {
 
       expect(matches).toBe(true);
     });
+
+    it("should return false for a non-matching password", async () => {
+      const digest = await hashPassword(password);
+      const matches = await verifyPassword(digest, getRandomPassword());
+
+      expect(matches).toBe(false);
+    });
   });
 });
