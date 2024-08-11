@@ -1,9 +1,17 @@
 import { faker } from "@faker-js/faker";
-import { hashPassword, verifyPassword } from "./password.js";
+import {
+  hashPassword,
+  isPasswordValid,
+  MAX_LENGTH,
+  verifyPassword,
+} from "./password.js";
+import { cpuUsage } from "node:process";
 
-const getRandomPassword = (): string => {
-  const length: number = faker.number.int({ min: 8, max: 64 });
-  return faker.internet.password({ length });
+const getRandomPassword = (length?: number): string => {
+  const options = {
+    length: faker.number.int({ min: length ?? 8, max: length ?? 64 }),
+  };
+  return faker.internet.password(options);
 };
 
 describe("password module", () => {
@@ -48,6 +56,51 @@ describe("password module", () => {
       const matches = await verifyPassword(digest, getRandomPassword());
 
       expect(matches).toBeFalse();
+    });
+  });
+
+  describe("isPasswordValid", () => {
+    it("should return true for a strong password", () => {
+      const username = faker.internet.userName();
+      const password = "F4`j84ZjMLNm[B~d";
+
+      expect(isPasswordValid(password, username)).toBeTrue();
+    });
+
+    it("should return false for a weak password", () => {
+      const username = faker.internet.userName();
+      // Reusing the username in the password is vulnerable to dictionary attacks
+      // while adding LUDS characters is not enough to make it strong
+      const password = username + "aB1@";
+
+      expect(isPasswordValid(password, username)).toBeFalse();
+    });
+
+    it("should allow long passwords (at least 64 characters)", () => {
+      const password = getRandomPassword(64);
+
+      expect(isPasswordValid(password)).toBeTrue();
+    });
+
+    it("should instantly reject very long passwords", () => {
+      const password = getRandomPassword(1000);
+      const startUsage = cpuUsage();
+
+      expect(isPasswordValid(password)).toBeFalse();
+
+      const usage = cpuUsage(startUsage);
+      const latency = (usage.user + usage.system) / 1000;
+      expect(latency).toBeLessThan(10); // Should be almost instantaneous
+    });
+
+    it("should take less than 100ms to validate a password", () => {
+      const password = getRandomPassword(MAX_LENGTH);
+      const startUsage = cpuUsage();
+      isPasswordValid(password);
+
+      const usage = cpuUsage(startUsage);
+      const latency = (usage.user + usage.system) / 1000;
+      expect(latency).toBeLessThan(100);
     });
   });
 });
