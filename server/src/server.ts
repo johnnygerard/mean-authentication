@@ -24,10 +24,6 @@ app.use(
 // Parse JSON requests
 app.use(express.json());
 
-app.get("/api/test", (req, res) => {
-  res.send("Server is up and running!");
-});
-
 // Mount public router
 app.use(publicRouter);
 
