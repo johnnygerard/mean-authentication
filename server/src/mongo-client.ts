@@ -1,5 +1,6 @@
 import { env } from "node:process";
 import { MongoClient, ServerApiVersion } from "mongodb";
+import type { User } from "./models/user.js";
 
 if (!env.CONNECTION_STRING) {
   throw new Error("CONNECTION_STRING is not set");
@@ -18,3 +19,6 @@ const now = Date.now();
 await mongoClient.db("admin").command({ ping: 1 });
 console.log("Database connection established!");
 console.log(`Database latency: ${Date.now() - now}ms`);
+
+export const database = mongoClient.db("app");
+export const users = database.collection<User>("users");
