@@ -4,9 +4,18 @@ import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../mongo-client.js";
 
-// Only exclude Unicode characters in the "Other" general category
-// See https://unicode.org/reports/tr18/#General_Category_Property
-const USERNAME_REGEX = /^\P{C}{1,100}$/u;
+/**
+ * Check a username for validity.
+ *
+ * Validity constraints:
+ * - Length: between 1 and 100 characters
+ * - Characters: all Unicode codepoints outside the "Other" general category
+ * @param username - Unvalidated username
+ * @returns Whether the username is valid
+ * @see https://unicode.org/reports/tr18/#General_Category_Property
+ */
+export const isUsernameValid = (username: string): boolean =>
+  username.length <= 100 && /^\P{C}+$/u.test(username);
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
   const reply = await users.findOne({ username }, { projection: { _id: 1 } });
@@ -18,7 +27,7 @@ export const register: RequestHandler = async (req, res, next) => {
     const { username, password } = req.body;
 
     // Validate username
-    if (typeof username !== "string" || !USERNAME_REGEX.test(username)) {
+    if (typeof username !== "string" || !isUsernameValid(username)) {
       res.status(BAD_REQUEST).json({ error: "Invalid username" });
       return;
     }
