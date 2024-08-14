@@ -4,6 +4,8 @@ import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../mongo-client.js";
 
+export const USERNAME_MAX_LENGTH = 100;
+
 /**
  * Check a username for validity.
  *
@@ -14,8 +16,8 @@ import { users } from "../mongo-client.js";
  * @returns Whether the username is valid
  * @see https://unicode.org/reports/tr18/#General_Category_Property
  */
-export const isUsernameValid = (username: string): boolean =>
-  username.length <= 100 && /^\P{C}+$/u.test(username);
+const isUsernameValid = (username: string): boolean =>
+  username.length <= USERNAME_MAX_LENGTH && /^\P{C}+$/u.test(username);
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
   const reply = await users.findOne({ username }, { projection: { _id: 1 } });
