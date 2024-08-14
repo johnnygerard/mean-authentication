@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   hashPassword,
   isPasswordValid,
-  MAX_LENGTH,
+  PASSWORD_MAX_LENGTH,
   verifyPassword,
 } from "./password.js";
 import { cpuUsage } from "node:process";
@@ -94,7 +94,7 @@ describe("password module", () => {
     });
 
     it("should take less than 100ms to validate a password", () => {
-      const password = getRandomPassword(MAX_LENGTH);
+      const password = getRandomPassword(PASSWORD_MAX_LENGTH);
       const startUsage = cpuUsage();
       isPasswordValid(password);
 

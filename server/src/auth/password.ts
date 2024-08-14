@@ -7,7 +7,7 @@ import zxcvbn from "zxcvbn";
 
 if (!env.ARGON2_SECRET) throw Error("ARGON2_SECRET is not set");
 const secret = Buffer.from(env.ARGON2_SECRET);
-export const MAX_LENGTH = 64;
+export const PASSWORD_MAX_LENGTH = 64;
 
 /**
  * Hash a password with Argon2
@@ -54,7 +54,7 @@ export const isPasswordValid = (
   ...userInputs: string[]
 ): boolean => {
   // Validate password length
-  if (password.length > MAX_LENGTH) return false;
+  if (password.length > PASSWORD_MAX_LENGTH) return false;
   const result = zxcvbn(password, userInputs);
   return result.score >= 3;
 };
