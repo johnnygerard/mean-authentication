@@ -42,8 +42,8 @@ export const register: RequestHandler = async (req, res, next) => {
     const user = new User(username, digest);
 
     // Save user
-    const reply = await users.insertOne(user);
-    console.log(reply);
+    await users.insertOne(user);
+
     res.status(CREATED).end();
   } catch (e) {
     next(e);
