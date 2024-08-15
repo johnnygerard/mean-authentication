@@ -3,6 +3,8 @@ import express from "express";
 import { env } from "node:process";
 import { INTERNAL_SERVER_ERROR, NO_CONTENT } from "./http-status-code.js";
 import cors from "cors";
+import publicRouter from "./routes/public.js";
+import cookieParser from "cookie-parser";
 
 const CLIENT_ORIGIN = "https://¤CLIENT_DOMAIN_NAME¤";
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
@@ -20,12 +22,14 @@ app.use(
   }),
 );
 
+// Parse HTTP cookies
+app.use(cookieParser());
+
 // Parse JSON requests
 app.use(express.json());
 
-app.get("/api/test", (req, res) => {
-  res.send("Server is up and running!");
-});
+// Mount public router
+app.use(publicRouter);
 
 const defaultErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (res.headersSent) return next(err);
