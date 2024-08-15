@@ -1,20 +1,21 @@
 import { Buffer } from "node:buffer";
 import { faker } from "@faker-js/faker";
-import { createJwt, validateJwt } from "./session.js";
+import { createJwt, UserSession, validateJwt } from "./session.js";
 import jwt from "jsonwebtoken";
 
 describe("session module", () => {
-  let username: string;
-  let userId: string;
+  let session: UserSession;
 
   beforeEach(() => {
-    username = faker.internet.userName();
-    userId = faker.string.uuid();
+    session = {
+      username: faker.internet.userName(),
+      userId: faker.string.uuid(),
+    };
   });
 
   describe("createJwt function", () => {
     it("should generate a signed JWT for the given user", async () => {
-      const token = await createJwt(username, userId);
+      const token = await createJwt(session);
 
       expect(token).toMatch(/^(?:\w|-)+(?:\.(\w|-)+){2}$/);
     });
@@ -22,15 +23,15 @@ describe("session module", () => {
 
   describe("validateJwt function", () => {
     it("should validate a JWT", async () => {
-      const token = await createJwt(username, userId);
-      const payload = await validateJwt(token);
+      const token = await createJwt(session);
+      const { username } = await validateJwt(token);
 
-      expect(payload.username).toBe(username);
+      expect(username).toBe(session.username);
     });
 
     it("should throw an error if token is expired", async () => {
       jasmine.clock().install();
-      const token = await createJwt(username, userId);
+      const token = await createJwt(session);
       const payload = jwt.decode(token) as jwt.JwtPayload;
 
       expect(typeof payload.exp).toBe("number");
@@ -44,7 +45,7 @@ describe("session module", () => {
     });
 
     it("should throw an error if token has no signature", async () => {
-      const token = await createJwt(username, userId);
+      const token = await createJwt(session);
 
       // Set algorithm to "none" and strip the signature
       const payload = token.split(".")[1];

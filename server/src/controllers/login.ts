@@ -41,7 +41,11 @@ export const login: RequestHandler = async (req, res, next) => {
     }
 
     // Set session cookie with JWT
-    res.cookie("session", await createJwt(username, user.id), jwtCookieOptions);
+    res.cookie(
+      "session",
+      await createJwt({ username, userId: user.id }),
+      jwtCookieOptions,
+    );
 
     res.status(OK).end();
   } catch (e) {

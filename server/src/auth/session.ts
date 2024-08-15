@@ -2,7 +2,7 @@
 // https://github.com/auth0/node-jsonwebtoken?tab=readme-ov-file#readme
 import { Buffer } from "node:buffer";
 import { env } from "node:process";
-import type { Algorithm, JwtPayload } from "jsonwebtoken";
+import type { Algorithm } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import { CookieOptions } from "express";
 import ms from "ms";
@@ -14,24 +14,28 @@ const ISSUER = "api.mean-authentication.app.jgerard.dev";
 const SESSION_LIFETIME = "1h";
 const SIGNATURE_ALGORITHM: Algorithm = "HS256";
 
+export type UserSession = {
+  username: string;
+  userId: string;
+};
+
 /**
  * Generate a signed JWT for the given user.
- * @param username - Username
- * @param userId - User ID
+ * @param session - User session data to be stored in the token payload
  * @returns JSON web token
  * @throws {Error} if token signing fails
  */
-export const createJwt = (username: string, userId: string): Promise<string> =>
+export const createJwt = (session: UserSession): Promise<string> =>
   new Promise((resolve, reject) => {
     jwt.sign(
-      { username },
+      { username: session.username },
       secret,
       {
         algorithm: SIGNATURE_ALGORITHM,
         audience: AUDIENCE,
         expiresIn: SESSION_LIFETIME,
         issuer: ISSUER,
-        subject: userId,
+        subject: session.userId,
       },
       (err, token) => {
         if (token) resolve(token);
@@ -46,7 +50,7 @@ export const createJwt = (username: string, userId: string): Promise<string> =>
  * @returns JWT payload
  * @throws {jwt.VerifyErrors} if token is invalid
  */
-export const validateJwt = (token: string): Promise<JwtPayload> =>
+export const validateJwt = (token: string): Promise<UserSession> =>
   new Promise((resolve, reject) => {
     jwt.verify(
       token,
@@ -59,8 +63,12 @@ export const validateJwt = (token: string): Promise<JwtPayload> =>
       (err, payload) => {
         if (typeof payload === "string")
           reject(new Error("Unexpected payload type"));
-        else if (payload) resolve(payload);
-        else reject(err);
+        else if (payload) {
+          const { username, sub } = payload;
+          if (typeof username === "string" && typeof sub === "string")
+            resolve({ username, userId: sub });
+          else reject(new Error("Unexpected payload"));
+        } else reject(err);
       },
     );
   });
