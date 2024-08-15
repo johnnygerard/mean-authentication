@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { BAD_REQUEST, OK } from "../http-status-code.js";
 import { USERNAME_MAX_LENGTH } from "./register.js";
-import { hashPassword, PASSWORD_MAX_LENGTH } from "../auth/password.js";
+import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
 import { createJwt, jwtCookieOptions } from "../auth/session.js";
 
@@ -26,11 +26,16 @@ export const login: RequestHandler = async (req, res, next) => {
       { projection: { _id: 0, password: 1, id: 1 } },
     );
 
-    // Hash password first to prevent timing attacks
-    const digest = await hashPassword(password);
+    // Check if user exists
+    if (!user) {
+      res.status(BAD_REQUEST).json({ error: "Invalid credentials" });
+      return;
+    }
 
-    // Check credentials
-    if (user === null || user.password !== digest) {
+    // Verify password
+    const matches = await verifyPassword(user.password, password);
+
+    if (!matches) {
       res.status(BAD_REQUEST).json({ error: "Invalid credentials" });
       return;
     }
