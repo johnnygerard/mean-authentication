@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { BAD_REQUEST, OK } from "../http-status-code.js";
+import { BAD_REQUEST, NO_CONTENT } from "../http-status-code.js";
 import { USERNAME_MAX_LENGTH } from "./register.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
@@ -47,7 +47,7 @@ export const login: RequestHandler = async (req, res, next) => {
       jwtCookieOptions,
     );
 
-    res.status(OK).end();
+    res.status(NO_CONTENT).end();
   } catch (e) {
     next(e);
   }
