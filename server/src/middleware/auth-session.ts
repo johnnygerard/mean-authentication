@@ -1,7 +1,9 @@
 import { RequestHandler } from "express";
 import { BAD_REQUEST } from "../http-status-code.js";
 import { UserSession, validateJwt } from "../auth/session.js";
-import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
+
+const { JsonWebTokenError, TokenExpiredError } = jsonwebtoken;
 
 declare global {
   namespace Express {
