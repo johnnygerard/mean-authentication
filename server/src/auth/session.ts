@@ -4,11 +4,14 @@ import { Buffer } from "node:buffer";
 import { env } from "node:process";
 import type { Algorithm, JwtPayload } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
+import { CookieOptions } from "express";
+import ms from "ms";
 
 if (!env.JWT_SECRET) throw new Error("JWT_SECRET is not set");
 const secret: Buffer = Buffer.from(env.JWT_SECRET, "base64");
 const AUDIENCE = "mean-authentication.app.jgerard.dev";
 const ISSUER = "api.mean-authentication.app.jgerard.dev";
+const SESSION_LIFETIME = "1h";
 const SIGNATURE_ALGORITHM: Algorithm = "HS256";
 
 /**
@@ -26,7 +29,7 @@ export const createJwt = (username: string, userId: string): Promise<string> =>
       {
         algorithm: SIGNATURE_ALGORITHM,
         audience: AUDIENCE,
-        expiresIn: "1h",
+        expiresIn: SESSION_LIFETIME,
         issuer: ISSUER,
         subject: userId,
       },
@@ -61,3 +64,10 @@ export const validateJwt = (token: string): Promise<JwtPayload> =>
       },
     );
   });
+
+export const jwtCookieOptions: CookieOptions = {
+  httpOnly: true,
+  maxAge: ms(SESSION_LIFETIME),
+  secure: true,
+  sameSite: "strict",
+};
