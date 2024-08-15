@@ -1,12 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
 import { BAD_REQUEST, CREATED } from "../http-status-code.js";
-import { mongoClient, users } from "../mongo-client.js";
+import { users } from "../mongo-client.js";
 
 describe("Register Controller", () => {
   afterAll(async () => {
     await users.deleteMany();
-    await mongoClient.close();
   });
 
   it("should register a new user", async () => {
