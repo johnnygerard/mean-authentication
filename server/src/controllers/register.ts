@@ -3,6 +3,7 @@ import { BAD_REQUEST, CREATED } from "../http-status-code.js";
 import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../mongo-client.js";
+import { createJwt, jwtCookieOptions } from "../auth/session.js";
 
 export const USERNAME_MAX_LENGTH = 100;
 
@@ -54,6 +55,13 @@ export const register: RequestHandler = async (req, res, next) => {
 
     // Save user
     await users.insertOne(user);
+
+    // Create user session
+    res.cookie(
+      "session",
+      await createJwt({ username, userId: user.id }),
+      jwtCookieOptions,
+    );
 
     res.status(CREATED).end();
   } catch (e) {
