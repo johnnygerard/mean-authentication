@@ -16,7 +16,9 @@ export const login: RequestHandler = async (req, res, next) => {
       username.length > USERNAME_MAX_LENGTH ||
       password.length > PASSWORD_MAX_LENGTH
     ) {
-      res.status(BAD_REQUEST).json({ error: "Client-side validation failure" });
+      res
+        .status(BAD_REQUEST)
+        .json({ error: "Client-side validation bypassed" });
       return;
     }
 

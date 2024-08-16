@@ -31,7 +31,9 @@ export const register: RequestHandler = async (req, res, next) => {
 
     // Validate username
     if (typeof username !== "string" || !isUsernameValid(username)) {
-      res.status(BAD_REQUEST).json({ error: "Invalid username" });
+      res
+        .status(BAD_REQUEST)
+        .json({ error: "Client-side validation bypassed" });
       return;
     }
 
@@ -43,7 +45,9 @@ export const register: RequestHandler = async (req, res, next) => {
 
     // Validate password
     if (typeof password !== "string" || !isPasswordValid(password, username)) {
-      res.status(BAD_REQUEST).json({ error: "Invalid password" });
+      res
+        .status(BAD_REQUEST)
+        .json({ error: "Client-side validation bypassed" });
       return;
     }
 
