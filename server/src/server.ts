@@ -6,7 +6,7 @@ import cors from "cors";
 import publicRouter from "./routes/public.js";
 import cookieParser from "cookie-parser";
 
-const CLIENT_ORIGIN = "https://¤CLIENT_DOMAIN_NAME¤";
+const CLIENT_ORIGIN = "https://mean-authentication.app.jgerard.dev";
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
 
@@ -19,6 +19,7 @@ app.use(
     optionsSuccessStatus: NO_CONTENT,
     origin: env.HEROKU_ENV === "production" ? CLIENT_ORIGIN : "*",
     preflightContinue: false,
+    credentials: true, // Include cookies in cross-origin requests
   }),
 );
 
