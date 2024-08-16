@@ -5,11 +5,9 @@ import jsonwebtoken from "jsonwebtoken";
 
 const { JsonWebTokenError, TokenExpiredError } = jsonwebtoken;
 
-declare global {
-  namespace Express {
-    interface Request {
-      session: UserSession;
-    }
+declare module "express-serve-static-core" {
+  interface Request {
+    session: UserSession;
   }
 }
 
