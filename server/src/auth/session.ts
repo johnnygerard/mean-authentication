@@ -2,6 +2,7 @@
 // https://github.com/auth0/node-jsonwebtoken?tab=readme-ov-file#readme
 import { Buffer } from "node:buffer";
 import { env } from "node:process";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Algorithm, VerifyErrors } from "jsonwebtoken";
 import jsonwebtoken from "jsonwebtoken";
 import { CookieOptions } from "express";
