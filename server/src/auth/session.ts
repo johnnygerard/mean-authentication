@@ -2,8 +2,8 @@
 // https://github.com/auth0/node-jsonwebtoken?tab=readme-ov-file#readme
 import { Buffer } from "node:buffer";
 import { env } from "node:process";
-import type { Algorithm } from "jsonwebtoken";
-import jwt from "jsonwebtoken";
+import type { Algorithm, VerifyErrors } from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
 import { CookieOptions } from "express";
 import ms from "ms";
 
@@ -27,7 +27,7 @@ export type UserSession = {
  */
 export const createJwt = (session: UserSession): Promise<string> =>
   new Promise((resolve, reject) => {
-    jwt.sign(
+    jsonwebtoken.sign(
       { username: session.username },
       secret,
       {
@@ -48,11 +48,11 @@ export const createJwt = (session: UserSession): Promise<string> =>
  * Validate a JWT
  * @param token - JSON web token
  * @returns JWT payload
- * @throws {jwt.VerifyErrors} if token is invalid
+ * @throws {VerifyErrors} if token is invalid
  */
 export const validateJwt = (token: string): Promise<UserSession> =>
   new Promise((resolve, reject) => {
-    jwt.verify(
+    jsonwebtoken.verify(
       token,
       secret,
       {
