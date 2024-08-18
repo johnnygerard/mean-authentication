@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { BAD_REQUEST, CREATED } from "../http-status-code.js";
+import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
 import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../mongo-client.js";
@@ -41,7 +41,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
 
     // Ensure username is unique
     if (await isUsernameTaken(username)) {
-      res.status(BAD_REQUEST).json(new ApiError(ErrorCode.DUPLICATE_USERNAME));
+      res.status(CONFLICT).end();
       return;
     }
 

@@ -1,8 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
-import { BAD_REQUEST, CREATED } from "../http-status-code.js";
+import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
-import { ErrorCode } from "../error-code.enum.js";
 
 const METHOD = "POST";
 const PATH = "/account";
@@ -34,10 +33,9 @@ describe("createAccount controller", () => {
     };
 
     await request(METHOD, PATH, credentials);
-    const { statusCode, payload } = await request(METHOD, PATH, credentials);
+    const { statusCode } = await request(METHOD, PATH, credentials);
 
-    expect(statusCode).toBe(BAD_REQUEST);
-    expect(JSON.parse(payload).code).toBe(ErrorCode.DUPLICATE_USERNAME);
+    expect(statusCode).toBe(CONFLICT);
   });
 
   it("should not register a user with an invalid username", async () => {
