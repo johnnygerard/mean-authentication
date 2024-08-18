@@ -5,7 +5,7 @@ import jsonwebtoken from "jsonwebtoken";
 import { ApiError } from "../types/api-error.class.js";
 import { ErrorCode } from "../error-code.enum.js";
 
-const { JsonWebTokenError, TokenExpiredError } = jsonwebtoken;
+const { JsonWebTokenError } = jsonwebtoken;
 
 declare module "express-serve-static-core" {
   interface Request {
