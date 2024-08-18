@@ -4,21 +4,26 @@ import { USERNAME_MAX_LENGTH } from "./register.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
 import { createJwt, jwtCookieOptions } from "../auth/session.js";
+import { ApiError } from "../types/api-error.class.js";
+import { ErrorCode } from "../error-code.enum.js";
 
 export const login: RequestHandler = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    // Type and length validation
-    if (
-      typeof username !== "string" ||
-      typeof password !== "string" ||
-      username.length > USERNAME_MAX_LENGTH ||
-      password.length > PASSWORD_MAX_LENGTH
-    ) {
+    // Validate username
+    if (typeof username !== "string" || username.length > USERNAME_MAX_LENGTH) {
       res
         .status(BAD_REQUEST)
-        .json({ error: "Client-side validation bypassed" });
+        .json(new ApiError(ErrorCode.VALIDATION_MISMATCH, "Invalid username"));
+      return;
+    }
+
+    // Validate password
+    if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
+      res
+        .status(BAD_REQUEST)
+        .json(new ApiError(ErrorCode.VALIDATION_MISMATCH, "Invalid password"));
       return;
     }
 
@@ -30,7 +35,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     // Check if user exists
     if (!user) {
-      res.status(BAD_REQUEST).json({ error: "Invalid credentials" });
+      res.status(BAD_REQUEST).json(new ApiError(ErrorCode.BAD_CREDENTIALS));
       return;
     }
 
@@ -38,7 +43,7 @@ export const login: RequestHandler = async (req, res, next) => {
     const matches = await verifyPassword(user.password, password);
 
     if (!matches) {
-      res.status(BAD_REQUEST).json({ error: "Invalid credentials" });
+      res.status(BAD_REQUEST).json(new ApiError(ErrorCode.BAD_CREDENTIALS));
       return;
     }
 

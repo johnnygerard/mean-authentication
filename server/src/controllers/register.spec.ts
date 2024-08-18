@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
 import { BAD_REQUEST, NO_CONTENT } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
+import { ErrorCode } from "../error-code.enum.js";
 
 describe("Register Controller", () => {
   afterAll(async () => {
@@ -24,15 +25,20 @@ describe("Register Controller", () => {
   });
 
   it("should not register a user with an existing username", async () => {
-    const payload = {
+    const credentials = {
       username: faker.internet.userName(),
       password: faker.internet.password(),
     };
 
-    await request("POST", "/register", payload);
-    const { statusCode } = await request("POST", "/register", payload);
+    await request("POST", "/register", credentials);
+    const { statusCode, payload } = await request(
+      "POST",
+      "/register",
+      credentials,
+    );
 
     expect(statusCode).toBe(BAD_REQUEST);
+    expect(JSON.parse(payload).code).toBe(ErrorCode.DUPLICATE_USERNAME);
   });
 
   it("should not register a user with an invalid username", async () => {

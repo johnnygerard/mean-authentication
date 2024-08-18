@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
 import { BAD_REQUEST, NO_CONTENT } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
+import { ErrorCode } from "../error-code.enum.js";
 
 describe("Login Controller", () => {
   afterAll(async () => {
@@ -33,12 +34,13 @@ describe("Login Controller", () => {
   });
 
   it("should not log in non-existing user", async () => {
-    const { statusCode } = await request("POST", "/login", {
+    const { statusCode, payload } = await request("POST", "/login", {
       username: faker.internet.userName(),
       password: faker.internet.password(),
     });
 
     expect(statusCode).toBe(BAD_REQUEST);
+    expect(JSON.parse(payload).code).toBe(ErrorCode.BAD_CREDENTIALS);
   });
 
   it("should not log in user with incorrect password", async () => {
@@ -47,11 +49,12 @@ describe("Login Controller", () => {
 
     await request("POST", "/register", { username, password });
 
-    const { statusCode } = await request("POST", "/login", {
+    const { statusCode, payload } = await request("POST", "/login", {
       username,
       password: faker.internet.password(),
     });
 
     expect(statusCode).toBe(BAD_REQUEST);
+    expect(JSON.parse(payload).code).toBe(ErrorCode.BAD_CREDENTIALS);
   });
 });

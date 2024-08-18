@@ -4,6 +4,8 @@ import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../mongo-client.js";
 import { createJwt, jwtCookieOptions } from "../auth/session.js";
+import { ErrorCode } from "../error-code.enum.js";
+import { ApiError } from "../types/api-error.class.js";
 
 export const USERNAME_MAX_LENGTH = 100;
 
@@ -33,13 +35,13 @@ export const register: RequestHandler = async (req, res, next) => {
     if (typeof username !== "string" || !isUsernameValid(username)) {
       res
         .status(BAD_REQUEST)
-        .json({ error: "Client-side validation bypassed" });
+        .json(new ApiError(ErrorCode.VALIDATION_MISMATCH, "Invalid username"));
       return;
     }
 
     // Ensure username is unique
     if (await isUsernameTaken(username)) {
-      res.status(BAD_REQUEST).json({ error: "Username is already taken" });
+      res.status(BAD_REQUEST).json(new ApiError(ErrorCode.DUPLICATE_USERNAME));
       return;
     }
 
@@ -47,7 +49,7 @@ export const register: RequestHandler = async (req, res, next) => {
     if (typeof password !== "string" || !isPasswordValid(password, username)) {
       res
         .status(BAD_REQUEST)
-        .json({ error: "Client-side validation bypassed" });
+        .json(new ApiError(ErrorCode.VALIDATION_MISMATCH, "Invalid password"));
       return;
     }
 
