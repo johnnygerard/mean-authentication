@@ -4,7 +4,10 @@ import { BAD_REQUEST, NO_CONTENT } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
 import { ErrorCode } from "../error-code.enum.js";
 
-describe("Login Controller", () => {
+const METHOD = "POST";
+const PATH = "/session";
+
+describe("createSession controller", () => {
   afterAll(async () => {
     await users.deleteMany();
   });
@@ -18,8 +21,8 @@ describe("Login Controller", () => {
     await request("POST", "/account", credentials);
 
     const { statusCode, headers, payload } = await request(
-      "POST",
-      "/login",
+      METHOD,
+      PATH,
       credentials,
     );
 
@@ -34,7 +37,7 @@ describe("Login Controller", () => {
   });
 
   it("should not log in non-existing user", async () => {
-    const { statusCode, payload } = await request("POST", "/login", {
+    const { statusCode, payload } = await request(METHOD, PATH, {
       username: faker.internet.userName(),
       password: faker.internet.password(),
     });
@@ -49,7 +52,7 @@ describe("Login Controller", () => {
 
     await request("POST", "/account", { username, password });
 
-    const { statusCode, payload } = await request("POST", "/login", {
+    const { statusCode, payload } = await request(METHOD, PATH, {
       username,
       password: faker.internet.password(),
     });

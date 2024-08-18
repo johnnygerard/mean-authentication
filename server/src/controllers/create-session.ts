@@ -7,7 +7,7 @@ import { createJwt, jwtCookieOptions } from "../auth/session.js";
 import { ApiError } from "../types/api-error.class.js";
 import { ErrorCode } from "../error-code.enum.js";
 
-export const login: RequestHandler = async (req, res, next) => {
+export const createSession: RequestHandler = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
