@@ -1,11 +1,9 @@
 import { RequestHandler } from "express";
 import { FORBIDDEN } from "../http-status-code.js";
 import { UserSession, validateJwt } from "../auth/session.js";
-import jsonwebtoken from "jsonwebtoken";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { ApiError } from "../types/api-error.class.js";
 import { ErrorCode } from "../error-code.enum.js";
-
-const { JsonWebTokenError } = jsonwebtoken;
 
 declare module "express-serve-static-core" {
   interface Request {
@@ -18,9 +16,8 @@ export const authSession: RequestHandler = async (req, res, next) => {
     // Check if the request has a session cookie
     const jwt = req.cookies.session;
 
-    // Handle missing session cookie
     if (typeof jwt !== "string") {
-      res.status(FORBIDDEN).json(new ApiError(ErrorCode.UNAUTHENTICATED));
+      res.status(FORBIDDEN).json(new ApiError(ErrorCode.NO_SESSION_COOKIE));
       return;
     }
 
@@ -29,9 +26,13 @@ export const authSession: RequestHandler = async (req, res, next) => {
 
     next();
   } catch (e) {
-    // Handle expired or invalid JWT
+    if (e instanceof TokenExpiredError) {
+      res.status(FORBIDDEN).json(new ApiError(ErrorCode.TOKEN_EXPIRED));
+      return;
+    }
+
     if (e instanceof JsonWebTokenError) {
-      res.status(FORBIDDEN).json(new ApiError(ErrorCode.UNAUTHENTICATED));
+      res.status(FORBIDDEN).json(new ApiError(ErrorCode.INVALID_TOKEN));
       return;
     }
 
