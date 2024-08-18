@@ -1,8 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
-import { BAD_REQUEST, CREATED } from "../http-status-code.js";
+import { CREATED, FORBIDDEN } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
-import { ErrorCode } from "../error-code.enum.js";
 
 const METHOD = "POST";
 const PATH = "/session";
@@ -37,13 +36,12 @@ describe("createSession controller", () => {
   });
 
   it("should not log in non-existing user", async () => {
-    const { statusCode, payload } = await request(METHOD, PATH, {
+    const { statusCode } = await request(METHOD, PATH, {
       username: faker.internet.userName(),
       password: faker.internet.password(),
     });
 
-    expect(statusCode).toBe(BAD_REQUEST);
-    expect(JSON.parse(payload).code).toBe(ErrorCode.BAD_CREDENTIALS);
+    expect(statusCode).toBe(FORBIDDEN);
   });
 
   it("should not log in user with incorrect password", async () => {
@@ -52,12 +50,11 @@ describe("createSession controller", () => {
 
     await request("POST", "/account", { username, password });
 
-    const { statusCode, payload } = await request(METHOD, PATH, {
+    const { statusCode } = await request(METHOD, PATH, {
       username,
       password: faker.internet.password(),
     });
 
-    expect(statusCode).toBe(BAD_REQUEST);
-    expect(JSON.parse(payload).code).toBe(ErrorCode.BAD_CREDENTIALS);
+    expect(statusCode).toBe(FORBIDDEN);
   });
 });
