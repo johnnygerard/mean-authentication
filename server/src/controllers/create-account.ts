@@ -27,7 +27,7 @@ const isUsernameTaken = async (username: string): Promise<boolean> => {
   return reply !== null;
 };
 
-export const register: RequestHandler = async (req, res, next) => {
+export const createAccount: RequestHandler = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 

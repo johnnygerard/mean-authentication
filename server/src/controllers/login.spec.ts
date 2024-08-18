@@ -15,7 +15,7 @@ describe("Login Controller", () => {
       password: faker.internet.password(),
     };
 
-    await request("POST", "/register", credentials);
+    await request("POST", "/account", credentials);
 
     const { statusCode, headers, payload } = await request(
       "POST",
@@ -47,7 +47,7 @@ describe("Login Controller", () => {
     const username = faker.internet.userName();
     const password = faker.internet.password();
 
-    await request("POST", "/register", { username, password });
+    await request("POST", "/account", { username, password });
 
     const { statusCode, payload } = await request("POST", "/login", {
       username,
