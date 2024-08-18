@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { BAD_REQUEST, NO_CONTENT } from "../http-status-code.js";
+import { BAD_REQUEST, CREATED } from "../http-status-code.js";
 import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
@@ -54,7 +54,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
       jwtCookieOptions,
     );
 
-    res.status(NO_CONTENT).end();
+    res.status(CREATED).end();
   } catch (e) {
     next(e);
   }

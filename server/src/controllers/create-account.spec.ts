@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
-import { BAD_REQUEST, NO_CONTENT } from "../http-status-code.js";
+import { BAD_REQUEST, CREATED } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
 import { ErrorCode } from "../error-code.enum.js";
 
@@ -19,7 +19,7 @@ describe("createAccount controller", () => {
       password: faker.internet.password(),
     });
 
-    expect(statusCode).toBe(NO_CONTENT);
+    expect(statusCode).toBe(CREATED);
     expect(payload).toBe("");
 
     // Retrieve new user from database

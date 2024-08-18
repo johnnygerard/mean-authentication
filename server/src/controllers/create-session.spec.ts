@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
-import { BAD_REQUEST, NO_CONTENT } from "../http-status-code.js";
+import { BAD_REQUEST, CREATED } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
 import { ErrorCode } from "../error-code.enum.js";
 
@@ -26,7 +26,7 @@ describe("createSession controller", () => {
       credentials,
     );
 
-    expect(statusCode).toBe(NO_CONTENT);
+    expect(statusCode).toBe(CREATED);
 
     expect(headers["set-cookie"]).toBeDefined();
     const setCookieHeaders = headers["set-cookie"] as string[];
