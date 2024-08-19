@@ -16,11 +16,12 @@ const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
 
 // Enable CORS for the Angular client
+// See https://github.com/expressjs/cors?tab=readme-ov-file#configuration-options
 app.use(
   cors({
     allowedHeaders: "Content-Type",
     maxAge: 86400,
-    methods: "POST",
+    methods: ["GET", "POST", "DELETE"],
     optionsSuccessStatus: NO_CONTENT,
     origin: env.HEROKU_ENV === "production" ? CLIENT_ORIGIN : "*",
     preflightContinue: false,
