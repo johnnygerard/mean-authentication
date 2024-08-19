@@ -5,6 +5,7 @@ import { INTERNAL_SERVER_ERROR, NO_CONTENT } from "./http-status-code.js";
 import cors from "cors";
 import publicRouter from "./routes/public.js";
 import cookieParser from "cookie-parser";
+import { ApiError } from "./types/api-error.class.js";
 
 const CLIENT_ORIGIN = "https://mean-authentication.app.jgerard.dev";
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
@@ -42,7 +43,7 @@ app.use(((e, req, res, next) => {
   }
 
   console.error(e);
-  res.status(INTERNAL_SERVER_ERROR).end();
+  res.status(INTERNAL_SERVER_ERROR).json(ApiError.UNEXPECTED_ERROR);
 }) as ErrorRequestHandler);
 
 if (env.NODE_ENV === "production") {
