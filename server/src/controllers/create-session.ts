@@ -4,7 +4,7 @@ import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
 import { createJwt, jwtCookieOptions } from "../auth/session.js";
-import { ApiError } from "../types/api-error.class.js";
+import { ApiError } from "../types/api-error.enum.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {

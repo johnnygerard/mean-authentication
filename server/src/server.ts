@@ -9,7 +9,7 @@ import {
 import cors from "cors";
 import publicRouter from "./routes/public.js";
 import cookieParser from "cookie-parser";
-import { ApiError } from "./types/api-error.class.js";
+import { ApiError } from "./types/api-error.enum.js";
 
 const CLIENT_ORIGIN = "https://mean-authentication.app.jgerard.dev";
 const PORT: number = parseInt(env.PORT ?? "3000", 10);

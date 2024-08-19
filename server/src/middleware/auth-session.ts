@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { FORBIDDEN } from "../http-status-code.js";
 import { UserSession, validateJwt } from "../auth/session.js";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
-import { ApiError } from "../types/api-error.class.js";
+import { ApiError } from "../types/api-error.enum.js";
 
 declare module "express-serve-static-core" {
   interface Request {

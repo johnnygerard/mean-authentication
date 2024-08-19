@@ -4,7 +4,7 @@ import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../mongo-client.js";
 import { createJwt, jwtCookieOptions } from "../auth/session.js";
-import { ApiError } from "../types/api-error.class.js";
+import { ApiError } from "../types/api-error.enum.js";
 
 export const USERNAME_MAX_LENGTH = 100;
 
