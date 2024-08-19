@@ -32,19 +32,18 @@ app.use(express.json());
 // Mount public router
 app.use(publicRouter);
 
-const defaultErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  if (res.headersSent) return next(err);
+// Global error handler
+app.use(((e, req, res, next) => {
+  // Delegate to default error handler if headers have already been sent
+  // See https://expressjs.com/en/guide/error-handling.html
+  if (res.headersSent) {
+    next(e);
+    return;
+  }
 
-  console.error(err);
-  res.status(INTERNAL_SERVER_ERROR).json({
-    message:
-      "Sorry, an unexpected error occurred on our end.\n" +
-      "Please try again later.\n\n" +
-      "If the problem persists, send us an email at support@example.com.",
-  });
-};
-
-app.use(defaultErrorHandler);
+  console.error(e);
+  res.status(INTERNAL_SERVER_ERROR).end();
+}) as ErrorRequestHandler);
 
 if (env.NODE_ENV === "production") {
   // Omitted host defaults to 0.0.0.0 or [::] if IPv6 is supported

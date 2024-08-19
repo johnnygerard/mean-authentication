@@ -4,7 +4,6 @@ import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../mongo-client.js";
 import { createJwt, jwtCookieOptions } from "../auth/session.js";
-import { ErrorCode } from "../error-code.enum.js";
 import { ApiError } from "../types/api-error.class.js";
 
 export const USERNAME_MAX_LENGTH = 100;
@@ -33,9 +32,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
 
     // Validate username
     if (typeof username !== "string" || !isUsernameValid(username)) {
-      res
-        .status(BAD_REQUEST)
-        .json(new ApiError(ErrorCode.VALIDATION_MISMATCH, "Invalid username"));
+      res.status(BAD_REQUEST).json(ApiError.INVALID_USERNAME);
       return;
     }
 
@@ -47,9 +44,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
 
     // Validate password
     if (typeof password !== "string" || !isPasswordValid(password, username)) {
-      res
-        .status(BAD_REQUEST)
-        .json(new ApiError(ErrorCode.VALIDATION_MISMATCH, "Invalid password"));
+      res.status(BAD_REQUEST).json(ApiError.INVALID_PASSWORD);
       return;
     }
 

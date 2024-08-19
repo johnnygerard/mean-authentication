@@ -1,6 +1,0 @@
-export enum ErrorCode {
-  VALIDATION_MISMATCH,
-  NO_SESSION_COOKIE,
-  TOKEN_EXPIRED,
-  INVALID_TOKEN,
-}

@@ -5,7 +5,6 @@ import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
 import { createJwt, jwtCookieOptions } from "../auth/session.js";
 import { ApiError } from "../types/api-error.class.js";
-import { ErrorCode } from "../error-code.enum.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
@@ -13,17 +12,13 @@ export const createSession: RequestHandler = async (req, res, next) => {
 
     // Validate username
     if (typeof username !== "string" || username.length > USERNAME_MAX_LENGTH) {
-      res
-        .status(BAD_REQUEST)
-        .json(new ApiError(ErrorCode.VALIDATION_MISMATCH, "Invalid username"));
+      res.status(BAD_REQUEST).json(ApiError.INVALID_USERNAME);
       return;
     }
 
     // Validate password
     if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
-      res
-        .status(BAD_REQUEST)
-        .json(new ApiError(ErrorCode.VALIDATION_MISMATCH, "Invalid password"));
+      res.status(BAD_REQUEST).json(ApiError.INVALID_PASSWORD);
       return;
     }
 

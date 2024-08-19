@@ -1,12 +1,13 @@
-import { ErrorCode } from "../error-code.enum.js";
+class _ApiError {
+  constructor(public error: string) {}
+}
 
 export class ApiError {
-  constructor(
-    public code: ErrorCode,
-    public message?: string,
-  ) {
-    if (!message && typeof code === "string") {
-      this.message = code;
-    }
-  }
+  static NO_SESSION_COOKIE = new _ApiError("NO_SESSION_COOKIE");
+  static TOKEN_EXPIRED = new _ApiError("TOKEN_EXPIRED");
+  static INVALID_TOKEN = new _ApiError("INVALID_TOKEN");
+
+  // Validation errors
+  static INVALID_USERNAME = new _ApiError("INVALID_USERNAME");
+  static INVALID_PASSWORD = new _ApiError("INVALID_PASSWORD");
 }
