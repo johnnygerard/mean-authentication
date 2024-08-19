@@ -56,6 +56,7 @@ app.use((req, res) => {
   res.status(NOT_FOUND).end();
 });
 
+// Start the server
 if (env.NODE_ENV === "production") {
   // Omitted host defaults to 0.0.0.0 or [::] if IPv6 is supported
   app.listen(PORT, () => {
