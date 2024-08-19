@@ -1,7 +1,11 @@
 import type { ErrorRequestHandler } from "express";
 import express from "express";
 import { env } from "node:process";
-import { INTERNAL_SERVER_ERROR, NO_CONTENT } from "./http-status-code.js";
+import {
+  INTERNAL_SERVER_ERROR,
+  NO_CONTENT,
+  NOT_FOUND,
+} from "./http-status-code.js";
 import cors from "cors";
 import publicRouter from "./routes/public.js";
 import cookieParser from "cookie-parser";
@@ -45,6 +49,11 @@ app.use(((e, req, res, next) => {
   console.error(e);
   res.status(INTERNAL_SERVER_ERROR).json(ApiError.UNEXPECTED_ERROR);
 }) as ErrorRequestHandler);
+
+// Final catch-all controller
+app.use((req, res) => {
+  res.status(NOT_FOUND).end();
+});
 
 if (env.NODE_ENV === "production") {
   // Omitted host defaults to 0.0.0.0 or [::] if IPv6 is supported
