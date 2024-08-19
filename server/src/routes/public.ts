@@ -7,8 +7,7 @@ import { authStatus } from "../controllers/auth-status.js";
 const router = express.Router();
 
 router.get("/auth-status", authStatus);
-router.post("/session", createSession);
-router.delete("/session", deleteSession);
+router.route("/session").post(createSession).delete(deleteSession);
 router.post("/account", createAccount);
 
 export default router;
