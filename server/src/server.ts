@@ -11,23 +11,25 @@ import publicRouter from "./routes/public.js";
 import cookieParser from "cookie-parser";
 import { ApiError } from "./types/api-error.enum.js";
 
-const CLIENT_ORIGIN = "https://mean-authentication.app.jgerard.dev";
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
+const isProduction = env.NODE_ENV === "production";
 
 // Enable CORS for the Angular client
 // See https://github.com/expressjs/cors?tab=readme-ov-file#configuration-options
-app.use(
-  cors({
-    allowedHeaders: "Content-Type",
-    maxAge: 86400,
-    methods: ["GET", "POST", "DELETE"],
-    optionsSuccessStatus: NO_CONTENT,
-    origin: env.HEROKU_ENV === "production" ? CLIENT_ORIGIN : "*",
-    preflightContinue: false,
-    credentials: true, // Include cookies in cross-origin requests
-  }),
-);
+if (isProduction) {
+  app.use(
+    cors({
+      allowedHeaders: "Content-Type",
+      maxAge: 86400,
+      methods: ["GET", "POST", "DELETE"],
+      optionsSuccessStatus: NO_CONTENT,
+      origin: "https://mean-authentication.app.jgerard.dev",
+      preflightContinue: false,
+      credentials: true, // Include cookies in cross-origin requests
+    }),
+  );
+}
 
 // Parse HTTP cookies
 app.use(cookieParser());
@@ -36,7 +38,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 // Mount public router
-app.use(publicRouter);
+app.use(isProduction ? "/" : "/api", publicRouter);
 
 // Global error handler
 app.use(((e, req, res, next) => {
@@ -57,7 +59,7 @@ app.use((req, res) => {
 });
 
 // Start the server
-if (env.NODE_ENV === "production") {
+if (isProduction) {
   // Omitted host defaults to 0.0.0.0 or [::] if IPv6 is supported
   app.listen(PORT, () => {
     console.log("Server listening on port", PORT);
