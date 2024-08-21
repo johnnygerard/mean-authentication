@@ -5,9 +5,11 @@ import { ErrorHandler } from "@angular/core";
  */
 export class GlobalErrorHandler implements ErrorHandler {
   handleError(e: unknown): void {
-    window.console.error(e);
-    window.alert(
-      "Sorry about that! An unexpected error occurred in the application.",
-    );
+    if (typeof window !== "undefined") {
+      window.console.error(e);
+      window.alert(
+        "Sorry about that! An unexpected error occurred in the application.",
+      );
+    }
   }
 }
