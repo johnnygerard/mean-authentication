@@ -1,9 +1,12 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { AuthService } from "../../services/auth.service";
+import { AsyncPipe } from "@angular/common";
+import { map } from "rxjs";
 
 @Component({
   selector: "app-home",
   standalone: true,
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: "./home.component.html",
   styles: `
     :host {
@@ -12,4 +15,11 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {}
+export class HomeComponent {
+  authStatus$ = inject(AuthService).isAuthenticated$.pipe(
+    map((isAuthenticated: boolean | null): string => {
+      if (isAuthenticated === null) return "Loading...";
+      return isAuthenticated ? "Authenticated" : "Unauthenticated";
+    }),
+  );
+}

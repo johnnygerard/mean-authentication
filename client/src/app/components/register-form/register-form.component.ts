@@ -9,6 +9,7 @@ import { Router, RouterLink } from "@angular/router";
 import { environment } from "../../../environments/environment";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { CONFLICT } from "../../http-status-code";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: "app-register-form",
@@ -23,6 +24,7 @@ import { CONFLICT } from "../../http-status-code";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterFormComponent {
+  #auth = inject(AuthService);
   #http = inject(HttpClient);
   #router = inject(Router);
   username = model("");
@@ -46,6 +48,7 @@ export class RegisterFormComponent {
       )
       .subscribe({
         next: async () => {
+          this.#auth.isAuthenticated$.next(true);
           await this.#router.navigateByUrl("/");
         },
         error: (e: HttpErrorResponse) => {
