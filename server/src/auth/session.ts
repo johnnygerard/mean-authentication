@@ -77,6 +77,6 @@ export const validateJwt = (token: string): Promise<UserSession> =>
 export const jwtCookieOptions: CookieOptions = {
   httpOnly: true,
   maxAge: ms(SESSION_LIFETIME),
-  secure: true,
+  secure: env.NODE_ENV === "production",
   sameSite: "strict",
 };
