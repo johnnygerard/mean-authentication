@@ -13,7 +13,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6">
+    <form class="space-y-6" (ngSubmit)="onSubmit()">
       <div>
         <label
           for="username"
@@ -68,7 +68,7 @@
       Already have an account?
       <a
         class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-        routerLink="/login"
+        routerLink="/createSession"
         >Sign in</a
       >
     </p>
