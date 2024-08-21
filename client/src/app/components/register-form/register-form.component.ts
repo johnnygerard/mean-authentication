@@ -48,7 +48,7 @@ export class RegisterFormComponent {
       )
       .subscribe({
         next: async () => {
-          this.#auth.isAuthenticated$.next(true);
+          this.#auth.isAuthenticated.set(true);
           await this.#router.navigateByUrl("/");
         },
         error: (e: HttpErrorResponse) => {

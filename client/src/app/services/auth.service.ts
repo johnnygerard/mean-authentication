@@ -1,6 +1,5 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject } from "rxjs";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -8,7 +7,7 @@ import { environment } from "../../environments/environment";
 })
 export class AuthService {
   #http = inject(HttpClient);
-  isAuthenticated$ = new BehaviorSubject<boolean | null>(null);
+  isAuthenticated = signal<boolean | null>(null);
 
   initAuthStatus(): void {
     this.#http
@@ -17,10 +16,10 @@ export class AuthService {
       })
       .subscribe({
         next: ({ isAuthenticated }) => {
-          this.isAuthenticated$.next(isAuthenticated);
+          this.isAuthenticated.set(isAuthenticated);
         },
         error: (e) => {
-          this.isAuthenticated$.next(false);
+          this.isAuthenticated.set(false);
           throw e;
         },
       });
