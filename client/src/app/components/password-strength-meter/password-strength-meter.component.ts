@@ -11,11 +11,9 @@ import zxcvbn from "zxcvbn";
   standalone: true,
   imports: [],
   templateUrl: "./password-strength-meter.component.html",
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
+  host: {
+    class: "flex flex-col gap-[8px]",
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordStrengthMeterComponent {
@@ -23,6 +21,6 @@ export class PasswordStrengthMeterComponent {
   userInputs = input<string[]>([]);
 
   result = computed(() => zxcvbn(this.password(), this.userInputs()));
-  strength = computed(() => this.result().score);
-  guesses = computed(() => this.result().guesses);
+  feedback = computed(() => this.result().feedback);
+  isPasswordValid = computed(() => this.result().score >= 3);
 }
