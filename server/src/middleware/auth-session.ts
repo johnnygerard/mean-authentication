@@ -1,15 +1,12 @@
 import { RequestHandler } from "express";
-import { BAD_REQUEST } from "../http-status-code.js";
+import { FORBIDDEN } from "../http-status-code.js";
 import { UserSession, validateJwt } from "../auth/session.js";
-import jsonwebtoken from "jsonwebtoken";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import { ApiError } from "../types/api-error.enum.js";
 
-const { JsonWebTokenError, TokenExpiredError } = jsonwebtoken;
-
-declare global {
-  namespace Express {
-    interface Request {
-      session: UserSession;
-    }
+declare module "express-serve-static-core" {
+  interface Request {
+    session: UserSession;
   }
 }
 
@@ -19,7 +16,7 @@ export const authSession: RequestHandler = async (req, res, next) => {
     const jwt = req.cookies.session;
 
     if (typeof jwt !== "string") {
-      res.status(BAD_REQUEST).json({ error: "Session token not found" });
+      res.status(FORBIDDEN).json(ApiError.NO_SESSION_COOKIE);
       return;
     }
 
@@ -29,12 +26,12 @@ export const authSession: RequestHandler = async (req, res, next) => {
     next();
   } catch (e) {
     if (e instanceof TokenExpiredError) {
-      res.status(BAD_REQUEST).json({ error: "Session token expired" });
+      res.status(FORBIDDEN).json(ApiError.TOKEN_EXPIRED);
       return;
     }
 
     if (e instanceof JsonWebTokenError) {
-      res.status(BAD_REQUEST).json({ error: "Invalid session token" });
+      res.status(FORBIDDEN).json(ApiError.INVALID_TOKEN);
       return;
     }
 

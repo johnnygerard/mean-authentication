@@ -1,22 +1,24 @@
 import type { RequestHandler } from "express";
-import { BAD_REQUEST, NO_CONTENT } from "../http-status-code.js";
-import { USERNAME_MAX_LENGTH } from "./register.js";
+import { BAD_REQUEST, CREATED, FORBIDDEN } from "../http-status-code.js";
+import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
 import { createJwt, jwtCookieOptions } from "../auth/session.js";
+import { ApiError } from "../types/api-error.enum.js";
 
-export const login: RequestHandler = async (req, res, next) => {
+export const createSession: RequestHandler = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    // Type and length validation
-    if (
-      typeof username !== "string" ||
-      typeof password !== "string" ||
-      username.length > USERNAME_MAX_LENGTH ||
-      password.length > PASSWORD_MAX_LENGTH
-    ) {
-      res.status(BAD_REQUEST).json({ error: "Client-side validation failure" });
+    // Validate username
+    if (typeof username !== "string" || username.length > USERNAME_MAX_LENGTH) {
+      res.status(BAD_REQUEST).json(ApiError.INVALID_USERNAME);
+      return;
+    }
+
+    // Validate password
+    if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
+      res.status(BAD_REQUEST).json(ApiError.INVALID_PASSWORD);
       return;
     }
 
@@ -28,7 +30,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     // Check if user exists
     if (!user) {
-      res.status(BAD_REQUEST).json({ error: "Invalid credentials" });
+      res.status(FORBIDDEN).end();
       return;
     }
 
@@ -36,7 +38,7 @@ export const login: RequestHandler = async (req, res, next) => {
     const matches = await verifyPassword(user.password, password);
 
     if (!matches) {
-      res.status(BAD_REQUEST).json({ error: "Invalid credentials" });
+      res.status(FORBIDDEN).end();
       return;
     }
 
@@ -47,7 +49,7 @@ export const login: RequestHandler = async (req, res, next) => {
       jwtCookieOptions,
     );
 
-    res.status(NO_CONTENT).end();
+    res.status(CREATED).end();
   } catch (e) {
     next(e);
   }

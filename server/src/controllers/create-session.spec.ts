@@ -1,9 +1,12 @@
 import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
-import { BAD_REQUEST, NO_CONTENT } from "../http-status-code.js";
+import { CREATED, FORBIDDEN } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
 
-describe("Login Controller", () => {
+const METHOD = "POST";
+const PATH = "/session";
+
+describe("createSession controller", () => {
   afterAll(async () => {
     await users.deleteMany();
   });
@@ -14,15 +17,15 @@ describe("Login Controller", () => {
       password: faker.internet.password(),
     };
 
-    await request("POST", "/register", credentials);
+    await request("POST", "/account", credentials);
 
     const { statusCode, headers, payload } = await request(
-      "POST",
-      "/login",
+      METHOD,
+      PATH,
       credentials,
     );
 
-    expect(statusCode).toBe(NO_CONTENT);
+    expect(statusCode).toBe(CREATED);
 
     expect(headers["set-cookie"]).toBeDefined();
     const setCookieHeaders = headers["set-cookie"] as string[];
@@ -33,25 +36,25 @@ describe("Login Controller", () => {
   });
 
   it("should not log in non-existing user", async () => {
-    const { statusCode } = await request("POST", "/login", {
+    const { statusCode } = await request(METHOD, PATH, {
       username: faker.internet.userName(),
       password: faker.internet.password(),
     });
 
-    expect(statusCode).toBe(BAD_REQUEST);
+    expect(statusCode).toBe(FORBIDDEN);
   });
 
   it("should not log in user with incorrect password", async () => {
     const username = faker.internet.userName();
     const password = faker.internet.password();
 
-    await request("POST", "/register", { username, password });
+    await request("POST", "/account", { username, password });
 
-    const { statusCode } = await request("POST", "/login", {
+    const { statusCode } = await request(METHOD, PATH, {
       username,
       password: faker.internet.password(),
     });
 
-    expect(statusCode).toBe(BAD_REQUEST);
+    expect(statusCode).toBe(FORBIDDEN);
   });
 });

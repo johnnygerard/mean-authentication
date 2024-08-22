@@ -1,7 +1,9 @@
 import { Buffer } from "node:buffer";
 import { faker } from "@faker-js/faker";
 import { createJwt, UserSession, validateJwt } from "./session.js";
-import jwt from "jsonwebtoken";
+import jsonwebtoken, { JwtPayload } from "jsonwebtoken";
+
+const { TokenExpiredError, JsonWebTokenError } = jsonwebtoken;
 
 describe("session module", () => {
   let session: UserSession;
@@ -32,13 +34,13 @@ describe("session module", () => {
     it("should throw an error if token is expired", async () => {
       jasmine.clock().install();
       const token = await createJwt(session);
-      const payload = jwt.decode(token) as jwt.JwtPayload;
+      const payload = jsonwebtoken.decode(token) as JwtPayload;
 
       expect(typeof payload.exp).toBe("number");
       jasmine.clock().mockDate(new Date((payload.exp as number) * 1000));
 
       await expectAsync(validateJwt(token)).toBeRejectedWithError(
-        jwt.TokenExpiredError,
+        TokenExpiredError,
       );
 
       jasmine.clock().uninstall();
@@ -55,7 +57,7 @@ describe("session module", () => {
       const badToken = [badHeader, payload, ""].join(".");
 
       await expectAsync(validateJwt(badToken)).toBeRejectedWithError(
-        jwt.JsonWebTokenError,
+        JsonWebTokenError,
       );
     });
   });
