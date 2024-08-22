@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   model,
 } from "@angular/core";
@@ -10,11 +11,12 @@ import { environment } from "../../../environments/environment";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { CONFLICT } from "../../http-status-code";
 import { AuthService } from "../../services/auth.service";
+import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 
 @Component({
   selector: "app-register-form",
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, PasswordStrengthMeterComponent],
   templateUrl: "./register-form.component.html",
   styles: `
     :host {
@@ -29,6 +31,10 @@ export class RegisterFormComponent {
   #router = inject(Router);
   username = model("");
   password = model("");
+  userInputs = computed(() => {
+    const username = this.username();
+    return username ? [username] : [];
+  });
   isPending = false;
 
   onSubmit(): void {
