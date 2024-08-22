@@ -5,18 +5,24 @@ import {
   inject,
   model,
 } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { environment } from "../../../environments/environment";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { CONFLICT } from "../../http-status-code";
 import { AuthService } from "../../services/auth.service";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
+import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
 
 @Component({
   selector: "app-register-form",
   standalone: true,
-  imports: [FormsModule, RouterLink, PasswordStrengthMeterComponent],
+  imports: [
+    FormsModule,
+    RouterLink,
+    PasswordStrengthMeterComponent,
+    UsernameValidatorDirective,
+  ],
   templateUrl: "./register-form.component.html",
   styles: `
     :host {
@@ -37,8 +43,8 @@ export class RegisterFormComponent {
   });
   isPending = false;
 
-  onSubmit(): void {
-    if (this.isPending) return;
+  onSubmit(form: NgForm): void {
+    if (form.invalid || this.isPending) return;
     this.isPending = true;
 
     this.#http
