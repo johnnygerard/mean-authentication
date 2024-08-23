@@ -30,7 +30,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
 
         // Propagate other HTTP errors
-        return throwError(() => true);
+        return throwError(() => error);
       },
     }),
   );
