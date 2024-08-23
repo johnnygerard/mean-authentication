@@ -13,7 +13,12 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" (ngSubmit)="onSubmit()">
+    <form
+      class="space-y-6"
+      (ngSubmit)="onSubmit(form)"
+      #form="ngForm"
+      appPasswordValidator
+    >
       <div>
         <label
           for="username"
@@ -27,10 +32,28 @@
             type="text"
             autocomplete="username"
             [(ngModel)]="username"
+            #usernameModel="ngModel"
+            appUsernameValidator
+            maxlength="100"
             required
+            spellcheck="false"
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
+        @if (
+          usernameModel.invalid &&
+          (usernameModel.dirty || usernameModel.touched || form.submitted)
+        ) {
+          <span class="mt-2 text-sm text-red-600">
+            @if (usernameModel.hasError("required")) {
+              This field is required
+            } @else if (usernameModel.hasError("maxlength")) {
+              Maximum length exceeded
+            } @else if (usernameModel.hasError("usernamePattern")) {
+              Invalid Unicode characters
+            }
+          </span>
+        }
       </div>
 
       <div>
@@ -41,17 +64,29 @@
             >Password</label
           >
         </div>
-        <div class="mt-2">
+        <div class="my-2">
           <input
             id="password"
             name="password"
             type="password"
             autocomplete="new-password"
             [(ngModel)]="password"
+            #passwordModel="ngModel"
             required
             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
+        @if (
+          passwordModel.invalid &&
+          (passwordModel.dirty || passwordModel.touched || form.submitted)
+        ) {
+          <span class="mt-2 text-sm text-red-600">
+            @if (passwordModel.hasError("required")) {
+              This field is required
+            }
+          </span>
+        }
+        <app-password-strength-meter />
       </div>
 
       <div>

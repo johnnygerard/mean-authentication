@@ -9,6 +9,10 @@ export default {
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
       },
+      backgroundImage: {
+        "valid-password": "linear-gradient(to right, #01D5E2, #114EF7)",
+        "invalid-password": "linear-gradient(to right, #E2D901, #F76411 60%)",
+      },
     },
   },
   plugins: [formsPlugin],
