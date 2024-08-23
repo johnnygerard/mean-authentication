@@ -1,15 +1,7 @@
 <nav>
-  <a
-    class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-    routerLink="/"
-    >Home</a
-  >
+  <a routerLink="/">Home</a>
   @if (isAuthenticated() === false) {
-    <a
-      class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-      routerLink="/sign-in"
-      >Sign in</a
-    >
+    <a routerLink="/sign-in">Sign in</a>
   }
 </nav>
 @if (isAuthenticated()) {
