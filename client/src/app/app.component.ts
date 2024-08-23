@@ -14,6 +14,7 @@ import { environment } from "../environments/environment";
 export class AppComponent {
   #authService = inject(AuthService);
   #http = inject(HttpClient);
+  isAuthenticated = this.#authService.isAuthenticated;
 
   // Delay initialization to make sure the session cookie is sent with the request
   @HostListener("document:DOMContentLoaded")

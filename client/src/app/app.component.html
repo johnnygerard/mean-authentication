@@ -1,19 +1,18 @@
 <nav>
-  @for (
-    link of [
-      ["/", "Home"],
-      ["/register", "Register"],
-      ["/sign-in", "Sign in"],
-    ];
-    track $index
-  ) {
+  <a
+    class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+    routerLink="/"
+    >Home</a
+  >
+  @if (isAuthenticated() === false) {
     <a
       class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-      [routerLink]="link[0]"
+      routerLink="/sign-in"
+      >Sign in</a
     >
-      {{ link[1] }}
-    </a>
   }
 </nav>
-<button type="button" (click)="deleteSession()">Log out</button>
+@if (isAuthenticated()) {
+  <button type="button" (click)="deleteSession()">Log out</button>
+}
 <router-outlet />
