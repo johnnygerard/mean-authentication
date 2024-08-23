@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
   model,
 } from "@angular/core";
@@ -13,6 +12,7 @@ import { CONFLICT } from "../../http-status-code";
 import { AuthService } from "../../services/auth.service";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
+import { PasswordValidatorDirective } from "../../directives/password-validator.directive";
 
 @Component({
   selector: "app-register-form",
@@ -22,6 +22,7 @@ import { UsernameValidatorDirective } from "../../directives/username-validator.
     RouterLink,
     PasswordStrengthMeterComponent,
     UsernameValidatorDirective,
+    PasswordValidatorDirective,
   ],
   templateUrl: "./register-form.component.html",
   styles: `
@@ -37,10 +38,6 @@ export class RegisterFormComponent {
   #router = inject(Router);
   username = model("");
   password = model("");
-  userInputs = computed(() => {
-    const username = this.username();
-    return username ? [username] : [];
-  });
   isPending = false;
 
   onSubmit(form: NgForm): void {

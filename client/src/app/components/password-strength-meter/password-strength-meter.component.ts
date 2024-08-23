@@ -2,9 +2,9 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  input,
+  inject,
 } from "@angular/core";
-import zxcvbn from "zxcvbn";
+import { PasswordService } from "../../services/password.service";
 
 @Component({
   selector: "app-password-strength-meter",
@@ -17,10 +17,8 @@ import zxcvbn from "zxcvbn";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordStrengthMeterComponent {
-  password = input.required<string>();
-  userInputs = input<string[]>([]);
-
-  result = computed(() => zxcvbn(this.password(), this.userInputs()));
-  feedback = computed(() => this.result().feedback);
+  result = inject(PasswordService).result;
+  warning = computed(() => this.result().feedback.warning);
+  suggestions = computed(() => this.result().feedback.suggestions);
   isPasswordValid = computed(() => this.result().score >= 3);
 }
