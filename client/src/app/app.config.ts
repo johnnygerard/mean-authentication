@@ -14,6 +14,11 @@ import {
 } from "@angular/common/http";
 import { errorInterceptor } from "./interceptors/error.interceptor";
 import { GlobalErrorHandler } from "./global-error-handler";
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+
+const prefersReducedMotion =
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,5 +30,6 @@ export const appConfig: ApplicationConfig = {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
     },
+    provideAnimationsAsync(prefersReducedMotion ? "noop" : "animations"),
   ],
 };
