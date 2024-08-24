@@ -1,7 +1,11 @@
 <mat-card>
   <mat-card-content>
     <h2 class="mat-title-medium">Sign in to your account</h2>
-    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+    <form
+      (ngSubmit)="onSubmit(form)"
+      (input)="areCredentialsInvalid.set(false)"
+      #form="ngForm"
+    >
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input
@@ -40,10 +44,11 @@
           <mat-error>Maximum length exceeded</mat-error>
         }
       </mat-form-field>
-
       <button type="submit" mat-flat-button>Sign in</button>
       @if (areCredentialsInvalid()) {
-        <div>Bad credentials. Try again.</div>
+        <mat-error class="mat-label-large">
+          Bad credentials. Please try again.
+        </mat-error>
       }
     </form>
     <p>
