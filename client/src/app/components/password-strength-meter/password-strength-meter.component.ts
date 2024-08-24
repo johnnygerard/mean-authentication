@@ -5,15 +5,14 @@ import {
   inject,
 } from "@angular/core";
 import { PasswordService } from "../../services/password.service";
+import { MatError } from "@angular/material/form-field";
 
 @Component({
   selector: "app-password-strength-meter",
   standalone: true,
-  imports: [],
+  imports: [MatError],
   templateUrl: "./password-strength-meter.component.html",
-  host: {
-    class: "flex flex-col gap-[8px]",
-  },
+  styleUrl: "./password-strength-meter.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordStrengthMeterComponent {
