@@ -17,6 +17,7 @@ import { FORBIDDEN } from "../../http-status-code";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInput } from "@angular/material/input";
+import { MatCardModule } from "@angular/material/card";
 
 @Component({
   selector: "app-sign-in-form",
@@ -25,6 +26,7 @@ import { MatInput } from "@angular/material/input";
     FormsModule,
     MatFormFieldModule,
     MatButtonModule,
+    MatCardModule,
     MatInput,
     PasswordStrengthMeterComponent,
     PasswordValidatorDirective,
@@ -32,11 +34,7 @@ import { MatInput } from "@angular/material/input";
     UsernameValidatorDirective,
   ],
   templateUrl: "./sign-in-form.component.html",
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
+  styleUrl: "./sign-in-form.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInFormComponent {
