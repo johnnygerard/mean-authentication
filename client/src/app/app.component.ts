@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { environment } from "../environments/environment";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-root",
@@ -16,6 +17,7 @@ import { MatButtonModule } from "@angular/material/button";
 export class AppComponent {
   #authService = inject(AuthService);
   #http = inject(HttpClient);
+  title = inject(Title).getTitle();
   isAuthenticated = this.#authService.isAuthenticated;
 
   // Delay initialization to make sure the session cookie is sent with the request
