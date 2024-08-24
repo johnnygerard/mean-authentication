@@ -1,53 +1,43 @@
 <h2>Sign in to your account</h2>
 <form (ngSubmit)="onSubmit(form)" #form="ngForm">
-  <label for="username">Username</label>
-  <input
-    id="username"
-    name="username"
-    type="text"
-    autocomplete="username"
-    [(ngModel)]="username"
-    #usernameModel="ngModel"
-    maxlength="100"
-    required
-    spellcheck="false"
-  />
-  @if (
-    usernameModel.invalid &&
-    (usernameModel.dirty || usernameModel.touched || form.submitted)
-  ) {
-    <span>
-      @if (usernameModel.hasError("required")) {
-        This field is required
-      } @else if (usernameModel.hasError("maxlength")) {
-        Maximum length exceeded
-      }
-    </span>
-  }
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input
+      matInput
+      name="username"
+      type="text"
+      autocomplete="username"
+      [(ngModel)]="username"
+      #usernameModel="ngModel"
+      maxlength="100"
+      required
+      spellcheck="false"
+    />
+    @if (usernameModel.hasError("required")) {
+      <mat-error>This field is required</mat-error>
+    } @else if (usernameModel.hasError("maxlength")) {
+      <mat-error>Maximum length exceeded</mat-error>
+    }
+  </mat-form-field>
 
-  <label for="password">Password</label>
-  <input
-    id="password"
-    name="password"
-    type="password"
-    autocomplete="current-password"
-    [(ngModel)]="password"
-    #passwordModel="ngModel"
-    maxlength="64"
-    required
-  />
-  @if (
-    passwordModel.invalid &&
-    (passwordModel.dirty || passwordModel.touched || form.submitted)
-  ) {
-    <span>
-      @if (passwordModel.hasError("required")) {
-        This field is required
-      } @else if (passwordModel.hasError("maxlength")) {
-        Maximum length exceeded
-      }
-    </span>
-  }
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      name="password"
+      type="password"
+      autocomplete="current-password"
+      [(ngModel)]="password"
+      #passwordModel="ngModel"
+      maxlength="64"
+      required
+    />
+    @if (passwordModel.hasError("required")) {
+      <mat-error>This field is required</mat-error>
+    } @else if (passwordModel.hasError("maxlength")) {
+      <mat-error>Maximum length exceeded</mat-error>
+    }
+  </mat-form-field>
 
   <button type="submit">Sign in</button>
   @if (areCredentialsInvalid()) {

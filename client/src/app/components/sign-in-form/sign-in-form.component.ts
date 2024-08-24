@@ -14,12 +14,16 @@ import { AuthService } from "../../services/auth.service";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { FORBIDDEN } from "../../http-status-code";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInput } from "@angular/material/input";
 
 @Component({
   selector: "app-sign-in-form",
   standalone: true,
   imports: [
     FormsModule,
+    MatFormFieldModule,
+    MatInput,
     PasswordStrengthMeterComponent,
     PasswordValidatorDirective,
     RouterLink,
