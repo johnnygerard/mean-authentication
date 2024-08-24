@@ -13,23 +13,27 @@ import { AuthService } from "../../services/auth.service";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
 import { PasswordValidatorDirective } from "../../directives/password-validator.directive";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatInput } from "@angular/material/input";
 
 @Component({
   selector: "app-register-form",
   standalone: true,
   imports: [
     FormsModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInput,
     RouterLink,
     PasswordStrengthMeterComponent,
     UsernameValidatorDirective,
     PasswordValidatorDirective,
   ],
   templateUrl: "./register-form.component.html",
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
+  styleUrl: "./register-form.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterFormComponent {

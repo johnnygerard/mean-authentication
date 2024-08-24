@@ -1,62 +1,56 @@
-<h2>Create your account</h2>
-<form (ngSubmit)="onSubmit(form)" #form="ngForm" appPasswordValidator>
-  <label for="username">Username</label>
-  <input
-    id="username"
-    name="username"
-    type="text"
-    autocomplete="username"
-    [(ngModel)]="username"
-    #usernameModel="ngModel"
-    appUsernameValidator
-    maxlength="100"
-    required
-    spellcheck="false"
-  />
-  @if (
-    usernameModel.invalid &&
-    (usernameModel.dirty || usernameModel.touched || form.submitted)
-  ) {
-    <span>
-      @if (usernameModel.hasError("required")) {
-        This field is required
-      } @else if (usernameModel.hasError("maxlength")) {
-        Maximum length exceeded
-      } @else if (usernameModel.hasError("usernamePattern")) {
-        Invalid Unicode characters
-      }
-    </span>
-  }
+<mat-card>
+  <mat-card-content>
+    <h2 class="mat-title-medium">Create your account</h2>
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm" appPasswordValidator>
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input
+          matInput
+          name="username"
+          type="text"
+          autocomplete="username"
+          [(ngModel)]="username"
+          #usernameModel="ngModel"
+          appUsernameValidator
+          maxlength="100"
+          required
+          spellcheck="false"
+        />
+        @if (usernameModel.hasError("required")) {
+          <mat-error>This field is required</mat-error>
+        } @else if (usernameModel.hasError("maxlength")) {
+          <mat-error>Maximum length exceeded</mat-error>
+        } @else if (usernameModel.hasError("usernamePattern")) {
+          <mat-error>Invalid Unicode characters</mat-error>
+        }
+      </mat-form-field>
 
-  <label for="password">Password</label>
-  <input
-    id="password"
-    name="password"
-    type="password"
-    autocomplete="new-password"
-    [(ngModel)]="password"
-    #passwordModel="ngModel"
-    maxlength="64"
-    required
-  />
-  @if (
-    passwordModel.invalid &&
-    (passwordModel.dirty || passwordModel.touched || form.submitted)
-  ) {
-    <span>
-      @if (passwordModel.hasError("required")) {
-        This field is required
-      } @else if (passwordModel.hasError("maxlength")) {
-        Maximum length exceeded
-      }
-    </span>
-  }
-  <app-password-strength-meter />
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          name="password"
+          type="password"
+          autocomplete="new-password"
+          [(ngModel)]="password"
+          #passwordModel="ngModel"
+          maxlength="64"
+          required
+        />
+        @if (passwordModel.hasError("required")) {
+          <mat-error>This field is required</mat-error>
+        } @else if (passwordModel.hasError("maxlength")) {
+          <mat-error>Maximum length exceeded</mat-error>
+        }
+      </mat-form-field>
+      <app-password-strength-meter />
 
-  <button type="submit">Register</button>
-</form>
+      <button mat-flat-button type="submit">Register</button>
+    </form>
 
-<p>
-  Already have an account?
-  <a routerLink="/sign-in">Sign in</a>
-</p>
+    <p>
+      Already have an account?
+      <a mat-button routerLink="/sign-in">Sign in</a>
+    </p>
+  </mat-card-content>
+</mat-card>
