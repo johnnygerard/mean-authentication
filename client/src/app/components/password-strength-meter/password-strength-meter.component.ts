@@ -6,11 +6,12 @@ import {
 } from "@angular/core";
 import { PasswordService } from "../../services/password.service";
 import { MatError } from "@angular/material/form-field";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
   selector: "app-password-strength-meter",
   standalone: true,
-  imports: [MatError],
+  imports: [MatError, MatTooltipModule],
   templateUrl: "./password-strength-meter.component.html",
   styleUrl: "./password-strength-meter.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,4 +21,11 @@ export class PasswordStrengthMeterComponent {
   warning = computed(() => this.result().feedback.warning);
   suggestions = computed(() => this.result().feedback.suggestions);
   isPasswordValid = computed(() => this.result().score >= 3);
+
+  tooltip = computed(() => {
+    const estimation =
+      this.result().crack_times_display.offline_slow_hashing_1e4_per_second;
+
+    return `Estimated time to crack: ${estimation}`;
+  });
 }
