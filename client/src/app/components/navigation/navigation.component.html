@@ -1,0 +1,10 @@
+<mat-toolbar role="navigation">
+  <a mat-button routerLink="/">{{ title }}</a>
+  <span class="spacer"></span>
+  @if (isAuthenticated() === false) {
+    <a mat-button routerLink="/sign-in">Sign in</a>
+  }
+  @if (isAuthenticated()) {
+    <button mat-button type="button" (click)="deleteSession()">Log out</button>
+  }
+</mat-toolbar>
