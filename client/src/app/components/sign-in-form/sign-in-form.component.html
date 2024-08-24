@@ -39,7 +39,7 @@
     }
   </mat-form-field>
 
-  <button type="submit">Sign in</button>
+  <button type="submit" mat-flat-button>Sign in</button>
   @if (areCredentialsInvalid()) {
     <div>Bad credentials. Try again.</div>
   }
@@ -47,5 +47,5 @@
 
 <p>
   Don't have an account?
-  <a routerLink="/register">Register</a>
+  <a mat-button routerLink="/register">Register</a>
 </p>

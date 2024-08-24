@@ -15,6 +15,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
 import { FORBIDDEN } from "../../http-status-code";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatButtonModule } from "@angular/material/button";
 import { MatInput } from "@angular/material/input";
 
 @Component({
@@ -23,6 +24,7 @@ import { MatInput } from "@angular/material/input";
   imports: [
     FormsModule,
     MatFormFieldModule,
+    MatButtonModule,
     MatInput,
     PasswordStrengthMeterComponent,
     PasswordValidatorDirective,
