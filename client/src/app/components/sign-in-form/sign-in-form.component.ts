@@ -6,10 +6,7 @@ import {
   signal,
 } from "@angular/core";
 import { FormsModule, NgForm } from "@angular/forms";
-import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
-import { PasswordValidatorDirective } from "../../directives/password-validator.directive";
 import { Router, RouterLink } from "@angular/router";
-import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
 import { AuthService } from "../../services/auth.service";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
@@ -28,10 +25,7 @@ import { MatCardModule } from "@angular/material/card";
     MatButtonModule,
     MatCardModule,
     MatInput,
-    PasswordStrengthMeterComponent,
-    PasswordValidatorDirective,
     RouterLink,
-    UsernameValidatorDirective,
   ],
   templateUrl: "./sign-in-form.component.html",
   styleUrl: "./sign-in-form.component.scss",
