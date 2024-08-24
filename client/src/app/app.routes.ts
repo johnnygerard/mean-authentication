@@ -1,12 +1,12 @@
 import { Routes } from "@angular/router";
-import { HomeComponent } from "./pages/home/home.component";
 import { SignInFormComponent } from "./components/sign-in-form/sign-in-form.component";
+import { HomePageComponent } from "./pages/home-page/home-page.component";
 
 export const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
-    component: HomeComponent,
+    component: HomePageComponent,
   },
   {
     path: "sign-in",

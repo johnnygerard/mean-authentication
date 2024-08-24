@@ -3,17 +3,13 @@ import { AuthService } from "../../services/auth.service";
 import { AuthStatusPipe } from "../../pipes/auth-status.pipe";
 
 @Component({
-  selector: "app-home",
+  selector: "app-home-page",
   standalone: true,
   imports: [AuthStatusPipe],
-  templateUrl: "./home.component.html",
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
+  templateUrl: "./home-page.component.html",
+  styleUrl: "./home-page.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
+export class HomePageComponent {
   auth = inject(AuthService);
 }
