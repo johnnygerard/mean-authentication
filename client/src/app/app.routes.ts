@@ -15,8 +15,7 @@ export const routes: Routes = [
   {
     path: "register",
     loadComponent: async () =>
-      (await import("./components/register-form/register-form.component"))
-        .RegisterFormComponent,
+      (await import("./pages/register-page.component")).RegisterPageComponent,
   },
   {
     path: "**",
