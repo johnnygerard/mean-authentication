@@ -21,6 +21,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatInput } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { PasswordService } from "../../services/password.service";
 
 @Component({
   selector: "app-register-form",
@@ -45,9 +46,11 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 export class RegisterFormComponent {
   #auth = inject(AuthService);
   #http = inject(HttpClient);
+  #passwordService = inject(PasswordService);
   #router = inject(Router);
   username = model("");
   password = model("");
+  warning = computed(() => this.#passwordService.result().feedback.warning);
   isPending = false;
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(

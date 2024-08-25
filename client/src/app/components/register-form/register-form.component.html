@@ -54,7 +54,9 @@
         } @else if (passwordModel.hasError("maxlength")) {
           <mat-error>Maximum length exceeded</mat-error>
         } @else if (passwordModel.hasError("strength")) {
-          <mat-error>Vulnerable password</mat-error>
+          <mat-error>
+            {{ warning() ? warning() : "Vulnerable password" }}
+          </mat-error>
         }
       </mat-form-field>
       <app-password-strength-meter [isPasswordEmpty]="!password()" />

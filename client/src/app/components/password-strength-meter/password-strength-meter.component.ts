@@ -6,21 +6,18 @@ import {
   input,
 } from "@angular/core";
 import { PasswordService } from "../../services/password.service";
-import { MatError } from "@angular/material/form-field";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: "app-password-strength-meter",
   standalone: true,
-  imports: [MatError, MatIconModule, MatTooltipModule],
+  imports: [MatTooltipModule],
   templateUrl: "./password-strength-meter.component.html",
   styleUrl: "./password-strength-meter.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordStrengthMeterComponent {
   result = inject(PasswordService).result;
-  warning = computed(() => this.result().feedback.warning);
   suggestions = computed(() => this.result().feedback.suggestions);
   isPasswordEmpty = input.required<boolean>();
   isPasswordValid = computed(() => this.result().score >= 3);
