@@ -55,7 +55,7 @@
           <mat-error>Maximum length exceeded</mat-error>
         }
       </mat-form-field>
-      <app-password-strength-meter />
+      <app-password-strength-meter [isPasswordEmpty]="!password()" />
 
       <button mat-flat-button type="submit">Register</button>
     </form>

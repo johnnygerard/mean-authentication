@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   inject,
+  input,
 } from "@angular/core";
 import { PasswordService } from "../../services/password.service";
 import { MatError } from "@angular/material/form-field";
@@ -20,9 +21,13 @@ export class PasswordStrengthMeterComponent {
   result = inject(PasswordService).result;
   warning = computed(() => this.result().feedback.warning);
   suggestions = computed(() => this.result().feedback.suggestions);
+  isPasswordEmpty = input.required<boolean>();
   isPasswordValid = computed(() => this.result().score >= 3);
 
   tooltip = computed(() => {
+    // Hide tooltip if password field is empty
+    if (this.isPasswordEmpty()) return "";
+
     const estimation =
       this.result().crack_times_display.offline_slow_hashing_1e4_per_second;
 
