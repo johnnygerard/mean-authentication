@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   model,
   signal,
@@ -15,6 +16,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInput } from "@angular/material/input";
 import { MatCardModule } from "@angular/material/card";
+import { MatIcon } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
   selector: "app-sign-in-form",
@@ -24,8 +27,10 @@ import { MatCardModule } from "@angular/material/card";
     MatFormFieldModule,
     MatButtonModule,
     MatCardModule,
+    MatTooltipModule,
     MatInput,
     RouterLink,
+    MatIcon,
   ],
   templateUrl: "./sign-in-form.component.html",
   styleUrl: "./sign-in-form.component.scss",
@@ -39,6 +44,10 @@ export class SignInFormComponent {
   username = model("");
   isPending = false;
   areCredentialsInvalid = signal(false);
+  isPasswordVisible = signal(false);
+  visibilityTooltip = computed(
+    () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
+  );
 
   onSubmit(form: NgForm): void {
     if (form.invalid || this.isPending) return;
@@ -72,5 +81,12 @@ export class SignInFormComponent {
           throw e;
         },
       });
+  }
+
+  togglePasswordVisibility(event: MouseEvent): void {
+    this.isPasswordVisible.update((value) => !value);
+
+    // Avoid losing focus due to event bubbling to the password input
+    event.stopPropagation();
   }
 }

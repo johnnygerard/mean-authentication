@@ -30,13 +30,25 @@
         <input
           matInput
           name="password"
-          type="password"
+          [type]="isPasswordVisible() ? 'text' : 'password'"
           autocomplete="new-password"
           [(ngModel)]="password"
           #passwordModel="ngModel"
           maxlength="64"
           required
         />
+        <button
+          type="button"
+          [matTooltip]="visibilityTooltip()"
+          [attr.aria-label]="visibilityTooltip()"
+          matSuffix
+          mat-icon-button
+          (click)="togglePasswordVisibility($event)"
+        >
+          <mat-icon
+            [svgIcon]="isPasswordVisible() ? 'visibility-off' : 'visibility'"
+          />
+        </button>
         @if (passwordModel.hasError("required")) {
           <mat-error>This field is required</mat-error>
         } @else if (passwordModel.hasError("maxlength")) {

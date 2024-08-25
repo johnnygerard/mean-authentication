@@ -1,8 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   model,
+  signal,
 } from "@angular/core";
 import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
@@ -17,6 +19,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatInput } from "@angular/material/input";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
   selector: "app-register-form",
@@ -26,6 +30,8 @@ import { MatInput } from "@angular/material/input";
     MatFormFieldModule,
     MatButtonModule,
     MatCardModule,
+    MatIconModule,
+    MatTooltipModule,
     MatInput,
     RouterLink,
     PasswordStrengthMeterComponent,
@@ -43,6 +49,10 @@ export class RegisterFormComponent {
   username = model("");
   password = model("");
   isPending = false;
+  isPasswordVisible = signal(false);
+  visibilityTooltip = computed(
+    () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
+  );
 
   onSubmit(form: NgForm): void {
     if (form.invalid || this.isPending) return;
@@ -73,5 +83,12 @@ export class RegisterFormComponent {
           throw e;
         },
       });
+  }
+
+  togglePasswordVisibility(event: MouseEvent): void {
+    this.isPasswordVisible.update((value) => !value);
+
+    // Avoid losing focus due to event bubbling to the password input
+    event.stopPropagation();
   }
 }
