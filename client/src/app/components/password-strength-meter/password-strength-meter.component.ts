@@ -22,6 +22,25 @@ export class PasswordStrengthMeterComponent {
   suggestions = computed(() => this.result().feedback.suggestions);
   isPasswordEmpty = input.required<boolean>();
   isPasswordValid = computed(() => this.result().score >= 3);
+  ariaValueText = computed(() => {
+    const score = this.result().score;
+
+    switch (score) {
+      case 0:
+        return "Unacceptable";
+      case 1:
+        return "Very weak";
+      case 2:
+        return "Weak";
+      case 3:
+        return "Acceptable";
+      case 4:
+        return "Strong";
+      default:
+        const _: never = score;
+        return _;
+    }
+  });
 
   tooltip = computed(() => {
     // Hide tooltip if password field is empty
