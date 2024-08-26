@@ -44,10 +44,10 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInFormComponent {
-  #auth = inject(AuthService);
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
   #router = inject(Router);
+  #isAuthenticated$ = inject(AuthService).isAuthenticated$;
   password = model("");
   username = model("");
   isLoading = signal(false);
@@ -81,7 +81,7 @@ export class SignInFormComponent {
       )
       .subscribe({
         next: async () => {
-          this.#auth.isAuthenticated.set(true);
+          this.#isAuthenticated$.next(true);
           await this.#router.navigate(["/"]);
         },
         error: (e: HttpErrorResponse) => {

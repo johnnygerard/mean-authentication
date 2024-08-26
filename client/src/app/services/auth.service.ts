@@ -1,13 +1,14 @@
-import { inject, Injectable, signal } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
+import { ReplaySubject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
   #http = inject(HttpClient);
-  isAuthenticated = signal<boolean | null>(null);
+  isAuthenticated$ = new ReplaySubject<boolean>(1);
 
   initAuthStatus(): void {
     this.#http
@@ -16,10 +17,10 @@ export class AuthService {
       })
       .subscribe({
         next: ({ isAuthenticated }) => {
-          this.isAuthenticated.set(isAuthenticated);
+          this.isAuthenticated$.next(isAuthenticated);
         },
         error: (e) => {
-          this.isAuthenticated.set(false);
+          this.isAuthenticated$.next(false);
           throw e;
         },
       });

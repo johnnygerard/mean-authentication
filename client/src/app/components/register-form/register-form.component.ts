@@ -50,10 +50,10 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterFormComponent {
-  #auth = inject(AuthService);
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
   #router = inject(Router);
+  #isAuthenticated$ = inject(AuthService).isAuthenticated$;
   username = model("");
   password = model("");
   isLoading = signal(false);
@@ -85,7 +85,7 @@ export class RegisterFormComponent {
       )
       .subscribe({
         next: async () => {
-          this.#auth.isAuthenticated.set(true);
+          this.#isAuthenticated$.next(true);
           await this.#router.navigateByUrl("/");
         },
         error: (e: HttpErrorResponse) => {
