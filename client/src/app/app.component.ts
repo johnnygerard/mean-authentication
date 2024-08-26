@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   #sanitizer = inject(DomSanitizer);
 
   ngOnInit(): void {
-    for (const name of ["visibility", "visibility-off", "info"])
+    for (const name of ["visibility", "visibility_off", "info"])
       this.#registerIcon(name);
   }
 
