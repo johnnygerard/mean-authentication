@@ -59,7 +59,7 @@ export class RegisterFormComponent {
   );
 
   onSubmit(form: NgForm): void {
-    if (form.invalid || this.isPending) return;
+    if (!form.valid || this.isPending) return;
     this.isPending = true;
 
     this.#http
