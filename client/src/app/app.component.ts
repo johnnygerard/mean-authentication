@@ -18,8 +18,14 @@ export class AppComponent implements OnInit {
   #sanitizer = inject(DomSanitizer);
 
   ngOnInit(): void {
-    for (const name of ["visibility", "visibility_off", "info"])
+    for (const name of [
+      "visibility",
+      "visibility_off",
+      "info",
+      "progress_activity",
+    ]) {
       this.#registerIcon(name);
+    }
   }
 
   // Delay initialization to make sure the session cookie is sent with the request

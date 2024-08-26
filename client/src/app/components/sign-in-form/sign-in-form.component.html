@@ -52,7 +52,12 @@
           <mat-error>{{ passwordModel.errors | passwordError }}</mat-error>
         }
       </mat-form-field>
-      <button type="submit" mat-flat-button>Sign in</button>
+      <button type="submit" mat-flat-button>
+        @if (isPending) {
+          <mat-icon svgIcon="progress_activity" />
+        }
+        Sign in
+      </button>
       @if (areCredentialsInvalid()) {
         <mat-error class="mat-label-large">
           Bad credentials. Please try again.
