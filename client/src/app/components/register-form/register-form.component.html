@@ -52,7 +52,7 @@
       <app-password-strength-meter [isPasswordEmpty]="!password()" />
 
       <button mat-flat-button type="submit">
-        @if (isPending) {
+        @if (isLoading()) {
           <mat-icon svgIcon="progress_activity" />
         }
         Register

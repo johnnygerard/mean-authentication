@@ -23,6 +23,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
+import { finalize } from "rxjs";
 
 @Component({
   selector: "app-register-form",
@@ -52,15 +53,15 @@ export class RegisterFormComponent {
   #router = inject(Router);
   username = model("");
   password = model("");
-  isPending = false;
+  isLoading = signal(false);
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(
     () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
   );
 
   onSubmit(form: NgForm): void {
-    if (!form.valid || this.isPending) return;
-    this.isPending = true;
+    if (!form.valid || this.isLoading()) return;
+    this.isLoading.set(true);
 
     this.#http
       .post(
@@ -73,13 +74,17 @@ export class RegisterFormComponent {
           withCredentials: true,
         },
       )
+      .pipe(
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+      )
       .subscribe({
         next: async () => {
           this.#auth.isAuthenticated.set(true);
           await this.#router.navigateByUrl("/");
         },
         error: (e: HttpErrorResponse) => {
-          this.isPending = false;
           if (e.status === CONFLICT) {
             window.alert("Sorry, this username is not available.");
             return;

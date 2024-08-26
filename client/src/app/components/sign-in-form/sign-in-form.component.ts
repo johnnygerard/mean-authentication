@@ -20,6 +20,7 @@ import { MatIcon } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
+import { finalize } from "rxjs";
 
 @Component({
   selector: "app-sign-in-form",
@@ -46,7 +47,7 @@ export class SignInFormComponent {
   #router = inject(Router);
   password = model("");
   username = model("");
-  isPending = false;
+  isLoading = signal(false);
   areCredentialsInvalid = signal(false);
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(
@@ -54,8 +55,8 @@ export class SignInFormComponent {
   );
 
   onSubmit(form: NgForm): void {
-    if (form.invalid || this.isPending) return;
-    this.isPending = true;
+    if (form.invalid || this.isLoading()) return;
+    this.isLoading.set(true);
     this.areCredentialsInvalid.set(false);
 
     this.#http
@@ -69,14 +70,17 @@ export class SignInFormComponent {
           withCredentials: true,
         },
       )
+      .pipe(
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+      )
       .subscribe({
         next: async () => {
           this.#auth.isAuthenticated.set(true);
           await this.#router.navigate(["/"]);
         },
         error: (e: HttpErrorResponse) => {
-          this.isPending = false;
-
           if (e.status === FORBIDDEN) {
             this.areCredentialsInvalid.set(true);
             return;
