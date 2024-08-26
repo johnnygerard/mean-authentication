@@ -16,12 +16,8 @@
           required
           spellcheck="false"
         />
-        @if (usernameModel.hasError("required")) {
-          <mat-error>This field is required</mat-error>
-        } @else if (usernameModel.hasError("maxlength")) {
-          <mat-error>Maximum length exceeded</mat-error>
-        } @else if (usernameModel.hasError("usernamePattern")) {
-          <mat-error>Invalid Unicode characters</mat-error>
+        @if (usernameModel.errors) {
+          <mat-error>{{ usernameModel.errors | usernameError }}</mat-error>
         }
       </mat-form-field>
 
@@ -49,14 +45,8 @@
             [svgIcon]="isPasswordVisible() ? 'visibility-off' : 'visibility'"
           />
         </button>
-        @if (passwordModel.hasError("required")) {
-          <mat-error>This field is required</mat-error>
-        } @else if (passwordModel.hasError("maxlength")) {
-          <mat-error>Maximum length exceeded</mat-error>
-        } @else if (passwordModel.hasError("strength")) {
-          <mat-error>
-            {{ warning() ? warning() : "Vulnerable password" }}
-          </mat-error>
+        @if (passwordModel.errors) {
+          <mat-error>{{ passwordModel.errors | passwordError }}</mat-error>
         }
       </mat-form-field>
       <app-password-strength-meter [isPasswordEmpty]="!password()" />

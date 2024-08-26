@@ -21,7 +21,8 @@ import { MatCardModule } from "@angular/material/card";
 import { MatInput } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { PasswordService } from "../../services/password.service";
+import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
+import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 
 @Component({
   selector: "app-register-form",
@@ -38,6 +39,8 @@ import { PasswordService } from "../../services/password.service";
     PasswordStrengthMeterComponent,
     UsernameValidatorDirective,
     PasswordValidatorDirective,
+    PasswordErrorPipe,
+    UsernameErrorPipe,
   ],
   templateUrl: "./register-form.component.html",
   styleUrl: "./register-form.component.scss",
@@ -46,11 +49,9 @@ import { PasswordService } from "../../services/password.service";
 export class RegisterFormComponent {
   #auth = inject(AuthService);
   #http = inject(HttpClient);
-  #passwordService = inject(PasswordService);
   #router = inject(Router);
   username = model("");
   password = model("");
-  warning = computed(() => this.#passwordService.result().feedback.warning);
   isPending = false;
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(

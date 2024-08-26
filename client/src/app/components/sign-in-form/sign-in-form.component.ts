@@ -18,6 +18,8 @@ import { MatInput } from "@angular/material/input";
 import { MatCardModule } from "@angular/material/card";
 import { MatIcon } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
+import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 
 @Component({
   selector: "app-sign-in-form",
@@ -31,6 +33,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     MatInput,
     RouterLink,
     MatIcon,
+    PasswordErrorPipe,
+    UsernameErrorPipe,
   ],
   templateUrl: "./sign-in-form.component.html",
   styleUrl: "./sign-in-form.component.scss",

@@ -45,7 +45,7 @@ export class PasswordValidatorDirective implements Validator {
     if (result.score < 3) {
       password.setErrors({
         ...password.errors,
-        strength: true,
+        strength: result.feedback.warning || "Vulnerable password",
       });
     }
 
