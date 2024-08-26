@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   model,
   signal,
@@ -24,6 +25,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { finalize } from "rxjs";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-register-form",
@@ -49,6 +51,7 @@ import { finalize } from "rxjs";
 })
 export class RegisterFormComponent {
   #auth = inject(AuthService);
+  #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
   #router = inject(Router);
   username = model("");
@@ -78,6 +81,7 @@ export class RegisterFormComponent {
         finalize(() => {
           this.isLoading.set(false);
         }),
+        takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe({
         next: async () => {
