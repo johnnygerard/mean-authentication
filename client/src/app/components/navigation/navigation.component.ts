@@ -6,31 +6,25 @@ import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Title } from "@angular/platform-browser";
 import { AuthService } from "../../services/auth.service";
-import { AsyncPipe } from "@angular/common";
 
 @Component({
   selector: "app-navigation",
   standalone: true,
-  imports: [
-    RouterOutlet,
-    RouterLink,
-    MatToolbarModule,
-    MatButtonModule,
-    AsyncPipe,
-  ],
+  imports: [RouterOutlet, RouterLink, MatToolbarModule, MatButtonModule],
   templateUrl: "./navigation.component.html",
   styleUrl: "./navigation.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
+  #auth = inject(AuthService);
   #http = inject(HttpClient);
   title = inject(Title).getTitle();
-  isAuthenticated$ = inject(AuthService).isAuthenticated$;
+  isAuthenticated = this.#auth.isAuthenticated;
 
   deleteSession(): void {
     this.#http.delete(`${environment.apiUrl}/session`).subscribe({
       next: () => {
-        this.isAuthenticated$.next(false);
+        this.#auth.setAuthStatus(false);
       },
       error: (e) => {
         throw e;

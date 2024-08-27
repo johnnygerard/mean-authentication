@@ -47,7 +47,7 @@ export class SignInFormComponent {
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
   #router = inject(Router);
-  #isAuthenticated$ = inject(AuthService).isAuthenticated$;
+  #auth = inject(AuthService);
   password = model("");
   username = model("");
   isLoading = signal(false);
@@ -81,7 +81,7 @@ export class SignInFormComponent {
       )
       .subscribe({
         next: async () => {
-          this.#isAuthenticated$.next(true);
+          this.#auth.setAuthStatus(true);
           await this.#router.navigate(["/"]);
         },
         error: (e: HttpErrorResponse) => {

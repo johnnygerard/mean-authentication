@@ -53,7 +53,7 @@ export class RegisterFormComponent {
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
   #router = inject(Router);
-  #isAuthenticated$ = inject(AuthService).isAuthenticated$;
+  #auth = inject(AuthService);
   username = model("");
   password = model("");
   isLoading = signal(false);
@@ -85,7 +85,7 @@ export class RegisterFormComponent {
       )
       .subscribe({
         next: async () => {
-          this.#isAuthenticated$.next(true);
+          this.#auth.setAuthStatus(true);
           await this.#router.navigateByUrl("/");
         },
         error: (e: HttpErrorResponse) => {

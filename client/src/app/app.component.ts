@@ -1,5 +1,4 @@
-import { Component, HostListener, inject, OnInit } from "@angular/core";
-import { AuthService } from "./services/auth.service";
+import { Component, inject, OnInit } from "@angular/core";
 import { NavigationComponent } from "./components/navigation/navigation.component";
 import { RouterOutlet } from "@angular/router";
 import { MatIconRegistry } from "@angular/material/icon";
@@ -13,7 +12,6 @@ import { DomSanitizer } from "@angular/platform-browser";
   styleUrl: "./app.component.scss",
 })
 export class AppComponent implements OnInit {
-  #authService = inject(AuthService);
   #iconRegistry = inject(MatIconRegistry);
   #sanitizer = inject(DomSanitizer);
 
@@ -26,12 +24,6 @@ export class AppComponent implements OnInit {
     ]) {
       this.#registerIcon(name);
     }
-  }
-
-  // Delay initialization to make sure the session cookie is sent with the request
-  @HostListener("document:DOMContentLoaded")
-  onDOMContentLoaded(): void {
-    this.#authService.initAuthStatus();
   }
 
   #registerIcon(name: string): void {

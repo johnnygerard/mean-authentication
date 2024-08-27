@@ -12,5 +12,5 @@ import { AsyncPipe } from "@angular/common";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
-  isAuthenticated$ = inject(AuthService).isAuthenticated$;
+  isAuthenticated = inject(AuthService).isAuthenticated;
 }
