@@ -22,6 +22,6 @@ export class UsernameValidatorDirective implements Validator {
     const username = control.value;
 
     if (typeof username !== "string" || /^\P{C}+$/u.test(username)) return null;
-    return { usernamePattern: true };
+    return { pattern: "Invalid Unicode characters" };
   }
 }

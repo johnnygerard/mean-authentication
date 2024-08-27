@@ -10,6 +10,9 @@ import zxcvbn from "zxcvbn";
 
 /**
  * Password cross-field validator directive.
+ *
+ * Note that this validator always returns null.
+ * The validation error is set on the password form control itself.
  */
 @Directive({
   selector: "[appPasswordValidator]",
@@ -25,16 +28,27 @@ import zxcvbn from "zxcvbn";
 export class PasswordValidatorDirective implements Validator {
   #passwordService = inject(PasswordService);
 
-  validate(control: AbstractControl): ValidationErrors | null {
-    const username = control.get("username")?.value;
-    const password = control.get("password")?.value;
+  validate(form: AbstractControl): ValidationErrors | null {
+    const username = form.get("username");
+    const password = form.get("password");
 
-    if (typeof username !== "string" || typeof password !== "string")
+    if (
+      typeof username?.value !== "string" ||
+      typeof password?.value !== "string"
+    ) {
       return null;
+    }
 
-    const result = zxcvbn(password, [username]);
+    const result = zxcvbn(password.value, [username.value]);
     this.#passwordService.result.set(result);
 
-    return result.score >= 3 ? null : { password: true };
+    if (result.score < 3) {
+      password.setErrors({
+        ...password.errors,
+        strength: result.feedback.warning || "Vulnerable password",
+      });
+    }
+
+    return null;
   }
 }

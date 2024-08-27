@@ -1,0 +1,32 @@
+@use "@angular/material" as mat;
+
+@include mat.core();
+
+$theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+:root {
+  @include mat.core-theme($theme);
+
+  @include mat.button-theme($theme);
+  @include mat.card-theme($theme);
+  @include mat.form-field-theme($theme);
+  @include mat.icon-theme($theme);
+  @include mat.icon-button-theme($theme);
+  @include mat.input-theme($theme);
+  @include mat.toolbar-theme($theme);
+  @include mat.tooltip-theme($theme);
+}
+
+// Use pre-defined typography utility classes (https://material.angular.io/guide/typography)
+@include mat.typography-hierarchy($theme);

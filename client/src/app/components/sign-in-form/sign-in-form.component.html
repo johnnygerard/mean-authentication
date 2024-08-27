@@ -1,110 +1,72 @@
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <img
-      class="mx-auto h-10 w-auto"
-      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-      alt=""
-    />
-    <h2
-      class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+<mat-card>
+  <mat-card-content>
+    <h2 class="mat-title-medium">Sign in to your account</h2>
+    <form
+      (ngSubmit)="onSubmit(form)"
+      (input)="areCredentialsInvalid.set(false)"
+      #form="ngForm"
     >
-      Sign in to your account
-    </h2>
-  </div>
-
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" (ngSubmit)="onSubmit(form)" #form="ngForm">
-      <div>
-        <label
-          for="username"
-          class="block text-sm font-medium leading-6 text-gray-900"
-          >Username</label
-        >
-        <div class="mt-2">
-          <input
-            id="username"
-            name="username"
-            type="text"
-            autocomplete="username"
-            [(ngModel)]="username"
-            #usernameModel="ngModel"
-            maxlength="100"
-            required
-            spellcheck="false"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-        @if (
-          usernameModel.invalid &&
-          (usernameModel.dirty || usernameModel.touched || form.submitted)
-        ) {
-          <span class="mt-2 text-sm text-red-600">
-            @if (usernameModel.hasError("required")) {
-              This field is required
-            } @else if (usernameModel.hasError("maxlength")) {
-              Maximum length exceeded
-            }
-          </span>
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input
+          matInput
+          name="username"
+          type="text"
+          autocomplete="username"
+          [(ngModel)]="username"
+          #usernameModel="ngModel"
+          maxlength="100"
+          required
+          spellcheck="false"
+        />
+        @if (usernameModel.errors) {
+          <mat-error>{{ usernameModel.errors | usernameError }}</mat-error>
         }
-      </div>
+      </mat-form-field>
 
-      <div>
-        <div class="flex items-center justify-between">
-          <label
-            for="password"
-            class="block text-sm font-medium leading-6 text-gray-900"
-            >Password</label
-          >
-        </div>
-        <div class="my-2">
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            [(ngModel)]="password"
-            #passwordModel="ngModel"
-            maxlength="64"
-            required
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-        @if (
-          passwordModel.invalid &&
-          (passwordModel.dirty || passwordModel.touched || form.submitted)
-        ) {
-          <span class="mt-2 text-sm text-red-600">
-            @if (passwordModel.hasError("required")) {
-              This field is required
-            } @else if (passwordModel.hasError("maxlength")) {
-              Maximum length exceeded
-            }
-          </span>
-        }
-      </div>
-
-      <div>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          name="password"
+          [type]="isPasswordVisible() ? 'text' : 'password'"
+          autocomplete="current-password"
+          [(ngModel)]="password"
+          #passwordModel="ngModel"
+          maxlength="64"
+          required
+        />
         <button
-          type="submit"
-          class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          type="button"
+          [matTooltip]="visibilityTooltip()"
+          [attr.aria-label]="visibilityTooltip()"
+          matSuffix
+          mat-icon-button
+          (click)="togglePasswordVisibility($event)"
         >
-          Sign in
+          <mat-icon
+            [svgIcon]="isPasswordVisible() ? 'visibility_off' : 'visibility'"
+          />
         </button>
-      </div>
+        @if (passwordModel.errors) {
+          <mat-error>{{ passwordModel.errors | passwordError }}</mat-error>
+        }
+      </mat-form-field>
+      <button type="submit" mat-flat-button>
+        @if (isLoading()) {
+          <mat-icon svgIcon="progress_activity" />
+        }
+        Sign in
+      </button>
       @if (areCredentialsInvalid()) {
-        <div class="text-center text-sm text-red-600">
-          Bad credentials. Try again.
-        </div>
+        <mat-error class="mat-label-large">
+          Bad credentials. Please try again.
+        </mat-error>
       }
     </form>
-
-    <p class="mt-10 text-center text-sm text-gray-500">
+    <p>
       Don't have an account?
-      <a
-        class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-        routerLink="/register"
-        >Register</a
-      >
+      <a mat-button routerLink="/register">Register</a>
     </p>
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>

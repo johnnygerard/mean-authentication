@@ -1,35 +1,35 @@
-import { Component, HostListener, inject } from "@angular/core";
-import { RouterLink, RouterOutlet } from "@angular/router";
-import { AuthService } from "./services/auth.service";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../environments/environment";
+import { Component, inject, OnInit } from "@angular/core";
+import { NavigationComponent } from "./components/navigation/navigation.component";
+import { RouterOutlet } from "@angular/router";
+import { MatIconRegistry } from "@angular/material/icon";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, NavigationComponent],
   templateUrl: "./app.component.html",
-  styles: [],
+  styleUrl: "./app.component.scss",
 })
-export class AppComponent {
-  #authService = inject(AuthService);
-  #http = inject(HttpClient);
-  isAuthenticated = this.#authService.isAuthenticated;
+export class AppComponent implements OnInit {
+  #iconRegistry = inject(MatIconRegistry);
+  #sanitizer = inject(DomSanitizer);
 
-  // Delay initialization to make sure the session cookie is sent with the request
-  @HostListener("document:DOMContentLoaded")
-  onDOMContentLoaded(): void {
-    this.#authService.initAuthStatus();
+  ngOnInit(): void {
+    for (const name of [
+      "visibility",
+      "visibility_off",
+      "info",
+      "progress_activity",
+    ]) {
+      this.#registerIcon(name);
+    }
   }
 
-  deleteSession(): void {
-    this.#http.delete(`${environment.apiUrl}/session`).subscribe({
-      next: () => {
-        this.#authService.isAuthenticated.set(false);
-      },
-      error: (e) => {
-        throw e;
-      },
-    });
+  #registerIcon(name: string): void {
+    this.#iconRegistry.addSvgIcon(
+      name,
+      this.#sanitizer.bypassSecurityTrustResourceUrl(`/icons/${name}.svg`),
+    );
   }
 }
