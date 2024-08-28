@@ -15,6 +15,7 @@ import {
 import { errorInterceptor } from "./interceptors/error.interceptor";
 import { GlobalErrorHandler } from "./global-error-handler";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 const prefersReducedMotion =
   typeof window !== "undefined" &&
@@ -31,5 +32,6 @@ export const appConfig: ApplicationConfig = {
       useClass: GlobalErrorHandler,
     },
     provideAnimationsAsync(prefersReducedMotion ? "noop" : "animations"),
+    MatSnackBar,
   ],
 };
