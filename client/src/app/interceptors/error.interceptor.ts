@@ -1,6 +1,5 @@
 import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
-import { delay, EMPTY, of, retry, throwError } from "rxjs";
-import { INTERNAL_SERVER_ERROR } from "../http-status-code";
+import { delay, of, retry, throwError } from "rxjs";
 
 /**
  * HTTP error interceptor
@@ -17,16 +16,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             `Retrying failed request: attempt #${retryCount}`,
           );
           return of(true).pipe(delay(10 ** (retryCount - 1)));
-        }
-
-        // Handle unexpected server-side errors
-        if (error.status === INTERNAL_SERVER_ERROR) {
-          window.alert(
-            "Sorry about that! Our servers encountered an unexpected error.\n" +
-              "Please try again later or contact support if the problem persists.",
-          );
-
-          return EMPTY;
         }
 
         // Propagate other HTTP errors

@@ -9,7 +9,6 @@ import {
 import cors from "cors";
 import publicRouter from "./routes/public.js";
 import cookieParser from "cookie-parser";
-import { ApiError } from "./types/api-error.enum.js";
 
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
@@ -50,7 +49,7 @@ app.use(((e, req, res, next) => {
   }
 
   console.error(e);
-  res.status(INTERNAL_SERVER_ERROR).json(ApiError.UNEXPECTED_ERROR);
+  res.status(INTERNAL_SERVER_ERROR).end();
 }) as ErrorRequestHandler);
 
 // Final catch-all controller
