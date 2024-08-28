@@ -23,6 +23,7 @@ import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { NotificationService } from "../../services/notification.service";
 
 @Component({
   selector: "app-sign-in-form",
@@ -46,12 +47,12 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 export class SignInFormComponent {
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
+  #notificationService = inject(NotificationService);
   #router = inject(Router);
   #auth = inject(AuthService);
   password = model("");
   username = model("");
   isLoading = signal(false);
-  areCredentialsInvalid = signal(false);
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(
     () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
@@ -60,7 +61,6 @@ export class SignInFormComponent {
   onSubmit(form: NgForm): void {
     if (form.invalid || this.isLoading()) return;
     this.isLoading.set(true);
-    this.areCredentialsInvalid.set(false);
 
     this.#http
       .post(
@@ -86,7 +86,9 @@ export class SignInFormComponent {
         },
         error: (e: HttpErrorResponse) => {
           if (e.status === FORBIDDEN) {
-            this.areCredentialsInvalid.set(true);
+            this.#notificationService.notify(
+              "Sorry, these credentials are incorrect. Please try again.",
+            );
             return;
           }
 
