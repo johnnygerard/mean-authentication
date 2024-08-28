@@ -1,6 +1,5 @@
 import { Routes } from "@angular/router";
 import { HomePageComponent } from "./pages/home-page/home-page.component";
-import { SignInPageComponent } from "./pages/sign-in-page.component";
 import { isUnauthenticatedGuard } from "./guards/is-unauthenticated.guard";
 import { NotFoundPageComponent } from "./pages/not-found-page.component";
 
@@ -12,7 +11,8 @@ export const routes: Routes = [
   },
   {
     path: "sign-in",
-    component: SignInPageComponent,
+    loadComponent: async () =>
+      (await import("./pages/sign-in-page.component")).SignInPageComponent,
     canActivate: [isUnauthenticatedGuard],
   },
   {
