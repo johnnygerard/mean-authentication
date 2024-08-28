@@ -26,6 +26,7 @@ import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { NotificationService } from "../../services/notification.service";
 
 @Component({
   selector: "app-register-form",
@@ -52,6 +53,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 export class RegisterFormComponent {
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
+  #notificationService = inject(NotificationService);
   #router = inject(Router);
   #auth = inject(AuthService);
   username = model("");
@@ -90,7 +92,9 @@ export class RegisterFormComponent {
         },
         error: (e: HttpErrorResponse) => {
           if (e.status === CONFLICT) {
-            window.alert("Sorry, this username is not available.");
+            this.#notificationService.notify(
+              "Sorry, this username is not available.",
+            );
             return;
           }
           throw e;

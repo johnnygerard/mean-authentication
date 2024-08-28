@@ -24,6 +24,7 @@ $theme: mat.define-theme(
   @include mat.icon-theme($theme);
   @include mat.icon-button-theme($theme);
   @include mat.input-theme($theme);
+  @include mat.snack-bar-theme($theme);
   @include mat.toolbar-theme($theme);
   @include mat.tooltip-theme($theme);
 }

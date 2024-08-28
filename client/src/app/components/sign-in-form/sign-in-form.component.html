@@ -1,11 +1,7 @@
 <mat-card>
   <mat-card-content>
     <h2 class="mat-title-medium">Sign in to your account</h2>
-    <form
-      (ngSubmit)="onSubmit(form)"
-      (input)="areCredentialsInvalid.set(false)"
-      #form="ngForm"
-    >
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input
@@ -58,11 +54,6 @@
         }
         Sign in
       </button>
-      @if (areCredentialsInvalid()) {
-        <mat-error class="mat-label-large">
-          Bad credentials. Please try again.
-        </mat-error>
-      }
     </form>
     <p>
       Don't have an account?

@@ -1,12 +1,16 @@
 import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
 import { delay, EMPTY, of, retry, throwError } from "rxjs";
-import { INTERNAL_SERVER_ERROR } from "../http-status-code";
+import { NotificationService } from "../services/notification.service";
+import { inject } from "@angular/core";
+import { SERVICE_UNAVAILABLE } from "../http-status-code";
 
 /**
  * HTTP error interceptor
  * @see https://angular.dev/guide/http/making-requests#handling-request-failure
  */
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const notificationService = inject(NotificationService);
+
   return next(req).pipe(
     retry({
       count: 4,
@@ -19,13 +23,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           return of(true).pipe(delay(10 ** (retryCount - 1)));
         }
 
-        // Handle unexpected server-side errors
-        if (error.status === INTERNAL_SERVER_ERROR) {
-          window.alert(
-            "Sorry about that! Our servers encountered an unexpected error.\n" +
-              "Please try again later or contact support if the problem persists.",
+        if (error.status === SERVICE_UNAVAILABLE) {
+          notificationService.notify(
+            "Sorry, the server is currently unavailable. Please try again later.",
           );
-
           return EMPTY;
         }
 
