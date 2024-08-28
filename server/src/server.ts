@@ -14,6 +14,9 @@ const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
 const isProduction = env.NODE_ENV === "production";
 
+// Trust requests from Heroku's load balancer
+app.set("trust proxy", 1);
+
 // Enable CORS for the Angular client
 // See https://github.com/expressjs/cors?tab=readme-ov-file#configuration-options
 if (isProduction) {
