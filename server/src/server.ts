@@ -5,7 +5,6 @@ import {
   INTERNAL_SERVER_ERROR,
   NO_CONTENT,
   NOT_FOUND,
-  OK,
 } from "./http-status-code.js";
 import cors from "cors";
 import publicRouter from "./routes/public.js";
@@ -16,14 +15,6 @@ const app = express();
 const isProduction = env.NODE_ENV === "production";
 
 app.set("trust proxy", 1);
-
-// Check proxy config (temporary endpoint for testing)
-app.get("/proxy", (req, res) => {
-  res.status(OK).json({
-    ip: req.ip,
-    ips: req.ips,
-  });
-});
 
 // Enable CORS for the Angular client
 // See https://github.com/expressjs/cors?tab=readme-ov-file#configuration-options
