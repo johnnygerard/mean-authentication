@@ -47,7 +47,7 @@ export const request = async (
         protocol: "http:",
         host: "localhost",
         port,
-        path: `/api${path}`,
+        path,
         headers,
       },
       (res) => {

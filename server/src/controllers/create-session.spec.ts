@@ -2,11 +2,28 @@ import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
 import { CREATED, FORBIDDEN } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
+import express from "express";
+import { createSession } from "./create-session.js";
+import { createAccount } from "./create-account.js";
+import type { AddressInfo, Server } from "node:net";
 
 describe("createSession controller", () => {
-  const REQUEST_LINE = "POST /session";
+  const POST_SESSION = "POST /session";
+  const POST_ACCOUNT = "POST /account";
+  let port: number;
+  let server: Server;
+
+  beforeAll(() => {
+    const app = express();
+    app.use(express.json());
+    app.post("/session", createSession);
+    app.post("/account", createAccount);
+    server = app.listen();
+    port = (server.address() as AddressInfo).port;
+  });
 
   afterAll(async () => {
+    server.close();
     await users.deleteMany();
   });
 
@@ -16,8 +33,8 @@ describe("createSession controller", () => {
       password: faker.internet.password(),
     };
 
-    await request("POST /account", { payload });
-    const response = await request(REQUEST_LINE, { payload });
+    await request(POST_ACCOUNT, { payload, port });
+    const response = await request(POST_SESSION, { payload, port });
 
     expect(response.statusCode).toBe(CREATED);
 
@@ -34,7 +51,7 @@ describe("createSession controller", () => {
       username: faker.internet.userName(),
       password: faker.internet.password(),
     };
-    const { statusCode } = await request(REQUEST_LINE, { payload });
+    const { statusCode } = await request(POST_SESSION, { payload, port });
 
     expect(statusCode).toBe(FORBIDDEN);
   });
@@ -45,10 +62,10 @@ describe("createSession controller", () => {
       password: faker.internet.password(),
     };
 
-    await request("POST /account", { payload });
+    await request(POST_ACCOUNT, { payload, port });
 
     payload.password = faker.internet.password();
-    const { statusCode } = await request(REQUEST_LINE, { payload });
+    const { statusCode } = await request(POST_SESSION, { payload, port });
 
     expect(statusCode).toBe(FORBIDDEN);
   });
