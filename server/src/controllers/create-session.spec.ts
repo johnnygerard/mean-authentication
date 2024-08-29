@@ -2,58 +2,70 @@ import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
 import { CREATED, FORBIDDEN } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
-
-const METHOD = "POST";
-const PATH = "/session";
+import express from "express";
+import { createSession } from "./create-session.js";
+import { createAccount } from "./create-account.js";
+import type { AddressInfo, Server } from "node:net";
 
 describe("createSession controller", () => {
+  const POST_SESSION = "POST /session";
+  const POST_ACCOUNT = "POST /account";
+  let port: number;
+  let server: Server;
+
+  beforeAll(() => {
+    const app = express();
+    app.use(express.json());
+    app.post("/session", createSession);
+    app.post("/account", createAccount);
+    server = app.listen();
+    port = (server.address() as AddressInfo).port;
+  });
+
   afterAll(async () => {
+    server.close();
     await users.deleteMany();
   });
 
   it("should create a new authentication session", async () => {
-    const credentials = {
+    const payload = {
       username: faker.internet.userName(),
       password: faker.internet.password(),
     };
 
-    await request("POST", "/account", credentials);
+    await request(POST_ACCOUNT, { payload, port });
+    const response = await request(POST_SESSION, { payload, port });
 
-    const { statusCode, headers, payload } = await request(
-      METHOD,
-      PATH,
-      credentials,
-    );
+    expect(response.statusCode).toBe(CREATED);
 
-    expect(statusCode).toBe(CREATED);
-
-    expect(headers["set-cookie"]).toBeDefined();
-    const setCookieHeaders = headers["set-cookie"] as string[];
+    expect(response.headers["set-cookie"]).toBeDefined();
+    const setCookieHeaders = response.headers["set-cookie"] as string[];
     expect(setCookieHeaders).toHaveSize(1);
     expect(setCookieHeaders[0]).toMatch(/^session=/);
 
-    expect(payload).toBe("");
+    expect(response.payload).toBe("");
   });
 
   it("should not log in non-existing user", async () => {
-    const { statusCode } = await request(METHOD, PATH, {
+    const payload = {
       username: faker.internet.userName(),
       password: faker.internet.password(),
-    });
+    };
+    const { statusCode } = await request(POST_SESSION, { payload, port });
 
     expect(statusCode).toBe(FORBIDDEN);
   });
 
   it("should not log in user with incorrect password", async () => {
-    const username = faker.internet.userName();
-    const password = faker.internet.password();
-
-    await request("POST", "/account", { username, password });
-
-    const { statusCode } = await request(METHOD, PATH, {
-      username,
+    const payload = {
+      username: faker.internet.userName(),
       password: faker.internet.password(),
-    });
+    };
+
+    await request(POST_ACCOUNT, { payload, port });
+
+    payload.password = faker.internet.password();
+    const { statusCode } = await request(POST_SESSION, { payload, port });
 
     expect(statusCode).toBe(FORBIDDEN);
   });

@@ -10,24 +10,28 @@ import http from "node:http";
  * Some headers are automatically set:
  * - `Content-Length` is set to the length of the payload
  * - `Content-Type` is set to `application/json` when the payload is an object
- * @param method - HTTP method
- * @param path - URL path
- * @param payload - Request payload
- * @param headers - Request headers
+ * @param requestLine - Request line (HTTP version ignored)
+ * @param options - Headers, payload, and port number
  * @returns HTTP response status code, headers, and payload
  * @see https://nodejs.org/docs/latest-v20.x/api/http.html#httprequestoptions-callback
  */
 export const request = async (
-  method: string,
-  path: string,
-  payload: string | object | null = null,
-  headers: Record<string, string> = {},
+  requestLine: string,
+  options: {
+    headers?: Record<string, string>;
+    payload?: string | object;
+    port?: number;
+  } = {},
 ): Promise<{
   statusCode: number;
   headers: http.IncomingHttpHeaders;
   payload: string;
 }> =>
   new Promise((resolve, reject) => {
+    const [method, path] = requestLine.split(" ");
+    const { headers = {}, port = 3000 } = options;
+    let { payload } = options;
+
     if (payload) {
       if (typeof payload === "object") {
         payload = JSON.stringify(payload);
@@ -42,8 +46,8 @@ export const request = async (
         method,
         protocol: "http:",
         host: "localhost",
-        port: 3000,
-        path: `/api${path}`,
+        port,
+        path,
         headers,
       },
       (res) => {

@@ -2,7 +2,8 @@ import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
 import { delay, EMPTY, of, retry, throwError } from "rxjs";
 import { NotificationService } from "../services/notification.service";
 import { inject } from "@angular/core";
-import { SERVICE_UNAVAILABLE } from "../http-status-code";
+import { SERVICE_UNAVAILABLE, TOO_MANY_REQUESTS } from "../http-status-code";
+import { formatRateLimit } from "./format-rate-limit";
 
 /**
  * HTTP error interceptor
@@ -27,6 +28,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           notificationService.notify(
             "Sorry, the server is currently unavailable. Please try again later.",
           );
+          return EMPTY;
+        }
+
+        if (error.status === TOO_MANY_REQUESTS) {
+          notificationService.notify(formatRateLimit(error.headers));
           return EMPTY;
         }
 

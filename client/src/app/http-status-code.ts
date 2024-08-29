@@ -1,5 +1,6 @@
-// Data extracted from:
-// https://www.rfc-editor.org/rfc/rfc9110#name-status-codes
+// Status codes retrieved from:
+// - https://www.rfc-editor.org/rfc/rfc9110#name-status-codes
+// - https://datatracker.ietf.org/doc/html/rfc6585
 
 // Informational 1xx
 export const CONTINUE = 100;
@@ -46,6 +47,9 @@ export const EXPECTATION_FAILED = 417;
 export const MISDIRECTED_REQUEST = 421;
 export const UNPROCESSABLE_CONTENT = 422;
 export const UPGRADE_REQUIRED = 426;
+export const PRECONDITION_REQUIRED = 428;
+export const TOO_MANY_REQUESTS = 429;
+export const REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
 
 // Server Error 5xx
 export const INTERNAL_SERVER_ERROR = 500;
@@ -54,3 +58,4 @@ export const BAD_GATEWAY = 502;
 export const SERVICE_UNAVAILABLE = 503;
 export const GATEWAY_TIMEOUT = 504;
 export const HTTP_VERSION_NOT_SUPPORTED = 505;
+export const NETWORK_AUTHENTICATION_REQUIRED = 511;
