@@ -3,7 +3,6 @@ import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
 import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../mongo-client.js";
-import { createJwt, jwtCookieOptions } from "../auth/session.js";
 import { ApiError } from "../types/api-error.enum.js";
 
 export const USERNAME_MAX_LENGTH = 100;
@@ -57,12 +56,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
     // Save user
     await users.insertOne(user);
 
-    // Create user session
-    res.cookie(
-      "session",
-      await createJwt({ username, userId: user.id }),
-      jwtCookieOptions,
-    );
+    // TODO Set session cookie and persist database session
 
     res.status(CREATED).end();
   } catch (e) {

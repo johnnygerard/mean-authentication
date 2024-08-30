@@ -3,7 +3,6 @@ import { BAD_REQUEST, CREATED, FORBIDDEN } from "../http-status-code.js";
 import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
-import { createJwt, jwtCookieOptions } from "../auth/session.js";
 import { ApiError } from "../types/api-error.enum.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
@@ -42,12 +41,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    // Set session cookie with JWT
-    res.cookie(
-      "session",
-      await createJwt({ username, userId: user.id }),
-      jwtCookieOptions,
-    );
+    // TODO Set session cookie and persist database session
 
     res.status(CREATED).end();
   } catch (e) {
