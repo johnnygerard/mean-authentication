@@ -8,6 +8,7 @@ import {
 } from "./http-status-code.js";
 import cors from "cors";
 import publicRouter from "./routes/public.js";
+import session from "./auth/session.js";
 
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
@@ -34,6 +35,9 @@ if (isProduction) {
 
 // Parse JSON requests
 app.use(express.json());
+
+// Load session
+app.use(session);
 
 // Mount public router
 app.use(isProduction ? "/" : "/api", publicRouter);
