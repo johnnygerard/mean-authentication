@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { BAD_REQUEST, CREATED, FORBIDDEN } from "../http-status-code.js";
+import { BAD_REQUEST, CREATED, UNAUTHORIZED } from "../http-status-code.js";
 import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
@@ -28,7 +28,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
 
     // Check if user exists
     if (!user) {
-      res.status(FORBIDDEN).end();
+      res.status(UNAUTHORIZED).end();
       return;
     }
 
@@ -36,7 +36,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
     const matches = await verifyPassword(user.password, password);
 
     if (!matches) {
-      res.status(FORBIDDEN).end();
+      res.status(UNAUTHORIZED).end();
       return;
     }
 

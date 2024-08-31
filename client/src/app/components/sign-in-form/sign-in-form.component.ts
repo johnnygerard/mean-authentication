@@ -12,7 +12,7 @@ import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
-import { FORBIDDEN } from "../../http-status-code";
+import { UNAUTHORIZED } from "../../http-status-code";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInput } from "@angular/material/input";
@@ -79,7 +79,7 @@ export class SignInFormComponent {
           await this.#router.navigate(["/"]);
         },
         error: (e: HttpErrorResponse) => {
-          if (e.status === FORBIDDEN) {
+          if (e.status === UNAUTHORIZED) {
             this.#notificationService.notify(
               "Sorry, these credentials are incorrect. Please try again.",
             );

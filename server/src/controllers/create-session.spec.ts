@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
-import { CREATED, FORBIDDEN } from "../http-status-code.js";
+import { CREATED, UNAUTHORIZED } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
 import express from "express";
 import { createSession } from "./create-session.js";
@@ -55,7 +55,7 @@ describe("createSession controller", () => {
     };
     const { statusCode } = await request(POST_SESSION, { payload, port });
 
-    expect(statusCode).toBe(FORBIDDEN);
+    expect(statusCode).toBe(UNAUTHORIZED);
   });
 
   it("should not log in user with incorrect password", async () => {
@@ -69,6 +69,6 @@ describe("createSession controller", () => {
     payload.password = faker.internet.password();
     const { statusCode } = await request(POST_SESSION, { payload, port });
 
-    expect(statusCode).toBe(FORBIDDEN);
+    expect(statusCode).toBe(UNAUTHORIZED);
   });
 });
