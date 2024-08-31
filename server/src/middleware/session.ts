@@ -11,6 +11,13 @@ const ID_BYTE_SIZE = ENTROPY / 8;
 const ENCODING = "base64url";
 const SESSION_LIFETIME = "1 day";
 
+// Session cookie signing keys (HMAC-256):
+// - Rotate keys periodically by prepending the new key to the array
+// - Use at least 256 bits of entropy for each key
+// See https://github.com/expressjs/session?tab=readme-ov-file#secret
+if (!env.SESSION_SECRET_1) throw new Error("SESSION_SECRET_1 is not set");
+const keys = [env.SESSION_SECRET_1];
+
 export const sessionCookie = {
   name: "id",
   options: {
@@ -37,7 +44,7 @@ export default session({
   resave: false,
   rolling: false,
   saveUninitialized: false,
-  secret: "temporary-secret", // TODO Use environment variable
+  secret: keys,
   store: new MemoryStore(), // TODO Use production store
   unset: "destroy",
 });
