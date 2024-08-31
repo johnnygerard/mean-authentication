@@ -5,6 +5,7 @@ import { users } from "../mongo-client.js";
 import express from "express";
 import { createAccount } from "./create-account.js";
 import type { AddressInfo, Server } from "node:net";
+import session from "../auth/session.js";
 
 describe("createAccount controller", () => {
   const POST_ACCOUNT = "POST /account";
@@ -14,6 +15,7 @@ describe("createAccount controller", () => {
   beforeAll(() => {
     const app = express();
     app.use(express.json());
+    app.use(session);
     app.post("/account", createAccount);
     server = app.listen();
     port = (server.address() as AddressInfo).port;

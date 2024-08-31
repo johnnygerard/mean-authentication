@@ -6,6 +6,7 @@ import express from "express";
 import { createSession } from "./create-session.js";
 import { createAccount } from "./create-account.js";
 import type { AddressInfo, Server } from "node:net";
+import session from "../auth/session.js";
 
 describe("createSession controller", () => {
   const POST_SESSION = "POST /session";
@@ -16,6 +17,7 @@ describe("createSession controller", () => {
   beforeAll(() => {
     const app = express();
     app.use(express.json());
+    app.use(session);
     app.post("/session", createSession);
     app.post("/account", createAccount);
     server = app.listen();
@@ -41,7 +43,7 @@ describe("createSession controller", () => {
     expect(response.headers["set-cookie"]).toBeDefined();
     const setCookieHeaders = response.headers["set-cookie"] as string[];
     expect(setCookieHeaders).toHaveSize(1);
-    expect(setCookieHeaders[0]).toMatch(/^session=/);
+    expect(setCookieHeaders[0]).toMatch(/^id=/);
 
     expect(response.payload).toBe("");
   });
