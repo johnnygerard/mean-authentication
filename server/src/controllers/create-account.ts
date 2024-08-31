@@ -62,7 +62,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
         return;
       }
 
-      req.session.userId = user.id;
+      req.session.user = { username };
       res.status(CREATED).end();
     });
   } catch (e) {

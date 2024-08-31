@@ -23,7 +23,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
     // Retrieve user from database
     const user = await users.findOne(
       { username },
-      { projection: { _id: 0, password: 1, id: 1 } },
+      { projection: { _id: 0, password: 1 } },
     );
 
     // Check if user exists
@@ -47,7 +47,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
         return;
       }
 
-      req.session.userId = user.id;
+      req.session.user = { username };
       res.status(CREATED).end();
     });
   } catch (e) {
