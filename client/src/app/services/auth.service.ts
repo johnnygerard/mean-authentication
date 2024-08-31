@@ -2,7 +2,7 @@ import { Injectable, signal } from "@angular/core";
 import ms from "ms";
 
 const AUTH_KEY = "authenticatedUntil";
-const SESSION_LIFETIME = "1h";
+const SESSION_LIFETIME = "2 days";
 
 /**
  * Track user's authentication status via persistent web storage.
