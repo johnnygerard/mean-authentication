@@ -28,7 +28,7 @@ export const sessionCookie = {
   } as CookieOptions,
 };
 
-const generateSessionId = (req: Request): string => {
+const generateSessionId = (_req: Request): string => {
   return randomBytes(ID_BYTE_SIZE).toString(ENCODING);
 };
 
