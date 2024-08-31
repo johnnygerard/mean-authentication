@@ -6,7 +6,7 @@ import express from "express";
 import { createSession } from "./create-session.js";
 import { createAccount } from "./create-account.js";
 import type { AddressInfo, Server } from "node:net";
-import session from "../auth/session.js";
+import session from "../middleware/session.js";
 
 describe("createSession controller", () => {
   const POST_SESSION = "POST /session";

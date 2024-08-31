@@ -5,7 +5,7 @@ import { users } from "../mongo-client.js";
 import express from "express";
 import { createAccount } from "./create-account.js";
 import type { AddressInfo, Server } from "node:net";
-import session from "../auth/session.js";
+import session from "../middleware/session.js";
 
 describe("createAccount controller", () => {
   const POST_ACCOUNT = "POST /account";

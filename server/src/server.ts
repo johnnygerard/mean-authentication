@@ -8,7 +8,7 @@ import {
 } from "./http-status-code.js";
 import cors from "cors";
 import publicRouter from "./routes/public.js";
-import session from "./auth/session.js";
+import session from "./middleware/session.js";
 
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
