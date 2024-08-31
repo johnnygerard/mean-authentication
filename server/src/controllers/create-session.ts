@@ -3,7 +3,6 @@ import { BAD_REQUEST, CREATED, FORBIDDEN } from "../http-status-code.js";
 import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../mongo-client.js";
-import { ApiError } from "../types/api-error.enum.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
@@ -11,13 +10,13 @@ export const createSession: RequestHandler = async (req, res, next) => {
 
     // Validate username
     if (typeof username !== "string" || username.length > USERNAME_MAX_LENGTH) {
-      res.status(BAD_REQUEST).json(ApiError.INVALID_USERNAME);
+      res.status(BAD_REQUEST).json({ error: "Invalid username" });
       return;
     }
 
     // Validate password
     if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
-      res.status(BAD_REQUEST).json(ApiError.INVALID_PASSWORD);
+      res.status(BAD_REQUEST).json({ error: "Invalid password" });
       return;
     }
 

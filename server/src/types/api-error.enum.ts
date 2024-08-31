@@ -1,7 +1,0 @@
-export enum ApiError {
-  UNEXPECTED_ERROR = "UNEXPECTED_ERROR",
-
-  // Validation errors
-  INVALID_USERNAME = "INVALID_USERNAME",
-  INVALID_PASSWORD = "INVALID_PASSWORD",
-}
