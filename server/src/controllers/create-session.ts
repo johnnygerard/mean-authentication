@@ -41,9 +41,16 @@ export const createSession: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    // TODO Set session cookie and persist database session
+    // Create session
+    req.session.regenerate((e) => {
+      if (e) {
+        next(e);
+        return;
+      }
 
-    res.status(CREATED).end();
+      req.session.userId = user.id;
+      res.status(CREATED).end();
+    });
   } catch (e) {
     next(e);
   }

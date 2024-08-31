@@ -1,7 +1,6 @@
-import type { CookieOptions } from "express-session";
 import session, { MemoryStore } from "express-session";
 import { randomBytes } from "node:crypto";
-import type { Request } from "express";
+import type { CookieOptions, Request } from "express";
 import ms from "ms";
 import { env } from "node:process";
 
@@ -12,11 +11,14 @@ const ID_BYTE_SIZE = ENTROPY / 8;
 const ENCODING = "base64url";
 const SESSION_LIFETIME = "1 day";
 
-const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  maxAge: ms(SESSION_LIFETIME),
-  sameSite: "strict",
-  secure: env.NODE_ENV === "production",
+export const sessionCookie = {
+  name: "id",
+  options: {
+    httpOnly: true,
+    maxAge: ms(SESSION_LIFETIME),
+    sameSite: "strict",
+    secure: env.NODE_ENV === "production",
+  } as CookieOptions,
 };
 
 const generateSessionId = (req: Request): string => {
@@ -28,9 +30,9 @@ const generateSessionId = (req: Request): string => {
  * @see https://github.com/expressjs/session
  */
 export default session({
-  cookie: cookieOptions,
+  cookie: sessionCookie.options,
   genid: generateSessionId,
-  name: "id",
+  name: sessionCookie.name,
   proxy: undefined, // Use "trust proxy" setting
   resave: false,
   rolling: false,

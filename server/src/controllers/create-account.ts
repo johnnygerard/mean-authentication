@@ -56,9 +56,16 @@ export const createAccount: RequestHandler = async (req, res, next) => {
     // Save user
     await users.insertOne(user);
 
-    // TODO Set session cookie and persist database session
+    // Create session
+    req.session.regenerate((e) => {
+      if (e) {
+        next(e);
+        return;
+      }
 
-    res.status(CREATED).end();
+      req.session.userId = user.id;
+      res.status(CREATED).end();
+    });
   } catch (e) {
     next(e);
   }
