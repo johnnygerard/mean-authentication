@@ -63,16 +63,10 @@ export class SignInFormComponent {
     this.isLoading.set(true);
 
     this.#http
-      .post(
-        `${environment.apiUrl}/session`,
-        {
-          username: this.username(),
-          password: this.password(),
-        },
-        {
-          withCredentials: true,
-        },
-      )
+      .post(`${environment.apiUrl}/session`, {
+        username: this.username(),
+        password: this.password(),
+      })
       .pipe(
         finalize(() => {
           this.isLoading.set(false);
