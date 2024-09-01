@@ -1,7 +1,7 @@
 {
   "buildCommand": "cd client && npm run vercel:build",
   "framework": "angular",
-  "installCommand": "npm update --global npm && cd client && npm ci",
+  "installCommand": "npm update --global npm && npm ci && cd client && npm ci",
   "outputDirectory": "client/dist/mean-authentication/browser",
   "headers": [
     {
