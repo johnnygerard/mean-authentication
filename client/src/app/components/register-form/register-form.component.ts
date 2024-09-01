@@ -69,16 +69,10 @@ export class RegisterFormComponent {
     this.isLoading.set(true);
 
     this.#http
-      .post(
-        `${environment.apiUrl}/account`,
-        {
-          username: this.username(),
-          password: this.password(),
-        },
-        {
-          withCredentials: true,
-        },
-      )
+      .post(`${environment.apiUrl}/account`, {
+        username: this.username(),
+        password: this.password(),
+      })
       .pipe(
         finalize(() => {
           this.isLoading.set(false);

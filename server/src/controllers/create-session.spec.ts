@@ -1,11 +1,12 @@
 import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
-import { CREATED, FORBIDDEN } from "../http-status-code.js";
+import { CREATED, UNAUTHORIZED } from "../http-status-code.js";
 import { users } from "../mongo-client.js";
 import express from "express";
 import { createSession } from "./create-session.js";
 import { createAccount } from "./create-account.js";
 import type { AddressInfo, Server } from "node:net";
+import session from "../middleware/session.js";
 
 describe("createSession controller", () => {
   const POST_SESSION = "POST /session";
@@ -16,6 +17,7 @@ describe("createSession controller", () => {
   beforeAll(() => {
     const app = express();
     app.use(express.json());
+    app.use(session);
     app.post("/session", createSession);
     app.post("/account", createAccount);
     server = app.listen();
@@ -41,9 +43,11 @@ describe("createSession controller", () => {
     expect(response.headers["set-cookie"]).toBeDefined();
     const setCookieHeaders = response.headers["set-cookie"] as string[];
     expect(setCookieHeaders).toHaveSize(1);
-    expect(setCookieHeaders[0]).toMatch(/^session=/);
+    expect(setCookieHeaders[0]).toMatch(/^id=/);
 
-    expect(response.payload).toBe("");
+    expect(JSON.parse(response.payload)).toEqual({
+      username: payload.username,
+    });
   });
 
   it("should not log in non-existing user", async () => {
@@ -53,7 +57,7 @@ describe("createSession controller", () => {
     };
     const { statusCode } = await request(POST_SESSION, { payload, port });
 
-    expect(statusCode).toBe(FORBIDDEN);
+    expect(statusCode).toBe(UNAUTHORIZED);
   });
 
   it("should not log in user with incorrect password", async () => {
@@ -67,6 +71,6 @@ describe("createSession controller", () => {
     payload.password = faker.internet.password();
     const { statusCode } = await request(POST_SESSION, { payload, port });
 
-    expect(statusCode).toBe(FORBIDDEN);
+    expect(statusCode).toBe(UNAUTHORIZED);
   });
 });

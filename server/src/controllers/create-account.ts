@@ -3,8 +3,6 @@ import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
 import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../mongo-client.js";
-import { createJwt, jwtCookieOptions } from "../auth/session.js";
-import { ApiError } from "../types/api-error.enum.js";
 
 export const USERNAME_MAX_LENGTH = 100;
 
@@ -32,7 +30,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
 
     // Validate username
     if (typeof username !== "string" || !isUsernameValid(username)) {
-      res.status(BAD_REQUEST).json(ApiError.INVALID_USERNAME);
+      res.status(BAD_REQUEST).json({ error: "Invalid username" });
       return;
     }
 
@@ -44,7 +42,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
 
     // Validate password
     if (typeof password !== "string" || !isPasswordValid(password, username)) {
-      res.status(BAD_REQUEST).json(ApiError.INVALID_PASSWORD);
+      res.status(BAD_REQUEST).json({ error: "Invalid password" });
       return;
     }
 
@@ -57,14 +55,16 @@ export const createAccount: RequestHandler = async (req, res, next) => {
     // Save user
     await users.insertOne(user);
 
-    // Create user session
-    res.cookie(
-      "session",
-      await createJwt({ username, userId: user.id }),
-      jwtCookieOptions,
-    );
+    // Create session
+    req.session.regenerate((e) => {
+      if (e) {
+        next(e);
+        return;
+      }
 
-    res.status(CREATED).end();
+      req.session.user = { username };
+      res.status(CREATED).json(req.session.user);
+    });
   } catch (e) {
     next(e);
   }

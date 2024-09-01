@@ -5,6 +5,7 @@ import { users } from "../mongo-client.js";
 import express from "express";
 import { createAccount } from "./create-account.js";
 import type { AddressInfo, Server } from "node:net";
+import session from "../middleware/session.js";
 
 describe("createAccount controller", () => {
   const POST_ACCOUNT = "POST /account";
@@ -14,6 +15,7 @@ describe("createAccount controller", () => {
   beforeAll(() => {
     const app = express();
     app.use(express.json());
+    app.use(session);
     app.post("/account", createAccount);
     server = app.listen();
     port = (server.address() as AddressInfo).port;
@@ -33,7 +35,9 @@ describe("createAccount controller", () => {
     const response = await request(POST_ACCOUNT, { payload, port });
 
     expect(response.statusCode).toBe(CREATED);
-    expect(response.payload).toBe("");
+    expect(JSON.parse(response.payload)).toEqual({
+      username: payload.username,
+    });
 
     // Retrieve new user from database
     const user = await users.findOne({ username: payload.username });

@@ -1,8 +1,19 @@
 import { RequestHandler } from "express";
 import { NO_CONTENT } from "../http-status-code.js";
-import { jwtCookieOptions } from "../auth/session.js";
+import { sessionCookie } from "../middleware/session.js";
 
-export const deleteSession: RequestHandler = (req, res) => {
-  res.clearCookie("session", { ...jwtCookieOptions, maxAge: 0 });
-  res.status(NO_CONTENT).end();
+export const deleteSession: RequestHandler = (req, res, next) => {
+  req.session.destroy((e) => {
+    if (e) {
+      next(e);
+      return;
+    }
+
+    res.clearCookie(sessionCookie.name, {
+      ...sessionCookie.options,
+      maxAge: 0,
+    });
+
+    res.status(NO_CONTENT).end();
+  });
 };
