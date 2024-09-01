@@ -45,7 +45,9 @@ describe("createSession controller", () => {
     expect(setCookieHeaders).toHaveSize(1);
     expect(setCookieHeaders[0]).toMatch(/^id=/);
 
-    expect(response.payload).toBe("");
+    expect(JSON.parse(response.payload)).toEqual({
+      username: payload.username,
+    });
   });
 
   it("should not log in non-existing user", async () => {

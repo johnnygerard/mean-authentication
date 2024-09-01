@@ -48,7 +48,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
       }
 
       req.session.user = { username };
-      res.status(CREATED).end();
+      res.status(CREATED).json(req.session.user);
     });
   } catch (e) {
     next(e);

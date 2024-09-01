@@ -35,7 +35,9 @@ describe("createAccount controller", () => {
     const response = await request(POST_ACCOUNT, { payload, port });
 
     expect(response.statusCode).toBe(CREATED);
-    expect(response.payload).toBe("");
+    expect(JSON.parse(response.payload)).toEqual({
+      username: payload.username,
+    });
 
     // Retrieve new user from database
     const user = await users.findOne({ username: payload.username });
