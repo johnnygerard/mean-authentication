@@ -15,8 +15,7 @@
     "@types/express-session": "^1.18.0",
     "@types/jasmine": "^5.1.4",
     "@types/node": "^20.14.14",
-    "jasmine": "^5.2.0",
-    "typescript": "^5.5.4"
+    "jasmine": "^5.2.0"
   },
   "scripts": {
     "build": "tsc",
