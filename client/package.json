@@ -1,16 +1,4 @@
 {
-  "name": "mean-authentication",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:mean-authentication": "node dist/mean-authentication/server/server.mjs",
-    "vercel:build": "ng version && ng build --configuration \"$VERCEL_ENV\""
-  },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^18.1.0",
     "@angular/cdk": "^18.2.1",
@@ -49,5 +37,17 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.5.2"
-  }
+  },
+  "name": "mean-authentication",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "serve:ssr:mean-authentication": "node dist/mean-authentication/server/server.mjs",
+    "vercel:build": "ng version && ng build --configuration \"$VERCEL_ENV\""
+  },
+  "version": "0.0.0"
 }
