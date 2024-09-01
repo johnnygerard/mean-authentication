@@ -17,8 +17,12 @@ const toHeadersObject = (headers: HttpHeaders): HeadersObject => {
 };
 
 export const formatRateLimit = (headers: HttpHeaders): string => {
+  console.debug("HttpHeaders:", headers);
   let message = "Sorry, you have made too many requests.";
-  const rateLimitDetails = parseRateLimit(toHeadersObject(headers));
+  const headersObject = toHeadersObject(headers);
+  console.debug("HeadersObject:", headersObject);
+  const rateLimitDetails = parseRateLimit(headersObject);
+  console.debug("RateLimitDetails:", rateLimitDetails);
 
   if (rateLimitDetails?.reset) {
     const resetDate = rateLimitDetails.reset;
