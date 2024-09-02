@@ -40,7 +40,7 @@ app.use(express.json());
 app.use(session);
 
 // Mount public router
-app.use(isProduction ? "/" : "/api", publicRouter);
+app.use(publicRouter);
 
 // Global error handler
 app.use(((e, req, res, next) => {

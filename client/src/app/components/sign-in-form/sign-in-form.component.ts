@@ -11,7 +11,6 @@ import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
 import { UNAUTHORIZED } from "../../http-status-code";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
@@ -63,7 +62,7 @@ export class SignInFormComponent {
     this.isLoading.set(true);
 
     this.#http
-      .post(`${environment.apiUrl}/session`, {
+      .post("/api/session", {
         username: this.username(),
         password: this.password(),
       })
