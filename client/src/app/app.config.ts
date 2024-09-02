@@ -19,6 +19,7 @@ import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatSnackBar,
 } from "@angular/material/snack-bar";
+import { apiBaseUrlInterceptor } from "./interceptors/api-base-url.interceptor";
 
 const prefersReducedMotion =
   typeof window !== "undefined" &&
@@ -29,7 +30,10 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(),
-    provideHttpClient(withFetch(), withInterceptors([errorInterceptor])),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([errorInterceptor, apiBaseUrlInterceptor]),
+    ),
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,

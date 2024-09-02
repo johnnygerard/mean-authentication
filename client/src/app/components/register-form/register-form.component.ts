@@ -9,7 +9,6 @@ import {
 } from "@angular/core";
 import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
-import { environment } from "../../../environments/environment";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { CONFLICT } from "../../http-status-code";
 import { AuthService } from "../../services/auth.service";
@@ -69,7 +68,7 @@ export class RegisterFormComponent {
     this.isLoading.set(true);
 
     this.#http
-      .post(`${environment.apiUrl}/account`, {
+      .post("/api/account", {
         username: this.username(),
         password: this.password(),
       })

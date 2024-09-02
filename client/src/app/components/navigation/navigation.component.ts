@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink, RouterOutlet } from "@angular/router";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Title } from "@angular/platform-browser";
 import { AuthService } from "../../services/auth.service";
@@ -22,7 +21,7 @@ export class NavigationComponent {
   isAuthenticated = this.#auth.isAuthenticated;
 
   deleteSession(): void {
-    this.#http.delete(`${environment.apiUrl}/session`).subscribe({
+    this.#http.delete("/api/session").subscribe({
       next: () => {
         this.#auth.setAuthStatus(false);
       },

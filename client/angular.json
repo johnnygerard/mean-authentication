@@ -104,15 +104,13 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "proxyConfig": "src/proxy.conf.json"
-          },
           "configurations": {
             "production": {
               "buildTarget": "mean-authentication:build:production"
             },
             "development": {
-              "buildTarget": "mean-authentication:build:development"
+              "buildTarget": "mean-authentication:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
