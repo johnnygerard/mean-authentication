@@ -6,7 +6,7 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "heroku-postbuild": "npm ci --include=dev && cd client/server && npm ci --include=dev && npm run build",
+    "heroku-postbuild": "npm ci --include=dev && cd client/server && npm ci --include=dev && npm run build:deploy",
     "lint": "eslint .",
     "start": "cd client/server && npm start"
   },
