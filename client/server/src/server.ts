@@ -13,12 +13,21 @@ const isProduction = env.NODE_ENV === "production";
 // Trust requests from Heroku's load balancer
 app.set("trust proxy", 1);
 
+const rateLimitingHeaders = [
+  "ratelimit-policy",
+  "ratelimit-limit",
+  "ratelimit-remaining",
+  "ratelimit-reset",
+  "retry-after",
+];
+
 // Enable CORS for the Angular client
 // See https://github.com/expressjs/cors?tab=readme-ov-file#configuration-options
 if (isProduction) {
   app.use(
     cors({
       allowedHeaders: "Content-Type",
+      exposedHeaders: rateLimitingHeaders,
       maxAge: 86400,
       methods: ["GET", "POST", "DELETE"],
       optionsSuccessStatus: NO_CONTENT,
