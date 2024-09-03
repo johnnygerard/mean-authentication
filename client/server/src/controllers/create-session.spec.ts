@@ -1,12 +1,12 @@
 import { faker } from "@faker-js/faker";
-import { request } from "../test-utils.js";
-import { CREATED, UNAUTHORIZED } from "../http-status-code.js";
-import { users } from "../mongo-client.js";
+import { request } from "../test-utils";
+import { CREATED, UNAUTHORIZED } from "../http-status-code";
+import { users } from "../mongo-client";
 import express from "express";
-import { createSession } from "./create-session.js";
-import { createAccount } from "./create-account.js";
+import { createSession } from "./create-session";
+import { createAccount } from "./create-account";
 import type { AddressInfo, Server } from "node:net";
-import session from "../middleware/session.js";
+import session from "../middleware/session";
 
 describe("createSession controller", () => {
   const POST_SESSION = "POST /session";

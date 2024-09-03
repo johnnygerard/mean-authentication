@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
-import { request } from "../test-utils.js";
-import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
-import { users } from "../mongo-client.js";
+import { request } from "../test-utils";
+import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code";
+import { users } from "../mongo-client";
 import express from "express";
-import { createAccount } from "./create-account.js";
+import { createAccount } from "./create-account";
 import type { AddressInfo, Server } from "node:net";
-import session from "../middleware/session.js";
+import session from "../middleware/session";
 
 describe("createAccount controller", () => {
   const POST_ACCOUNT = "POST /account";

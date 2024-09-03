@@ -1,6 +1,6 @@
 import { env } from "node:process";
 import { MongoClient, ServerApiVersion } from "mongodb";
-import type { User } from "./models/user.js";
+import type { User } from "./models/user";
 
 if (!env.CONNECTION_STRING) {
   throw new Error("CONNECTION_STRING is not set");

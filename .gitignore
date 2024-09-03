@@ -4,6 +4,6 @@
 /client/dist/
 /client/.angular/cache/
 
-/server/node_modules/
-/server/dist/
-/server/.env
+/client/server/node_modules/
+/client/server/dist/
+/client/server/.env
