@@ -1,9 +1,1 @@
 /node_modules/
-
-/client/node_modules/
-/client/dist/
-/client/.angular/cache/
-
-/client/server/node_modules/
-/client/server/dist/
-/client/server/.env
