@@ -22,7 +22,7 @@ import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
-import { UNAUTHORIZED } from "../../../../server/src/http-status-code";
+import { UNAUTHORIZED } from "@server/http-status-code";
 
 @Component({
   selector: "app-sign-in-form",
