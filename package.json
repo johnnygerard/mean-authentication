@@ -6,9 +6,9 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "heroku-postbuild": "npm ci --include=dev && cd server && npm ci --include=dev && npm run build",
+    "heroku-postbuild": "npm ci --include=dev && cd client/server && npm ci --include=dev && npm run build",
     "lint": "eslint .",
-    "start": "cd server && npm start"
+    "start": "cd client/server && npm start"
   },
   "type": "module",
   "devDependencies": {
@@ -18,7 +18,7 @@
     "@types/zxcvbn": "^4.4.5",
     "eslint": "^9.8.0",
     "prettier": "3.3.3",
-    "typescript": "^5.5.4",
+    "typescript": "~5.5.2",
     "typescript-eslint": "^8.0.0"
   },
   "dependencies": {

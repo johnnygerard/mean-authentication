@@ -2,8 +2,11 @@ import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
 import { delay, EMPTY, of, retry, throwError } from "rxjs";
 import { NotificationService } from "../services/notification.service";
 import { inject } from "@angular/core";
-import { SERVICE_UNAVAILABLE, TOO_MANY_REQUESTS } from "../http-status-code";
 import { formatRateLimit } from "./format-rate-limit";
+import {
+  SERVICE_UNAVAILABLE,
+  TOO_MANY_REQUESTS,
+} from "_server/http-status-code";
 
 /**
  * HTTP error interceptor

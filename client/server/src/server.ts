@@ -1,11 +1,7 @@
 import type { ErrorRequestHandler } from "express";
 import express from "express";
 import { env } from "node:process";
-import {
-  INTERNAL_SERVER_ERROR,
-  NO_CONTENT,
-  NOT_FOUND,
-} from "./http-status-code.js";
+import { INTERNAL_SERVER_ERROR, NO_CONTENT, NOT_FOUND } from "./http-status-code.js";
 import cors from "cors";
 import publicRouter from "./routes/public.js";
 import session from "./middleware/session.js";

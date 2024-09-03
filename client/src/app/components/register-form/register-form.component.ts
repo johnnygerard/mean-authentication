@@ -10,7 +10,6 @@ import {
 import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { CONFLICT } from "../../http-status-code";
 import { AuthService } from "../../services/auth.service";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
@@ -26,6 +25,7 @@ import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
+import { CONFLICT } from "_server/http-status-code";
 
 @Component({
   selector: "app-register-form",

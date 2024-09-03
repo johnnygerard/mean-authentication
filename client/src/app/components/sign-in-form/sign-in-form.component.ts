@@ -11,7 +11,6 @@ import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { UNAUTHORIZED } from "../../http-status-code";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInput } from "@angular/material/input";
@@ -23,6 +22,7 @@ import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
+import { UNAUTHORIZED } from "_server/http-status-code";
 
 @Component({
   selector: "app-sign-in-form",
