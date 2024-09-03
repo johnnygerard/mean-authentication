@@ -1,8 +1,8 @@
 import express from "express";
-import { createAccount } from "../controllers/create-account";
-import { createSession } from "../controllers/create-session";
-import { deleteSession } from "../controllers/delete-session";
-import { rateLimiter } from "../middleware/rate-limiter";
+import { createAccount } from "../controllers/create-account.js";
+import { createSession } from "../controllers/create-session.js";
+import { deleteSession } from "../controllers/delete-session.js";
+import { rateLimiter } from "../middleware/rate-limiter.js";
 import ms from "ms";
 
 const router = express.Router();

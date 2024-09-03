@@ -1,9 +1,9 @@
 import { AddressInfo, Server } from "node:net";
 import express from "express";
-import { rateLimiter } from "./rate-limiter";
+import { rateLimiter } from "./rate-limiter.js";
 import ms from "ms";
-import { OK, TOO_MANY_REQUESTS } from "../http-status-code";
-import { request } from "../test-utils";
+import { OK, TOO_MANY_REQUESTS } from "../http-status-code.js";
+import { request } from "../test-utils.js";
 
 describe("Rate limiter middleware", () => {
   const GET = "GET /";

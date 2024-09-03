@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { hashPassword, isPasswordValid, PASSWORD_MAX_LENGTH, verifyPassword } from "./password";
+import { hashPassword, isPasswordValid, PASSWORD_MAX_LENGTH, verifyPassword } from "./password.js";
 import { cpuUsage } from "node:process";
 
 const getRandomPassword = (length?: number): string => {

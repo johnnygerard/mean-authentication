@@ -1,8 +1,8 @@
 import type { RequestHandler } from "express";
-import { BAD_REQUEST, CREATED, UNAUTHORIZED } from "../http-status-code";
-import { USERNAME_MAX_LENGTH } from "./create-account";
-import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password";
-import { users } from "../mongo-client";
+import { BAD_REQUEST, CREATED, UNAUTHORIZED } from "../http-status-code.js";
+import { USERNAME_MAX_LENGTH } from "./create-account.js";
+import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
+import { users } from "../mongo-client.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
