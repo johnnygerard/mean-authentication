@@ -25,7 +25,7 @@ import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
-import { CONFLICT } from "@server/http-status-code";
+import { CONFLICT } from "_server/http-status-code";
 
 @Component({
   selector: "app-register-form",

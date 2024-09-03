@@ -6,7 +6,7 @@ import { formatRateLimit } from "./format-rate-limit";
 import {
   SERVICE_UNAVAILABLE,
   TOO_MANY_REQUESTS,
-} from "@server/http-status-code";
+} from "_server/http-status-code";
 
 /**
  * HTTP error interceptor
