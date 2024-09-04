@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:deploy": "tsc --project tsconfig.deploy.json",
+    "build:deploy": "npm ci --include=dev && tsc --project tsconfig.deploy.json && npm prune",
     "init-db": "node --env-file=.env dist/database/init.js",
     "start": "node dist/server.js",
     "start:dev": "tsc && node --watch --env-file=.env dist/server.js",
