@@ -9,7 +9,7 @@ import { env } from "node:process";
 const ENTROPY = 64;
 const ID_BYTE_SIZE = ENTROPY / 8;
 const ENCODING = "base64url";
-const SESSION_LIFETIME = "2 days";
+export const SESSION_LIFETIME = "2 days";
 
 // Session cookie signing keys (HMAC-256):
 // - Rotate keys periodically by prepending the new key to the array
