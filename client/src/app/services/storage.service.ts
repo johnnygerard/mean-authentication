@@ -34,12 +34,12 @@ export class StorageService {
   }
 
   getItem(key: string): string | null {
-    return window.localStorage[key];
+    return window.localStorage.getItem(key);
   }
 
   setItem(key: string, value: string): void {
     try {
-      window.localStorage[key] = value;
+      window.localStorage.setItem(key, value);
     } catch (e) {
       if (e instanceof DOMException && e.name === "QuotaExceededError") {
         this.#notifier.send(
