@@ -85,7 +85,7 @@ export class RegisterFormComponent {
         },
         error: (e: HttpErrorResponse) => {
           if (e.status === CONFLICT) {
-            this.#notificationService.notify(
+            this.#notificationService.send(
               "Sorry, this username is not available.",
             );
             return;

@@ -11,7 +11,7 @@ export class NotificationService {
    * Display a notification message
    * @param message - Notification message
    */
-  notify(message: string): void {
+  send(message: string): void {
     this.#snackBar.open(message, "Close", {
       horizontalPosition: "center",
       verticalPosition: "top",

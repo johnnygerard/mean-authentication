@@ -79,7 +79,7 @@ export class SignInFormComponent {
         },
         error: (e: HttpErrorResponse) => {
           if (e.status === UNAUTHORIZED) {
-            this.#notificationService.notify(
+            this.#notificationService.send(
               "Sorry, these credentials are incorrect. Please try again.",
             );
             return;

@@ -28,14 +28,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
 
         if (error.status === SERVICE_UNAVAILABLE) {
-          notificationService.notify(
+          notificationService.send(
             "Sorry, the server is currently unavailable. Please try again later.",
           );
           return EMPTY;
         }
 
         if (error.status === TOO_MANY_REQUESTS) {
-          notificationService.notify(formatRateLimit(error.headers));
+          notificationService.send(formatRateLimit(error.headers));
           return EMPTY;
         }
 

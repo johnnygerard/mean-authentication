@@ -9,7 +9,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
   handleError(e: unknown): void {
     window.console.error(e);
-    this.#notificationService.notify(
+    this.#notificationService.send(
       "An unknown error has occurred. Please try again later.",
     );
   }
