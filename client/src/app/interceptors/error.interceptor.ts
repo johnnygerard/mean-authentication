@@ -13,7 +13,7 @@ import {
  * @see https://angular.dev/guide/http/making-requests#handling-request-failure
  */
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const notificationService = inject(NotificationService);
+  const notifier = inject(NotificationService);
 
   return next(req).pipe(
     retry({
@@ -28,14 +28,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         }
 
         if (error.status === SERVICE_UNAVAILABLE) {
-          notificationService.send(
+          notifier.send(
             "Sorry, the server is currently unavailable. Please try again later.",
           );
           return EMPTY;
         }
 
         if (error.status === TOO_MANY_REQUESTS) {
-          notificationService.send(formatRateLimit(error.headers));
+          notifier.send(formatRateLimit(error.headers));
           return EMPTY;
         }
 

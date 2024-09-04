@@ -46,7 +46,7 @@ import { UNAUTHORIZED } from "_server/http-status-code";
 export class SignInFormComponent {
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
-  #notificationService = inject(NotificationService);
+  #notifier = inject(NotificationService);
   #router = inject(Router);
   #auth = inject(AuthService);
   password = model("");
@@ -79,7 +79,7 @@ export class SignInFormComponent {
         },
         error: (e: HttpErrorResponse) => {
           if (e.status === UNAUTHORIZED) {
-            this.#notificationService.send(
+            this.#notifier.send(
               "Sorry, these credentials are incorrect. Please try again.",
             );
             return;

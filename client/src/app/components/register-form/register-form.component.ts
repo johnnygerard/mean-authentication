@@ -52,7 +52,7 @@ import { CONFLICT } from "_server/http-status-code";
 export class RegisterFormComponent {
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
-  #notificationService = inject(NotificationService);
+  #notifier = inject(NotificationService);
   #router = inject(Router);
   #auth = inject(AuthService);
   username = model("");
@@ -85,9 +85,7 @@ export class RegisterFormComponent {
         },
         error: (e: HttpErrorResponse) => {
           if (e.status === CONFLICT) {
-            this.#notificationService.send(
-              "Sorry, this username is not available.",
-            );
+            this.#notifier.send("Sorry, this username is not available.");
             return;
           }
           throw e;
