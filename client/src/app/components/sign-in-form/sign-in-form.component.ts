@@ -9,7 +9,6 @@ import {
 } from "@angular/core";
 import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
-import { AuthService } from "../../services/auth.service";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
@@ -23,6 +22,8 @@ import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
 import { UNAUTHORIZED } from "_server/http-status-code";
+import { SessionService } from "../../services/session.service";
+import { SessionUser } from "_server/types/session-user";
 
 @Component({
   selector: "app-sign-in-form",
@@ -48,7 +49,7 @@ export class SignInFormComponent {
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
   #router = inject(Router);
-  #auth = inject(AuthService);
+  #session = inject(SessionService);
   password = model("");
   username = model("");
   isLoading = signal(false);
@@ -62,7 +63,7 @@ export class SignInFormComponent {
     this.isLoading.set(true);
 
     this.#http
-      .post("/api/session", {
+      .post<SessionUser>("/api/session", {
         username: this.username(),
         password: this.password(),
       })
@@ -73,8 +74,8 @@ export class SignInFormComponent {
         takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe({
-        next: async () => {
-          this.#auth.setAuthStatus(true);
+        next: async (user) => {
+          this.#session.store(user);
           await this.#router.navigate(["/"]);
         },
         error: (e: HttpErrorResponse) => {
@@ -85,7 +86,8 @@ export class SignInFormComponent {
             return;
           }
 
-          throw e;
+          window.console.error(e);
+          this.#notifier.send("Sign-in failed. Please try again later.");
         },
       });
   }

@@ -10,7 +10,6 @@ import {
 import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { AuthService } from "../../services/auth.service";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
 import { PasswordValidatorDirective } from "../../directives/password-validator.directive";
@@ -26,6 +25,8 @@ import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
 import { CONFLICT } from "_server/http-status-code";
+import { SessionService } from "../../services/session.service";
+import { SessionUser } from "_server/types/session-user";
 
 @Component({
   selector: "app-register-form",
@@ -54,7 +55,8 @@ export class RegisterFormComponent {
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
   #router = inject(Router);
-  #auth = inject(AuthService);
+  #session = inject(SessionService);
+
   username = model("");
   password = model("");
   isLoading = signal(false);
@@ -68,7 +70,7 @@ export class RegisterFormComponent {
     this.isLoading.set(true);
 
     this.#http
-      .post("/api/account", {
+      .post<SessionUser>("/api/account", {
         username: this.username(),
         password: this.password(),
       })
@@ -79,8 +81,8 @@ export class RegisterFormComponent {
         takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe({
-        next: async () => {
-          this.#auth.setAuthStatus(true);
+        next: async (user) => {
+          this.#session.store(user);
           await this.#router.navigateByUrl("/");
         },
         error: (e: HttpErrorResponse) => {
@@ -88,7 +90,9 @@ export class RegisterFormComponent {
             this.#notifier.send("Sorry, this username is not available.");
             return;
           }
-          throw e;
+
+          window.console.error(e);
+          this.#notifier.send("Registration failed. Please try again later.");
         },
       });
   }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
-import { AuthService } from "../../services/auth.service";
 import { AuthStatusPipe } from "../../pipes/auth-status.pipe";
 import { AsyncPipe } from "@angular/common";
+import { SessionService } from "../../services/session.service";
 
 @Component({
   selector: "app-home-page",
@@ -12,5 +12,5 @@ import { AsyncPipe } from "@angular/common";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
-  isAuthenticated = inject(AuthService).isAuthenticated;
+  isAuthenticated = inject(SessionService).isAuthenticated;
 }
