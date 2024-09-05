@@ -1,16 +1,18 @@
 import { CanActivateFn, Router } from "@angular/router";
 import { inject } from "@angular/core";
-import { AuthService } from "../services/auth.service";
 import { toObservable } from "@angular/core/rxjs-interop";
 import { filter, map } from "rxjs";
+import { SessionService } from "../services/session.service";
 
-export const isUnauthenticatedGuard: CanActivateFn = (route, state) => {
-  if (typeof window === "undefined") return false;
+const isPlatformServer = typeof window === "undefined";
 
-  const auth = inject(AuthService);
+export const isUnauthenticatedGuard: CanActivateFn = (_route, _state) => {
+  if (isPlatformServer) return false;
+
   const router = inject(Router);
+  const session = inject(SessionService);
 
-  return toObservable(auth.isAuthenticated).pipe(
+  return toObservable(session.isAuthenticated).pipe(
     filter((value) => value !== null),
     map((isAuthenticated) => (isAuthenticated ? router.parseUrl("/") : true)),
   );

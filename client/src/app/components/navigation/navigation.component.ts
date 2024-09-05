@@ -4,7 +4,8 @@ import { RouterLink, RouterOutlet } from "@angular/router";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { HttpClient } from "@angular/common/http";
 import { Title } from "@angular/platform-browser";
-import { AuthService } from "../../services/auth.service";
+import { SessionService } from "../../services/session.service";
+import { NotificationService } from "../../services/notification.service";
 
 @Component({
   selector: "app-navigation",
@@ -15,18 +16,20 @@ import { AuthService } from "../../services/auth.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
-  #auth = inject(AuthService);
   #http = inject(HttpClient);
+  #notifier = inject(NotificationService);
+  #session = inject(SessionService);
   title = inject(Title).getTitle();
-  isAuthenticated = this.#auth.isAuthenticated;
+  isAuthenticated = this.#session.isAuthenticated;
 
-  deleteSession(): void {
+  onLogout(): void {
     this.#http.delete("/api/session").subscribe({
       next: () => {
-        this.#auth.setAuthStatus(false);
+        this.#session.clear();
       },
       error: (e) => {
-        throw e;
+        window.console.error(e);
+        this.#notifier.send("Logout failed. Please try again later.");
       },
     });
   }
