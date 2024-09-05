@@ -76,7 +76,7 @@ export class SignInFormComponent {
       .subscribe({
         next: async (user) => {
           this.#session.store(user);
-          await this.#router.navigate(["/"]);
+          await this.#router.navigateByUrl("/");
         },
         error: (e: HttpErrorResponse) => {
           if (e.status === UNAUTHORIZED) {
