@@ -1,14 +1,10 @@
 import type { ErrorRequestHandler } from "express";
 import express from "express";
 import { env } from "node:process";
-import {
-  INTERNAL_SERVER_ERROR,
-  NO_CONTENT,
-  NOT_FOUND,
-} from "./http-status-code.js";
-import cors from "cors";
+import { INTERNAL_SERVER_ERROR, NOT_FOUND } from "./http-status-code.js";
 import publicRouter from "./routes/public.js";
 import session from "./middleware/session.js";
+import cors from "./middleware/cors.js";
 
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
@@ -17,30 +13,8 @@ const isProduction = env.NODE_ENV === "production";
 // Trust requests from Heroku's load balancer
 app.set("trust proxy", 1);
 
-const rateLimitingHeaders = [
-  "ratelimit-policy",
-  "ratelimit-limit",
-  "ratelimit-remaining",
-  "ratelimit-reset",
-  "retry-after",
-];
-
-// Enable CORS for the Angular client
-// See https://github.com/expressjs/cors?tab=readme-ov-file#configuration-options
-if (isProduction) {
-  app.use(
-    cors({
-      allowedHeaders: "Content-Type",
-      exposedHeaders: rateLimitingHeaders,
-      maxAge: 86400,
-      methods: ["GET", "POST", "DELETE"],
-      optionsSuccessStatus: NO_CONTENT,
-      origin: "https://mean-authentication.app.jgerard.dev",
-      preflightContinue: false,
-      credentials: true, // Include cookies in cross-origin requests
-    }),
-  );
-}
+// Enable CORS
+if (isProduction) app.use(cors);
 
 // Parse JSON requests
 app.use(express.json());

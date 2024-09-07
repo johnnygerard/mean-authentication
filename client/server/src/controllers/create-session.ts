@@ -2,7 +2,8 @@ import type { RequestHandler } from "express";
 import { BAD_REQUEST, CREATED, UNAUTHORIZED } from "../http-status-code.js";
 import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
-import { users } from "../mongo-client.js";
+import { users } from "../database/client.js";
+import { generateSessionId } from "../middleware/session.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
@@ -39,6 +40,9 @@ export const createSession: RequestHandler = async (req, res, next) => {
       res.status(UNAUTHORIZED).end();
       return;
     }
+
+    // Generate session ID
+    req.sessionID = await generateSessionId();
 
     // Create session
     req.session.regenerate((e) => {
