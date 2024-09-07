@@ -3,6 +3,7 @@ import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
 import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../database/client.js";
+import { generateSessionId } from "../middleware/session.js";
 
 export const USERNAME_MAX_LENGTH = 100;
 
@@ -54,6 +55,9 @@ export const createAccount: RequestHandler = async (req, res, next) => {
 
     // Save user
     await users.insertOne(user);
+
+    // Generate session ID
+    req.sessionID = await generateSessionId();
 
     // Create session
     req.session.regenerate((e) => {

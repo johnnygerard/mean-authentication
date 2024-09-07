@@ -1,9 +1,10 @@
 import session from "express-session";
 import { randomBytes } from "node:crypto";
-import type { CookieOptions, Request } from "express";
+import type { CookieOptions } from "express";
 import ms from "ms";
 import { env } from "node:process";
 import connectMongoDBSession from "connect-mongodb-session";
+import { sessions } from "../database/client.js";
 
 // The optimal entropy depends on multiple factors (see link below).
 // https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length
@@ -29,8 +30,12 @@ export const sessionCookie = {
   } as CookieOptions,
 };
 
-const generateSessionId = (_req: Request): string => {
-  return randomBytes(ID_BYTE_SIZE).toString(ENCODING);
+export const generateSessionId = async (): Promise<string> => {
+  const sessionId = randomBytes(ID_BYTE_SIZE).toString(ENCODING);
+
+  // Query the database to enforce session ID uniqueness
+  const count = await sessions.countDocuments({ _id: sessionId });
+  return count ? generateSessionId() : sessionId;
 };
 
 if (!env.CONNECTION_STRING) {
@@ -55,7 +60,7 @@ store.on("error", (e) => {
  */
 export default session({
   cookie: sessionCookie.options,
-  genid: generateSessionId,
+  genid: (req) => req.sessionID,
   name: sessionCookie.name,
   proxy: undefined, // Use "trust proxy" setting
   resave: false,
