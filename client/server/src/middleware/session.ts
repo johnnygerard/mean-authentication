@@ -1,8 +1,9 @@
-import session, { MemoryStore } from "express-session";
+import session from "express-session";
 import { randomBytes } from "node:crypto";
 import type { CookieOptions, Request } from "express";
 import ms from "ms";
 import { env } from "node:process";
+import connectMongoDBSession from "connect-mongodb-session";
 
 // The optimal entropy depends on multiple factors (see link below).
 // https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length
@@ -32,6 +33,22 @@ const generateSessionId = (_req: Request): string => {
   return randomBytes(ID_BYTE_SIZE).toString(ENCODING);
 };
 
+if (!env.CONNECTION_STRING) {
+  throw new Error("CONNECTION_STRING is not set");
+}
+
+const MongoDBStore = connectMongoDBSession(session);
+const store = new MongoDBStore({
+  uri: env.CONNECTION_STRING,
+  databaseName: "app",
+  collection: "sessions",
+  expires: ms(SESSION_LIFETIME),
+});
+
+store.on("error", (e) => {
+  console.error("MongoDB session store error:", e);
+});
+
 /**
  * Session middleware
  * @see https://github.com/expressjs/session
@@ -45,6 +62,6 @@ export default session({
   rolling: false,
   saveUninitialized: false,
   secret: keys,
-  store: new MemoryStore(), // TODO Use production store
+  store,
   unset: "destroy",
 });
