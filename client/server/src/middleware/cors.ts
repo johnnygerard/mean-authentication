@@ -1,5 +1,6 @@
 import cors from "cors";
 import { NO_CONTENT } from "../http-status-code.js";
+import ms from "ms";
 
 const rateLimitingHeaders = [
   "ratelimit-policy",
@@ -16,7 +17,7 @@ const rateLimitingHeaders = [
 export default cors({
   allowedHeaders: "Content-Type",
   exposedHeaders: rateLimitingHeaders,
-  maxAge: 86400,
+  maxAge: ms("1 hour") / 1000,
   methods: ["GET", "POST", "DELETE"],
   optionsSuccessStatus: NO_CONTENT,
   origin: "https://mean-authentication.app.jgerard.dev",
