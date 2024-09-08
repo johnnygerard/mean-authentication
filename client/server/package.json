@@ -9,7 +9,6 @@
     "mongodb": "^6.8.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1",
     "@tsconfig/node20": "^20.1.4",
     "@types/connect-mongodb-session": "^2.4.7",
     "@types/cors": "^2.8.17",
