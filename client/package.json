@@ -23,6 +23,7 @@
     "@angular-devkit/build-angular": "^18.2.2",
     "@angular/cli": "^18.2.2",
     "@angular/compiler-cli": "^18.2.2",
+    "@cypress/schematic": "^2.5.2",
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
@@ -31,7 +32,8 @@
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0"
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "cypress": "latest"
   },
   "name": "mean-authentication",
   "private": true,
@@ -42,7 +44,10 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:mean-authentication": "node dist/mean-authentication/server/server.mjs",
-    "vercel:build": "ng version && ng build --configuration \"$VERCEL_ENV\""
+    "vercel:build": "ng version && ng build --configuration \"$VERCEL_ENV\"",
+    "e2e": "ng e2e",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "version": "0.0.0"
 }
