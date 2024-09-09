@@ -20,6 +20,7 @@ import {
   MatSnackBar,
 } from "@angular/material/snack-bar";
 import { apiBaseUrlInterceptor } from "./interceptors/api-base-url.interceptor";
+import { credentialsInterceptor } from "./interceptors/credentials.interceptor";
 
 const prefersReducedMotion =
   typeof window !== "undefined" &&
@@ -32,7 +33,11 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(
       withFetch(),
-      withInterceptors([errorInterceptor, apiBaseUrlInterceptor]),
+      withInterceptors([
+        apiBaseUrlInterceptor,
+        credentialsInterceptor,
+        errorInterceptor,
+      ]),
     ),
     {
       provide: ErrorHandler,
