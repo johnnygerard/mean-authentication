@@ -18,4 +18,20 @@ describe("User registration", () => {
       cy.location("pathname").should("equal", "/");
     });
   });
+
+  it("should validate the password", () => {
+    cy.getByData("register-form").within(($form) => {
+      const weakPassword = faker.internet.password({
+        length: 8,
+        pattern: /[a-z]/,
+      });
+
+      // Fill out and submit the form
+      cy.getByData("username").type(faker.internet.userName());
+      cy.getByData("password").type(weakPassword);
+      cy.root().submit();
+
+      cy.getByData("password").should("have.class", "ng-invalid");
+    });
+  });
 });
