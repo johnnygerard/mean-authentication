@@ -6,6 +6,7 @@ import { ValidationErrors } from "@angular/forms";
   standalone: true,
 })
 export class PasswordErrorPipe implements PipeTransform {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   transform(errors: ValidationErrors, ...args: unknown[]): string {
     if (errors["required"]) return "This field is required";
     if (errors["maxlength"]) return "Maximum length exceeded";

@@ -37,8 +37,7 @@ export class PasswordStrengthMeterComponent {
       case 4:
         return "Strong";
       default:
-        const _: never = score;
-        return _;
+        return ((_: never) => _)(score); // Exhaustive check
     }
   });
 

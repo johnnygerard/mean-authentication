@@ -6,7 +6,8 @@ import { SessionService } from "../services/session.service";
 
 const isPlatformServer = typeof window === "undefined";
 
-export const isUnauthenticatedGuard: CanActivateFn = (_route, _state) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const isUnauthenticatedGuard: CanActivateFn = (route, state) => {
   if (isPlatformServer) return false;
 
   const router = inject(Router);
