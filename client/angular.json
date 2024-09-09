@@ -173,10 +173,10 @@
   },
   "cli": {
     "schematicCollections": [
-      "@cypress/schematic",
       "@schematics/angular",
       "@angular/material",
-      "@angular/cdk"
+      "@angular/cdk",
+      "@cypress/schematic"
     ]
   }
 }
