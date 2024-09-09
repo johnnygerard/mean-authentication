@@ -1,8 +1,8 @@
-import { SessionUser } from "./types/session-user.js";
+import { ClientSession } from "./types/client-session.js";
 
 declare module "express-session" {
   // noinspection JSUnusedGlobalSymbols
   interface SessionData {
-    user: SessionUser;
+    user: ClientSession;
   }
 }

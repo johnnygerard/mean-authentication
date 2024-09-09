@@ -23,7 +23,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
 import { UNAUTHORIZED } from "_server/http-status-code";
 import { SessionService } from "../../services/session.service";
-import { SessionUser } from "_server/types/session-user";
+import { ClientSession } from "_server/types/client-session";
 
 @Component({
   selector: "app-sign-in-form",
@@ -63,7 +63,7 @@ export class SignInFormComponent {
     this.isLoading.set(true);
 
     this.#http
-      .post<SessionUser>("/api/session", {
+      .post<ClientSession>("/api/session", {
         username: this.username(),
         password: this.password(),
       })

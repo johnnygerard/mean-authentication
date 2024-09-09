@@ -26,7 +26,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
 import { CONFLICT } from "_server/http-status-code";
 import { SessionService } from "../../services/session.service";
-import { SessionUser } from "_server/types/session-user";
+import { ClientSession } from "_server/types/client-session";
 
 @Component({
   selector: "app-register-form",
@@ -70,7 +70,7 @@ export class RegisterFormComponent {
     this.isLoading.set(true);
 
     this.#http
-      .post<SessionUser>("/api/account", {
+      .post<ClientSession>("/api/account", {
         username: this.username(),
         password: this.password(),
       })
