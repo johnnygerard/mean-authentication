@@ -25,7 +25,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
     // Retrieve user from database
     const user = await users.findOne(
       { username },
-      { projection: { _id: 0, password: 1 } },
+      { projection: { password: 1 } },
     );
 
     // Check if user exists
