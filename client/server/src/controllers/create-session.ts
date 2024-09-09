@@ -4,6 +4,7 @@ import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../database/client.js";
 import { generateSessionId } from "../middleware/session.js";
+import { ClientSession } from "../types/client-session.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
@@ -51,8 +52,9 @@ export const createSession: RequestHandler = async (req, res, next) => {
         return;
       }
 
-      req.session.user = { username };
-      res.status(CREATED).json(req.session.user);
+      const clientSession: ClientSession = { username };
+      req.session.user = { _id: user._id, clientSession };
+      res.status(CREATED).json(clientSession);
     });
   } catch (e) {
     next(e);
