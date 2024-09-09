@@ -4,6 +4,7 @@ import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../database/client.js";
 import { generateSessionId } from "../middleware/session.js";
+import { ClientSession } from "../types/client-session.js";
 
 export const USERNAME_MAX_LENGTH = 100;
 
@@ -54,7 +55,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
     const user = new User(username, digest);
 
     // Save user
-    await users.insertOne(user);
+    const { insertedId } = await users.insertOne(user);
 
     // Generate session ID
     req.sessionID = await generateSessionId();
@@ -66,8 +67,9 @@ export const createAccount: RequestHandler = async (req, res, next) => {
         return;
       }
 
-      req.session.user = { username };
-      res.status(CREATED).json(req.session.user);
+      const clientSession: ClientSession = { username };
+      req.session.user = { _id: insertedId, clientSession };
+      res.status(CREATED).json(clientSession);
     });
   } catch (e) {
     next(e);

@@ -3,8 +3,10 @@ import express from "express";
 import { env } from "node:process";
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from "./http-status-code.js";
 import publicRouter from "./routes/public.js";
+import privateRouter from "./routes/private.js";
 import session from "./middleware/session.js";
 import cors from "./middleware/cors.js";
+import { isAuthenticated } from "./middleware/is-authenticated.js";
 
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
@@ -24,6 +26,9 @@ app.use(session);
 
 // Mount public router
 app.use(publicRouter);
+
+// Mount private router
+app.use(isAuthenticated, privateRouter);
 
 // Global error handler
 app.use(((e, req, res, next) => {

@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
-import { SessionUser } from "_server/types/session-user";
+import { ClientSession } from "_server/types/client-session";
 import { StorageService } from "./storage.service";
 
 const SESSION_KEY = "session";
@@ -10,7 +10,7 @@ const SESSION_KEY = "session";
 export class SessionService {
   #isPlatformServer = typeof window === "undefined";
   #storage = inject(StorageService);
-  #user = signal<SessionUser | null | undefined>(undefined);
+  #user = signal<ClientSession | null | undefined>(undefined);
   user = this.#user.asReadonly();
 
   isAuthenticated = computed<boolean | null>(() => {
@@ -33,7 +33,7 @@ export class SessionService {
     this.#storage.removeItem(SESSION_KEY);
   }
 
-  store(user: SessionUser): void {
+  store(user: ClientSession): void {
     this.#user.set(user);
     this.#storage.setItem(SESSION_KEY, JSON.stringify(user));
   }
