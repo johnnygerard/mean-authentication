@@ -1,0 +1,5 @@
+<h1 class="mat-headline-large">Account</h1>
+@if (account()) {
+  <p>Registered on {{ createdAt() | date }}</p>
+  <p>Username: {{ username() }}</p>
+}
