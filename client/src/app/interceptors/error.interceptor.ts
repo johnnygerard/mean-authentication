@@ -6,7 +6,10 @@ import { formatRateLimit } from "./format-rate-limit";
 import {
   SERVICE_UNAVAILABLE,
   TOO_MANY_REQUESTS,
+  UNAUTHORIZED,
 } from "_server/http-status-code";
+import { Router } from "@angular/router";
+import { SessionService } from "../services/session.service";
 
 /**
  * HTTP error interceptor
@@ -14,6 +17,8 @@ import {
  */
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const notifier = inject(NotificationService);
+  const router = inject(Router);
+  const session = inject(SessionService);
 
   return next(req).pipe(
     retry({
@@ -36,6 +41,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
         if (error.status === TOO_MANY_REQUESTS) {
           notifier.send(formatRateLimit(error.headers));
+          return EMPTY;
+        }
+
+        if (error.status === UNAUTHORIZED) {
+          session.clear();
+          router.navigateByUrl("/sign-in");
           return EMPTY;
         }
 
