@@ -7,6 +7,7 @@ import privateRouter from "./routes/private.js";
 import session from "./middleware/session.js";
 import cors from "./middleware/cors.js";
 import { isAuthenticated } from "./middleware/is-authenticated.js";
+import { csrf } from "./middleware/csrf.js";
 
 const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
@@ -23,7 +24,7 @@ const middleware = [
 if (isProduction) middleware.unshift(cors); // Enable CORS
 
 app.use("/api", middleware, publicRouter);
-app.use("/api/user", isAuthenticated, privateRouter);
+app.use("/api/user", isAuthenticated, csrf, privateRouter);
 
 // Final catch-all controller
 app.use((req, res) => {

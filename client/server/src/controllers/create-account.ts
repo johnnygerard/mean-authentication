@@ -5,6 +5,7 @@ import { User } from "../models/user.js";
 import { users } from "../database/client.js";
 import { generateSessionId } from "../middleware/session.js";
 import { ClientSession } from "../types/client-session.js";
+import { generateCSRFToken } from "../auth/csrf.js";
 
 export const USERNAME_MAX_LENGTH = 100;
 
@@ -67,7 +68,10 @@ export const createAccount: RequestHandler = async (req, res, next) => {
         return;
       }
 
-      const clientSession: ClientSession = { username };
+      const clientSession: ClientSession = {
+        csrfToken: generateCSRFToken(),
+        username,
+      };
       req.session.user = { _id: insertedId, clientSession };
       res.status(CREATED).json(clientSession);
     });

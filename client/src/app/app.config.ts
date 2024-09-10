@@ -11,6 +11,7 @@ import {
   provideHttpClient,
   withFetch,
   withInterceptors,
+  withNoXsrfProtection,
 } from "@angular/common/http";
 import { errorInterceptor } from "./interceptors/error.interceptor";
 import { GlobalErrorHandler } from "./global-error-handler";
@@ -21,6 +22,7 @@ import {
 } from "@angular/material/snack-bar";
 import { apiBaseUrlInterceptor } from "./interceptors/api-base-url.interceptor";
 import { credentialsInterceptor } from "./interceptors/credentials.interceptor";
+import { csrfInterceptor } from "./interceptors/csrf.interceptor";
 
 const prefersReducedMotion =
   typeof window !== "undefined" &&
@@ -33,9 +35,11 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(
       withFetch(),
+      withNoXsrfProtection(),
       withInterceptors([
         apiBaseUrlInterceptor,
         credentialsInterceptor,
+        csrfInterceptor,
         errorInterceptor,
       ]),
     ),

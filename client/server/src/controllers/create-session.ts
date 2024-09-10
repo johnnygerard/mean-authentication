@@ -5,6 +5,7 @@ import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../database/client.js";
 import { generateSessionId } from "../middleware/session.js";
 import { ClientSession } from "../types/client-session.js";
+import { generateCSRFToken } from "../auth/csrf.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
@@ -52,7 +53,10 @@ export const createSession: RequestHandler = async (req, res, next) => {
         return;
       }
 
-      const clientSession: ClientSession = { username };
+      const clientSession: ClientSession = {
+        csrfToken: generateCSRFToken(),
+        username,
+      };
       req.session.user = { _id: user._id, clientSession };
       res.status(CREATED).json(clientSession);
     });
