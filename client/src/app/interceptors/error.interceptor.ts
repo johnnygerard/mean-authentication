@@ -10,8 +10,23 @@ import {
 } from "_server/http-status-code";
 import { Router } from "@angular/router";
 import { SessionService } from "../services/session.service";
+import ms from "ms";
 
 const NON_HTTP_ERROR = 0; // Network or connection error
+const baseDelay = ms("50 milliseconds");
+
+/**
+ * Compute the delay in milliseconds for the next retry attempt
+ * @param retryCount - The number of retry attempts (1-based)
+ * @returns The delay in milliseconds
+ */
+const computeDelay = (retryCount: number): number => {
+  const multiplier = 2 ** (retryCount - 1);
+  const delay = baseDelay * multiplier;
+  const jitter = Math.random() * delay;
+
+  return Math.floor(delay + jitter);
+};
 
 /**
  * HTTP error interceptor
@@ -24,15 +39,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     retry({
-      count: 4,
+      count: 5,
       delay: (error: HttpErrorResponse, retryCount: number) => {
         switch (error.status) {
           case NON_HTTP_ERROR:
             window.console.error(
               `Retrying failed request: attempt #${retryCount}`,
             );
-            // Retry after 1, 10, 100, and 1000 ms
-            return of(true).pipe(delay(10 ** (retryCount - 1)));
+            return of(true).pipe(delay(computeDelay(retryCount)));
 
           case SERVICE_UNAVAILABLE:
             notifier.send(
