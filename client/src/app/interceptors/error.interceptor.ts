@@ -1,4 +1,8 @@
-import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
+import {
+  HttpErrorResponse,
+  HttpInterceptorFn,
+  HttpRequest,
+} from "@angular/common/http";
 import { delay, EMPTY, of, retry, throwError } from "rxjs";
 import { NotificationService } from "../services/notification.service";
 import { inject } from "@angular/core";
@@ -6,7 +10,30 @@ import { formatRateLimit } from "./format-rate-limit";
 import {
   SERVICE_UNAVAILABLE,
   TOO_MANY_REQUESTS,
+  UNAUTHORIZED,
 } from "_server/http-status-code";
+import { Router } from "@angular/router";
+import { SessionService } from "../services/session.service";
+import ms from "ms";
+
+const NON_HTTP_ERROR = 0; // Network or connection error
+const baseDelay = ms("50 milliseconds");
+
+/**
+ * Compute the delay in milliseconds for the next retry attempt
+ * @param retryCount - The number of retry attempts (1-based)
+ * @returns The delay in milliseconds
+ */
+const computeDelay = (retryCount: number): number => {
+  const multiplier = 2 ** (retryCount - 1);
+  const delay = baseDelay * multiplier;
+  const jitter = Math.random() * delay;
+
+  return Math.floor(delay + jitter);
+};
+
+const isLoginAttempt = (req: HttpRequest<unknown>): boolean =>
+  req.method === "POST" && new URL(req.url).pathname === "/api/session";
 
 /**
  * HTTP error interceptor
@@ -14,33 +41,45 @@ import {
  */
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const notifier = inject(NotificationService);
+  const router = inject(Router);
+  const session = inject(SessionService);
 
   return next(req).pipe(
     retry({
-      count: 4,
+      count: 5,
       delay: (error: HttpErrorResponse, retryCount: number) => {
-        // Retry non-HTTP errors after 1, 10, 100, and 1000 ms
-        if (error.status === 0) {
-          window.console.error(
-            `Retrying failed request: attempt #${retryCount}`,
-          );
-          return of(true).pipe(delay(10 ** (retryCount - 1)));
+        switch (error.status) {
+          case NON_HTTP_ERROR:
+            window.console.error(
+              `Retrying failed request: attempt #${retryCount}`,
+            );
+            return of(true).pipe(delay(computeDelay(retryCount)));
+
+          case SERVICE_UNAVAILABLE:
+            notifier.send(
+              "Sorry, the server is currently unavailable. Please try again later.",
+            );
+            break;
+
+          case TOO_MANY_REQUESTS:
+            notifier.send(formatRateLimit(error.headers));
+            break;
+
+          case UNAUTHORIZED:
+            // Do not intercept login attempts
+            if (isLoginAttempt(req)) return throwError(() => error);
+
+            session.clear();
+            router.navigateByUrl("/sign-in");
+            break;
+
+          default:
+            // Propagate other HTTP errors
+            return throwError(() => error);
         }
 
-        if (error.status === SERVICE_UNAVAILABLE) {
-          notifier.send(
-            "Sorry, the server is currently unavailable. Please try again later.",
-          );
-          return EMPTY;
-        }
-
-        if (error.status === TOO_MANY_REQUESTS) {
-          notifier.send(formatRateLimit(error.headers));
-          return EMPTY;
-        }
-
-        // Propagate other HTTP errors
-        return throwError(() => error);
+        // The HTTP error has been handled; complete the observable
+        return EMPTY;
       },
     }),
   );

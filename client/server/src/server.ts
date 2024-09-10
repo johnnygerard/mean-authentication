@@ -1,4 +1,4 @@
-import type { ErrorRequestHandler } from "express";
+import type { ErrorRequestHandler, RequestHandler } from "express";
 import express from "express";
 import { env } from "node:process";
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from "./http-status-code.js";
@@ -15,23 +15,23 @@ const isProduction = env.NODE_ENV === "production";
 // Trust requests from Heroku's load balancer
 app.set("trust proxy", 1);
 
-// Enable CORS
-if (isProduction) app.use(cors);
+const middleware: RequestHandler[] = [];
 
-// Parse JSON requests
-app.use(express.json());
+if (isProduction) middleware.push(cors); // Enable CORS
+middleware.push(express.json()); // Parse JSON requests
+middleware.push(session); // Load session
 
-// Load session
-app.use(session);
+// Mount middleware
+app.use("/api", middleware);
 
 // Mount public router
-app.use(publicRouter);
+app.use("/api", publicRouter);
 
 // Mount private router
-app.use(isAuthenticated, privateRouter);
+app.use("/api", isAuthenticated, privateRouter);
 
 // Global error handler
-app.use(((e, req, res, next) => {
+app.use("/api", ((e, req, res, next) => {
   // Delegate to default error handler if headers have already been sent
   // See https://expressjs.com/en/guide/error-handling.html
   if (res.headersSent) {
