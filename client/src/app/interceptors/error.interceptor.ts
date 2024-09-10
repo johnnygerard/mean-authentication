@@ -1,4 +1,8 @@
-import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
+import {
+  HttpErrorResponse,
+  HttpInterceptorFn,
+  HttpRequest,
+} from "@angular/common/http";
 import { delay, EMPTY, of, retry, throwError } from "rxjs";
 import { NotificationService } from "../services/notification.service";
 import { inject } from "@angular/core";
@@ -27,6 +31,9 @@ const computeDelay = (retryCount: number): number => {
 
   return Math.floor(delay + jitter);
 };
+
+const isLoginAttempt = (req: HttpRequest<unknown>): boolean =>
+  req.method === "POST" && new URL(req.url).pathname === "/api/session";
 
 /**
  * HTTP error interceptor
@@ -59,6 +66,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           case UNAUTHORIZED:
+            // Do not intercept login attempts
+            if (isLoginAttempt(req)) return throwError(() => error);
+
             session.clear();
             router.navigateByUrl("/sign-in");
             break;
