@@ -1,6 +1,7 @@
 import cors from "cors";
 import { NO_CONTENT } from "../http-status-code.js";
 import ms from "ms";
+import { CSRF_HEADER } from "./csrf.js";
 
 const rateLimitingHeaders = [
   "ratelimit-policy",
@@ -15,7 +16,7 @@ const rateLimitingHeaders = [
  * @see https://github.com/expressjs/cors?tab=readme-ov-file#configuration-options
  */
 export default cors({
-  allowedHeaders: "Content-Type",
+  allowedHeaders: ["Content-Type", CSRF_HEADER],
   exposedHeaders: rateLimitingHeaders,
   maxAge: ms("1 hour") / 1000,
   methods: ["GET", "POST", "DELETE"],

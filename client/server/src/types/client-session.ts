@@ -5,5 +5,6 @@
  * vulnerable to XSS attacks.
  */
 export type ClientSession = {
+  csrfToken: string;
   username: string;
 };
