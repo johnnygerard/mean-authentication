@@ -31,7 +31,7 @@ export class AccountPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.#http
-      .get<AccountData>("/api/account")
+      .get<AccountData>("/api/user/account")
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe({
         next: (value) => this.account.set(value),

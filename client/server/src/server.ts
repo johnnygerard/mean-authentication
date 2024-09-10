@@ -28,7 +28,7 @@ app.use("/api", middleware);
 app.use("/api", publicRouter);
 
 // Mount private router
-app.use("/api", isAuthenticated, privateRouter);
+app.use("/api/user", isAuthenticated, privateRouter);
 
 // Global error handler
 app.use("/api", ((e, req, res, next) => {
