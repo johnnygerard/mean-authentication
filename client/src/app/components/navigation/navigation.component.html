@@ -3,10 +3,17 @@
   <span class="spacer"></span>
   @switch (isAuthenticated()) {
     @case (true) {
-      <button mat-button type="button" (click)="onLogout()">Log out</button>
+      <button
+        data-test="logout-button"
+        mat-button
+        type="button"
+        (click)="onLogout()"
+      >
+        Log out
+      </button>
     }
     @case (false) {
-      <a mat-button routerLink="/sign-in">Sign in</a>
+      <a data-test="login-link" mat-button routerLink="/sign-in">Sign in</a>
     }
   }
 </mat-toolbar>
