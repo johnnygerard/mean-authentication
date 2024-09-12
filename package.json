@@ -6,10 +6,10 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "heroku-cleanup": "cd client/server && rm -rf src/",
-    "heroku-postbuild": "npm ci --include=dev && cd client/server && npm run build:deploy",
+    "heroku-cleanup": "cd server && rm -rf src/",
+    "heroku-postbuild": "npm ci --include=dev && cd server && npm run build:deploy",
     "lint": "eslint .",
-    "start": "cd client/server && npm start"
+    "start": "cd server && npm start"
   },
   "type": "module",
   "devDependencies": {

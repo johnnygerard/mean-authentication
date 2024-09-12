@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CREATED, UNAUTHORIZED } from "../../server/src/http-status-code";
+import { CREATED, UNAUTHORIZED } from "../../../server/src/http-status-code";
 
 describe("User authentication flow", () => {
   it("should work", () => {
