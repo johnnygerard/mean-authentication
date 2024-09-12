@@ -2,7 +2,6 @@
   "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
     "noPropertyAccessFromIndexSignature": true,
-    "strict": true,
     "outDir": "dist",
     "rootDir": "src"
   }
