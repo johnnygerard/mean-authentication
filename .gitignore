@@ -5,6 +5,6 @@
 /client/.angular/cache/
 /client/cypress/screenshots/
 
-/client/server/node_modules/
-/client/server/dist/
-/client/server/.env
+/server/node_modules/
+/server/dist/
+/server/.env

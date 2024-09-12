@@ -24,7 +24,7 @@
     // 1. To be inherited by tsconfig.spec.json.
     // 2. WebStorm TypeScript language service only reads tsconfig.json and not tsconfig.app.json.
     "paths": {
-      "_server/*": ["./server/src/*"]
+      "_server/*": ["../server/src/*"]
     }
   },
   "angularCompilerOptions": {
