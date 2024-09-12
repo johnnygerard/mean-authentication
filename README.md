@@ -1,4 +1,4 @@
-# Authentication system for the MEAN stack
+# AuthMEAN
 
 ![project status](https://img.shields.io/badge/project_status-active_development-green?style=for-the-badge)
 
@@ -49,9 +49,9 @@ Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](
 
 ## Screenshots
 
-### Register Page
+### Registration Form
 
-![Register Page](./screenshots/register-page.avif)
+![Registration Form](./screenshots/registration-form.avif)
 
 ## Dev Environment & Tools
 
