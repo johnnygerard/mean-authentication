@@ -47,7 +47,13 @@ Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](
 
 - CORS-enabled REST API
 
-## Environment & Tools
+## Screenshots
+
+### Register Page
+
+![Register Page](./screenshots/register-page.avif)
+
+## Dev Environment & Tools
 
 - System: [Ubuntu](https://ubuntu.com/)
 - IDE: [WebStorm](https://www.jetbrains.com/webstorm/)
