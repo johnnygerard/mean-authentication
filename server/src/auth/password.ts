@@ -1,12 +1,11 @@
 // Argon2 reference implementation: https://github.com/P-H-C/phc-winner-argon2
 // Argon2 Node.js bindings: https://github.com/ranisalt/node-argon2
 import { Buffer } from "node:buffer";
-import { env } from "node:process";
 import argon2 from "argon2";
 import zxcvbn from "zxcvbn";
+import { ARGON2_SECRET } from "../load-env.js";
 
-if (!env.ARGON2_SECRET) throw Error("ARGON2_SECRET is not set");
-const secret = Buffer.from(env.ARGON2_SECRET);
+const secret = Buffer.from(ARGON2_SECRET);
 export const PASSWORD_MAX_LENGTH = 64;
 
 /**

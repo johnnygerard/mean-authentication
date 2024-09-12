@@ -2,9 +2,13 @@ import session from "express-session";
 import { randomBytes } from "node:crypto";
 import type { CookieOptions } from "express";
 import ms from "ms";
-import { env } from "node:process";
 import connectMongoDBSession from "connect-mongodb-session";
 import { sessions } from "../database/client.js";
+import {
+  CONNECTION_STRING,
+  isProduction,
+  SESSION_SECRET_1,
+} from "../load-env.js";
 
 // The optimal entropy depends on multiple factors (see link below).
 // https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length
@@ -17,8 +21,7 @@ export const SESSION_LIFETIME = "2 days";
 // - Rotate keys periodically by prepending the new key to the array
 // - Use at least 256 bits of entropy for each key
 // See https://github.com/expressjs/session?tab=readme-ov-file#secret
-if (!env.SESSION_SECRET_1) throw new Error("SESSION_SECRET_1 is not set");
-const keys = [env.SESSION_SECRET_1];
+const keys = [SESSION_SECRET_1];
 
 export const sessionCookie = {
   name: "id",
@@ -26,7 +29,7 @@ export const sessionCookie = {
     httpOnly: true,
     maxAge: ms(SESSION_LIFETIME),
     sameSite: "strict",
-    secure: env.NODE_ENV === "production",
+    secure: isProduction,
   } as CookieOptions,
 };
 
@@ -38,13 +41,9 @@ export const generateSessionId = async (): Promise<string> => {
   return count ? generateSessionId() : sessionId;
 };
 
-if (!env.CONNECTION_STRING) {
-  throw new Error("CONNECTION_STRING is not set");
-}
-
 const MongoDBStore = connectMongoDBSession(session);
 const store = new MongoDBStore({
-  uri: env.CONNECTION_STRING,
+  uri: CONNECTION_STRING,
   databaseName: "app",
   collection: "sessions",
   expires: ms(SESSION_LIFETIME),

@@ -1,6 +1,5 @@
 import type { ErrorRequestHandler } from "express";
 import express from "express";
-import { env } from "node:process";
 import { INTERNAL_SERVER_ERROR, NOT_FOUND } from "./http-status-code.js";
 import publicRouter from "./routes/public.js";
 import privateRouter from "./routes/private.js";
@@ -8,10 +7,9 @@ import session from "./middleware/session.js";
 import cors from "./middleware/cors.js";
 import { isAuthenticated } from "./middleware/is-authenticated.js";
 import { csrf } from "./middleware/csrf.js";
+import { isProduction, port } from "./load-env.js";
 
-const PORT: number = parseInt(env.PORT ?? "3000", 10);
 const app = express();
-const isProduction = env.NODE_ENV === "production";
 
 // Trust requests from Heroku's load balancer
 app.set("trust proxy", 1);
@@ -47,13 +45,13 @@ app.use(((e, req, res, next) => {
 // Start the server
 if (isProduction) {
   // Omitted host defaults to 0.0.0.0 or [::] if IPv6 is supported
-  app.listen(PORT, () => {
-    console.log("Server listening on port", PORT);
+  app.listen(port, () => {
+    console.log("Server listening on port", port);
   });
 } else {
   const HOST = "localhost";
 
-  app.listen(PORT, HOST, () => {
-    console.log(`Server listening at http://${HOST}:${PORT}`);
+  app.listen(port, HOST, () => {
+    console.log(`Server listening at http://${HOST}:${port}`);
   });
 }
