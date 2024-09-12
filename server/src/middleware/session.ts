@@ -17,8 +17,8 @@ export const SESSION_LIFETIME = "2 days";
 // - Rotate keys periodically by prepending the new key to the array
 // - Use at least 256 bits of entropy for each key
 // See https://github.com/expressjs/session?tab=readme-ov-file#secret
-if (!env.SESSION_SECRET_1) throw new Error("SESSION_SECRET_1 is not set");
-const keys = [env.SESSION_SECRET_1];
+if (!env["SESSION_SECRET_1"]) throw new Error("SESSION_SECRET_1 is not set");
+const keys = [env["SESSION_SECRET_1"]];
 
 export const sessionCookie = {
   name: "id",
@@ -26,7 +26,7 @@ export const sessionCookie = {
     httpOnly: true,
     maxAge: ms(SESSION_LIFETIME),
     sameSite: "strict",
-    secure: env.NODE_ENV === "production",
+    secure: env["NODE_ENV"] === "production",
   } as CookieOptions,
 };
 
@@ -38,13 +38,13 @@ export const generateSessionId = async (): Promise<string> => {
   return count ? generateSessionId() : sessionId;
 };
 
-if (!env.CONNECTION_STRING) {
+if (!env["CONNECTION_STRING"]) {
   throw new Error("CONNECTION_STRING is not set");
 }
 
 const MongoDBStore = connectMongoDBSession(session);
 const store = new MongoDBStore({
-  uri: env.CONNECTION_STRING,
+  uri: env["CONNECTION_STRING"],
   databaseName: "app",
   collection: "sessions",
   expires: ms(SESSION_LIFETIME),

@@ -5,8 +5,8 @@ import { env } from "node:process";
 import argon2 from "argon2";
 import zxcvbn from "zxcvbn";
 
-if (!env.ARGON2_SECRET) throw Error("ARGON2_SECRET is not set");
-const secret = Buffer.from(env.ARGON2_SECRET);
+if (!env["ARGON2_SECRET"]) throw Error("ARGON2_SECRET is not set");
+const secret = Buffer.from(env["ARGON2_SECRET"]);
 export const PASSWORD_MAX_LENGTH = 64;
 
 /**

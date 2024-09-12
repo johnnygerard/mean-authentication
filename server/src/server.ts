@@ -9,9 +9,9 @@ import cors from "./middleware/cors.js";
 import { isAuthenticated } from "./middleware/is-authenticated.js";
 import { csrf } from "./middleware/csrf.js";
 
-const PORT: number = parseInt(env.PORT ?? "3000", 10);
+const PORT: number = parseInt(env["PORT"] ?? "3000", 10);
 const app = express();
-const isProduction = env.NODE_ENV === "production";
+const isProduction = env["NODE_ENV"] === "production";
 
 // Trust requests from Heroku's load balancer
 app.set("trust proxy", 1);
