@@ -4,6 +4,8 @@
 
 This project provides a reusable authentication system for applications built on the [MEAN stack](https://www.mongodb.com/resources/languages/mean-stack).
 
+[![live demo](https://img.shields.io/badge/live_demo-blue?style=for-the-badge)](https://mean-authentication.app.jgerard.dev/)
+
 ## Tech Stack
 
 ### Frontend
@@ -19,6 +21,14 @@ This project provides a reusable authentication system for applications built on
 - Data stored in a [MongoDB](https://www.mongodb.com/) cluster managed by [MongoDB Atlas](https://www.mongodb.com/atlas)
 
 Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)).
+
+## Lighthouse Reports
+
+Version audited: v0.14.0
+
+- [Home page](https://googlechrome.github.io/lighthouse/viewer/?gist=8a2dd7b07bb5108fdddf0c0b85471839)
+- [Registration page](https://googlechrome.github.io/lighthouse/viewer/?gist=ad49f017ce5653d1abb7ace3375c4906)
+- [Login page](https://googlechrome.github.io/lighthouse/viewer/?gist=942eb80d2aaf63bdf2329a16f8823a09)
 
 ## Key Features
 
@@ -47,6 +57,14 @@ Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](
 
 - CORS-enabled REST API
 
+## Dev Environment & Tools
+
+- System: [Ubuntu](https://ubuntu.com/)
+- IDE: [WebStorm](https://www.jetbrains.com/webstorm/)
+- Formatter: [Prettier](https://prettier.io/)
+- Linter: [ESLint](https://eslint.org/)
+- AI assistant: [GitHub Copilot](https://github.com/features/copilot)
+
 ## Screenshots
 
 ### Registration Page
@@ -56,14 +74,6 @@ Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](
 ### Login Page
 
 ![login page](./screenshots/login-page.avif)
-
-## Dev Environment & Tools
-
-- System: [Ubuntu](https://ubuntu.com/)
-- IDE: [WebStorm](https://www.jetbrains.com/webstorm/)
-- Formatter: [Prettier](https://prettier.io/)
-- Linter: [ESLint](https://eslint.org/)
-- AI assistant: [GitHub Copilot](https://github.com/features/copilot)
 
 ## Copyright
 
