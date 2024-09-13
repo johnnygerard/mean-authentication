@@ -38,6 +38,8 @@
           [(ngModel)]="password"
           #passwordModel="ngModel"
           maxlength="64"
+          [readonly]="!isPasswordServiceLoaded()"
+          [placeholder]="isPasswordServiceLoaded() ? '' : 'Loading...'"
           required
         />
         <button

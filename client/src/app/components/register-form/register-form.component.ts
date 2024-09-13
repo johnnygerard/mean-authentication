@@ -27,6 +27,7 @@ import { NotificationService } from "../../services/notification.service";
 import { CONFLICT } from "_server/http-status-code";
 import { SessionService } from "../../services/session.service";
 import { ClientSession } from "_server/types/client-session";
+import { PasswordService } from "../../services/password.service";
 
 @Component({
   selector: "app-register-form",
@@ -59,6 +60,7 @@ export class RegisterFormComponent {
 
   username = model("");
   password = model("");
+  isPasswordServiceLoaded = inject(PasswordService).isLoaded.asReadonly();
   isLoading = signal(false);
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(

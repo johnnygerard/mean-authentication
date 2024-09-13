@@ -42,6 +42,7 @@ export class PasswordService {
     },
   };
 
+  isLoaded = signal(false);
   result = signal(this.#defaultResult);
   #isPlatformBrowser = typeof window === "object";
 
@@ -55,6 +56,9 @@ export class PasswordService {
     script.defer = true;
     script.integrity = "sha256-9CxlH0BQastrZiSQ8zjdR6WVHTMSA5xKuP5QkEhPNRo=";
     script.crossOrigin = "anonymous";
+    script.onload = () => {
+      this.isLoaded.set(true);
+    };
 
     window.document.body.appendChild(script);
   }
