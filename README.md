@@ -47,6 +47,14 @@ Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](
 
 - CORS-enabled REST API
 
+## Dev Environment & Tools
+
+- System: [Ubuntu](https://ubuntu.com/)
+- IDE: [WebStorm](https://www.jetbrains.com/webstorm/)
+- Formatter: [Prettier](https://prettier.io/)
+- Linter: [ESLint](https://eslint.org/)
+- AI assistant: [GitHub Copilot](https://github.com/features/copilot)
+
 ## Screenshots
 
 ### Registration Page
@@ -56,14 +64,6 @@ Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](
 ### Login Page
 
 ![login page](./screenshots/login-page.avif)
-
-## Dev Environment & Tools
-
-- System: [Ubuntu](https://ubuntu.com/)
-- IDE: [WebStorm](https://www.jetbrains.com/webstorm/)
-- Formatter: [Prettier](https://prettier.io/)
-- Linter: [ESLint](https://eslint.org/)
-- AI assistant: [GitHub Copilot](https://github.com/features/copilot)
 
 ## Copyright
 
