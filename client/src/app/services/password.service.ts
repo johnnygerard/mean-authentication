@@ -53,9 +53,8 @@ export class PasswordService {
     const script = window.document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js";
     script.defer = true;
-    script.onload = () => {
-      console.debug("Test empty password", window.zxcvbn(""));
-    };
+    script.integrity = "sha256-9CxlH0BQastrZiSQ8zjdR6WVHTMSA5xKuP5QkEhPNRo=";
+    script.crossOrigin = "anonymous";
 
     window.document.body.appendChild(script);
   }
