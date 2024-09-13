@@ -20,6 +20,14 @@ This project provides a reusable authentication system for applications built on
 
 Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)).
 
+## Lighthouse Reports
+
+Version audited: v0.14.0
+
+- [Home page](https://googlechrome.github.io/lighthouse/viewer/?gist=8a2dd7b07bb5108fdddf0c0b85471839)
+- [Registration page](https://googlechrome.github.io/lighthouse/viewer/?gist=ad49f017ce5653d1abb7ace3375c4906)
+- [Login page](https://googlechrome.github.io/lighthouse/viewer/?gist=942eb80d2aaf63bdf2329a16f8823a09)
+
 ## Key Features
 
 ### Security
