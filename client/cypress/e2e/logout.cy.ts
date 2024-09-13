@@ -1,19 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { CREATED, NO_CONTENT } from "../../../server/src/http-status-code";
+import { registerNewUser } from "./registration.cy";
 
 describe("Logout button", () => {
-  const username = faker.internet.userName();
-
   before(() => {
-    // Register a new user
-    cy.visit("/register");
-    cy.intercept("POST", "/api/account").as("register");
-    cy.getByData("register-form").within(() => {
-      cy.getByData("username").type(username);
-      cy.getByData("password").type(faker.internet.password());
-      cy.root().submit();
-    });
-    cy.wait("@register").its("response.statusCode").should("eq", CREATED);
+    registerNewUser(faker.internet.userName(), faker.internet.password());
   });
 
   it("should log out the user", () => {

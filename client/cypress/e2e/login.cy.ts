@@ -1,13 +1,15 @@
 import { faker } from "@faker-js/faker";
 import { CREATED } from "../../../server/src/http-status-code";
+import { registerNewUser } from "./registration.cy";
 
 describe("Login page", () => {
   const username = faker.internet.userName();
   const password = faker.internet.password();
 
   before(() => {
-    // Register a new user
-    cy.request("POST", "/api/account", { username, password });
+    registerNewUser(username, password);
+    // Log out the user
+    cy.getByData("logout-button").click();
   });
 
   it("should log in an existing user", () => {
