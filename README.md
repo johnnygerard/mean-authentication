@@ -49,9 +49,13 @@ Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](
 
 ## Screenshots
 
-### Registration Form
+### Registration Page
 
-![Registration Form](./screenshots/registration-form.avif)
+![registration page](./screenshots/registration-page.avif)
+
+### Login Page
+
+![login page](./screenshots/login-page.avif)
 
 ## Dev Environment & Tools
 
