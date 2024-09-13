@@ -4,6 +4,8 @@
 
 This project provides a reusable authentication system for applications built on the [MEAN stack](https://www.mongodb.com/resources/languages/mean-stack).
 
+[![live demo](https://img.shields.io/badge/live_demo-blue?style=for-the-badge)](https://mean-authentication.app.jgerard.dev/)
+
 ## Tech Stack
 
 ### Frontend
