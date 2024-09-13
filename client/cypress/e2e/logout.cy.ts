@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { CREATED, NO_CONTENT } from "../../../server/src/http-status-code";
+import { NO_CONTENT } from "../../../server/src/http-status-code";
 import { registerNewUser } from "./registration.cy";
 
 describe("Logout button", () => {
