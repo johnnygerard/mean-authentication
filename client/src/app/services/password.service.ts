@@ -1,12 +1,6 @@
 import { Injectable, signal } from "@angular/core";
 import type { ZXCVBNResult } from "zxcvbn";
 
-declare global {
-  interface Window {
-    zxcvbn: (password: string, userInputs?: string[]) => ZXCVBNResult;
-  }
-}
-
 /**
  * This service's main purpose is to share password strength results between
  * the password validator directive and the password strength meter component.
