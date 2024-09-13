@@ -6,7 +6,6 @@ import {
   Validator,
 } from "@angular/forms";
 import { PasswordService } from "../services/password.service";
-import zxcvbn from "zxcvbn";
 
 /**
  * Password cross-field validator directive.
@@ -34,12 +33,13 @@ export class PasswordValidatorDirective implements Validator {
 
     if (
       typeof username?.value !== "string" ||
-      typeof password?.value !== "string"
+      typeof password?.value !== "string" ||
+      typeof window.zxcvbn === "undefined"
     ) {
       return null;
     }
 
-    const result = zxcvbn(password.value, [username.value]);
+    const result = window.zxcvbn(password.value, [username.value]);
     this.#passwordService.result.set(result);
 
     if (result.score < 3) {
