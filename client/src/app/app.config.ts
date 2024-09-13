@@ -37,10 +37,10 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withNoXsrfProtection(),
       withInterceptors([
-        apiBaseUrlInterceptor,
         credentialsInterceptor,
         csrfInterceptor,
         errorInterceptor,
+        apiBaseUrlInterceptor, // Must be last
       ]),
     ),
     {
