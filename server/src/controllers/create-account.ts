@@ -3,7 +3,6 @@ import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
 import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../database/client.js";
-import { generateSessionId } from "../middleware/session.js";
 import { ClientSession } from "../types/client-session.js";
 import { generateCSRFToken } from "../auth/csrf.js";
 
@@ -57,9 +56,6 @@ export const createAccount: RequestHandler = async (req, res, next) => {
 
     // Save user
     const { insertedId } = await users.insertOne(user);
-
-    // Generate session ID
-    req.sessionID = await generateSessionId();
 
     // Create session
     req.session.regenerate((e) => {
