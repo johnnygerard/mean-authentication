@@ -1,6 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { RouterStateSnapshot, TitleStrategy } from "@angular/router";
 import { Title } from "@angular/platform-browser";
+import { AppComponent } from "../app.component";
 
 /**
  * Service that updates the title of the page based on the current route.
@@ -14,9 +15,19 @@ export class TitleStrategyService extends TitleStrategy {
 
   override updateTitle(snapshot: RouterStateSnapshot): void {
     const title = this.buildTitle(snapshot);
+    let fullTitle: string;
 
-    if (title !== undefined) {
-      this.#title.setTitle(title + " | AuthMEAN");
+    switch (title) {
+      case undefined:
+        return;
+      case AppComponent.APP_NAME:
+        fullTitle = `${title} - The Future of Authentication`;
+        break;
+      default:
+        fullTitle = `${title} | ${AppComponent.APP_NAME}`;
+        break;
     }
+
+    this.#title.setTitle(fullTitle);
   }
 }
