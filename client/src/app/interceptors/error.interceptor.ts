@@ -33,7 +33,7 @@ const computeDelay = (retryCount: number): number => {
 };
 
 const isLoginAttempt = (req: HttpRequest<unknown>): boolean =>
-  req.method === "POST" && new URL(req.url).pathname === "/api/session";
+  req.method === "POST" && req.url === "/api/session";
 
 /**
  * HTTP error interceptor
