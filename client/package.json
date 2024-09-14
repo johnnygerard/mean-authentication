@@ -42,7 +42,6 @@
     "build:vercel": "ng version && ng build --configuration \"$VERCEL_ENV\"",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "e2e": "ng e2e",
     "start": "ng serve",
     "test": "ng test"
   },
