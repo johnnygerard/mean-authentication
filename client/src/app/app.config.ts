@@ -3,7 +3,7 @@ import {
   ErrorHandler,
   provideZoneChangeDetection,
 } from "@angular/core";
-import { provideRouter } from "@angular/router";
+import { provideRouter, TitleStrategy } from "@angular/router";
 
 import { routes } from "./app.routes";
 import { provideClientHydration } from "@angular/platform-browser";
@@ -23,6 +23,7 @@ import {
 import { apiBaseUrlInterceptor } from "./interceptors/api-base-url.interceptor";
 import { credentialsInterceptor } from "./interceptors/credentials.interceptor";
 import { csrfInterceptor } from "./interceptors/csrf.interceptor";
+import { TitleStrategyService } from "./services/title-strategy.service";
 
 const prefersReducedMotion =
   typeof window !== "undefined" &&
@@ -50,5 +51,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(prefersReducedMotion ? "noop" : "animations"),
     MatSnackBar,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5_000 } },
+    {
+      provide: TitleStrategy,
+      useClass: TitleStrategyService,
+    },
   ],
 };

@@ -5,9 +5,9 @@ import {
   inject,
 } from "@angular/core";
 import { SessionService } from "../../services/session.service";
-import { Title } from "@angular/platform-browser";
 import { RouterLink } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
+import { AppComponent } from "../../app.component";
 
 @Component({
   selector: "app-home-page",
@@ -19,7 +19,6 @@ import { MatButtonModule } from "@angular/material/button";
 })
 export class HomePageComponent {
   #session = inject(SessionService);
-  #title: string = inject(Title).getTitle();
   isAuthenticated = this.#session.isAuthenticated;
 
   heading = computed(() => {
@@ -29,7 +28,7 @@ export class HomePageComponent {
       case undefined:
         return "Welcome";
       case null:
-        return `Welcome to ${this.#title}`;
+        return `Welcome to ${AppComponent.APP_NAME}`;
       default:
         return `Welcome back, ${user.username}!`;
     }

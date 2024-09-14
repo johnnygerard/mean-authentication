@@ -3,12 +3,14 @@ import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { isUnauthenticatedGuard } from "./guards/is-unauthenticated.guard";
 import { NotFoundPageComponent } from "./pages/not-found-page.component";
 import { isAuthenticatedGuard } from "./guards/is-authenticated.guard";
+import { AppComponent } from "./app.component";
 
 export const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
     component: HomePageComponent,
+    title: AppComponent.APP_NAME,
   },
   {
     path: "account",
@@ -16,22 +18,26 @@ export const routes: Routes = [
       (await import("./pages/account-page/account-page.component"))
         .AccountPageComponent,
     canActivate: [isAuthenticatedGuard],
+    title: "Account",
   },
   {
     path: "sign-in",
     loadComponent: async () =>
       (await import("./pages/sign-in-page.component")).SignInPageComponent,
     canActivate: [isUnauthenticatedGuard],
+    title: "Sign In",
   },
   {
     path: "register",
     loadComponent: async () =>
       (await import("./pages/register-page.component")).RegisterPageComponent,
     canActivate: [isUnauthenticatedGuard],
+    title: "Register",
   },
   {
     path: "not-found",
     component: NotFoundPageComponent,
+    title: "Not Found",
   },
   {
     path: "**",
