@@ -38,13 +38,13 @@
   "name": "mean-authentication",
   "private": true,
   "scripts": {
-    "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
-    "vercel:build": "ng version && ng build --configuration \"$VERCEL_ENV\"",
-    "e2e": "ng e2e",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "e2e": "ng e2e",
+    "start": "ng serve",
+    "test": "ng test",
+    "vercel:build": "ng version && ng build --configuration \"$VERCEL_ENV\""
   },
   "version": "0.0.0"
 }
