@@ -46,12 +46,12 @@ app.use(((e, req, res, next) => {
 if (isProduction) {
   // Omitted host defaults to 0.0.0.0 or [::] if IPv6 is supported
   app.listen(port, () => {
-    console.log("Server listening on port", port);
+    console.log("Express server listening on port", port);
   });
 } else {
   const HOST = "localhost";
 
   app.listen(port, HOST, () => {
-    console.log(`Server listening at http://${HOST}:${port}`);
+    console.log(`Express server listening at http://${HOST}:${port}`);
   });
 }
