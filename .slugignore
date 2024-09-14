@@ -1,6 +1,4 @@
 /.github/
 /.idea/
-/client/public/
-/client/src/
-/client/*.json
-/client/server.ts
+/client/
+/screenshots/
