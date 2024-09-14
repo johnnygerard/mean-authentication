@@ -38,16 +38,12 @@
   "name": "mean-authentication",
   "private": true,
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:mean-authentication": "node dist/mean-authentication/server/server.mjs",
-    "vercel:build": "ng version && ng build --configuration \"$VERCEL_ENV\"",
-    "e2e": "ng e2e",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "build:vercel": "ng version && ng build --configuration \"$VERCEL_ENV\"",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "start": "ng serve",
+    "test": "ng test"
   },
   "version": "0.0.0"
 }

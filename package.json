@@ -1,17 +1,7 @@
 {
-  "engines": {
-    "node": "^20",
-    "npm": "^10"
+  "dependencies": {
+    "ms": "^2.1.3"
   },
-  "scripts": {
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "heroku-cleanup": "cd server && rm -rf src/",
-    "heroku-postbuild": "npm ci --include=dev && cd server && npm run build:deploy",
-    "lint": "eslint .",
-    "start": "cd server && npm start"
-  },
-  "type": "module",
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@faker-js/faker": "^9.0.0",
@@ -23,7 +13,17 @@
     "typescript": "~5.5.2",
     "typescript-eslint": "^8.0.0"
   },
-  "dependencies": {
-    "ms": "^2.1.3"
-  }
+  "engines": {
+    "node": "^20",
+    "npm": "^10"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "heroku-cleanup": "cd server && rm -rf src/",
+    "heroku-postbuild": "npm ci --include=dev && cd server && npm run build:heroku",
+    "lint": "eslint .",
+    "start:heroku": "cd server && npm start"
+  },
+  "type": "module"
 }
