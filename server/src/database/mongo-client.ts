@@ -1,8 +1,8 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import type { User } from "../models/user.js";
-import { CONNECTION_STRING } from "../load-env.js";
+import { MONGODB_CONNECTION_URL } from "../load-env.js";
 
-export const mongoClient = new MongoClient(CONNECTION_STRING, {
+export const mongoClient = new MongoClient(MONGODB_CONNECTION_URL, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,

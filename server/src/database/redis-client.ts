@@ -1,14 +1,7 @@
-import { REDIS_ENDPOINT, REDIS_PASSWORD } from "../load-env.js";
 import { createClient } from "redis";
+import { REDIS_CONNECTION_URL } from "../load-env.js";
 
-const [host, port] = REDIS_ENDPOINT.split(":");
-export const redisClient = createClient({
-  password: REDIS_PASSWORD,
-  socket: {
-    host,
-    port: parseInt(port, 10),
-  },
-});
+export const redisClient = createClient({ url: REDIS_CONNECTION_URL });
 
 redisClient.on("error", (e) => {
   console.error("Redis client error:", e);
