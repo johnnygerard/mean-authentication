@@ -9,7 +9,9 @@ This project provides a reusable authentication system for applications built on
 Warning: Because the API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)),
 you may experience a few seconds of delay on the first API request.
 
-## Tech Stack
+## Tech Stack & Architecture
+
+[TypeScript](https://www.typescriptlang.org/) is used across the full stack.
 
 ### Frontend
 
