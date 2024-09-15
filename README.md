@@ -6,21 +6,23 @@ This project provides a reusable authentication system for applications built on
 
 [![live demo](https://img.shields.io/badge/live_demo-blue?style=for-the-badge)](https://mean-authentication.app.jgerard.dev/)
 
+Warning: Because the API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)),
+you may experience a few seconds of delay on the first API request.
+
 ## Tech Stack
 
 ### Frontend
 
-- [Angular 18](https://blog.angular.dev/angular-v18-is-now-available-e79d5ac0affe)
-- [Angular Material](https://material.angular.io/)
-- [Sass](https://sass-lang.com/)
+- **Framework**: [Angular](https://angular.dev/)
+- **UI Library**: [Angular Material](https://material.angular.io/)
+- **Style**: [Sass](https://sass-lang.com/)
 
 ### Backend
 
-- Angular static assets served by [Vercel Edge Network](https://vercel.com/docs/edge-network/overview)
-- [Express](https://expressjs.com/) API server hosted on [Heroku](https://www.heroku.com/) platform
-- Data stored in a [MongoDB](https://www.mongodb.com/) cluster managed by [MongoDB Atlas](https://www.mongodb.com/atlas)
-
-Note: The API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)).
+- **CDN**: Static assets delivered through [Vercel Edge Network](https://vercel.com/docs/edge-network/overview).
+- **API Server**: Powered by [Express](https://expressjs.com/) and hosted on [Heroku](https://www.heroku.com/).
+- **Database**: User data stored in [MongoDB Atlas](https://www.mongodb.com/atlas).
+- **Cache**: Session data managed by [Redis Cloud](https://redis.io/cloud/).
 
 ## Lighthouse Reports
 
