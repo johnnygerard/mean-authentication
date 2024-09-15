@@ -1,6 +1,12 @@
 import { createClient } from "redis";
 import { REDIS_CONNECTION_URL } from "../load-env.js";
 
+/**
+ * Redis Cloud client instance
+ *
+ * Note that TLS is not enabled by default.
+ * @see https://redis.io/docs/latest/operate/rc/security/database-security/tls-ssl/
+ */
 export const redisClient = createClient({ url: REDIS_CONNECTION_URL });
 
 redisClient.on("error", (e) => {
