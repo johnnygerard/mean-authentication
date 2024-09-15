@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
 import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
-import { users } from "../database/client.js";
+import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
 import { generateCSRFToken } from "../auth/csrf.js";
 

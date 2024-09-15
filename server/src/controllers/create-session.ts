@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 import { BAD_REQUEST, CREATED, UNAUTHORIZED } from "../http-status-code.js";
 import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
-import { users } from "../database/client.js";
+import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
 import { generateCSRFToken } from "../auth/csrf.js";
 

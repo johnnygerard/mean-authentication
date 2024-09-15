@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { users } from "../database/client.js";
+import { users } from "../database/mongo-client.js";
 import { NOT_FOUND, OK, UNAUTHORIZED } from "../http-status-code.js";
 import { ObjectId } from "mongodb";
 

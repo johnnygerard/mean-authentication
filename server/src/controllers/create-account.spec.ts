@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { request } from "../test-utils.js";
 import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
-import { users } from "../database/client.js";
+import { users } from "../database/mongo-client.js";
 import express from "express";
 import { createAccount } from "./create-account.js";
 import type { AddressInfo, Server } from "node:net";
