@@ -69,11 +69,11 @@ Version audited: v0.14.0
 
 ### Registration Page
 
-![registration page](./screenshots/registration-page.avif)
+![registration page](docs/screenshots/registration-page.avif)
 
 ### Login Page
 
-![login page](./screenshots/login-page.avif)
+![login page](docs/screenshots/login-page.avif)
 
 ## Copyright
 
