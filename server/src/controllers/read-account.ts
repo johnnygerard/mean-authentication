@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { users } from "../database/client.js";
 import { NOT_FOUND, OK, UNAUTHORIZED } from "../http-status-code.js";
+import { ObjectId } from "mongodb";
 
 export const readAccount: RequestHandler = async (req, res, next) => {
   try {
@@ -12,7 +13,7 @@ export const readAccount: RequestHandler = async (req, res, next) => {
     }
 
     const user = await users.findOne(
-      { _id: sessionUser._id },
+      { _id: new ObjectId(sessionUser._id) },
       { projection: { _id: 0, password: 0 } },
     );
 

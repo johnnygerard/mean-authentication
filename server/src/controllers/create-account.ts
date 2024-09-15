@@ -68,7 +68,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
         csrfToken: generateCSRFToken(),
         username,
       };
-      req.session.user = { _id: insertedId, clientSession };
+      req.session.user = { _id: insertedId.toJSON(), clientSession };
       res.status(CREATED).json(clientSession);
     });
   } catch (e) {
