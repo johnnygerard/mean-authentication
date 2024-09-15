@@ -2,14 +2,9 @@ import session from "express-session";
 import { randomBytes } from "node:crypto";
 import type { CookieOptions } from "express";
 import ms from "ms";
-import {
-  isProduction,
-  REDIS_ENDPOINT,
-  REDIS_PASSWORD,
-  SESSION_SECRET_1,
-} from "../load-env.js";
+import { isProduction, SESSION_SECRET_1 } from "../load-env.js";
 import RedisStore from "connect-redis";
-import { createClient } from "redis";
+import { redisClient } from "../database/redis-client.js";
 
 // The optimal entropy depends on multiple factors (see link below).
 // https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length
@@ -37,25 +32,6 @@ export const sessionCookie = {
 const generateSessionId = (): string => {
   return randomBytes(ID_BYTE_SIZE).toString(ENCODING);
 };
-
-const [host, port] = REDIS_ENDPOINT.split(":");
-const redisClient = createClient({
-  password: REDIS_PASSWORD,
-  socket: {
-    host,
-    port: parseInt(port, 10),
-  },
-});
-
-redisClient.on("error", (e) => {
-  console.error("Redis client error:", e);
-});
-
-await redisClient.connect();
-console.log("Connected to Redis!");
-const now = Date.now();
-await redisClient.ping();
-console.log(`Cache latency: ${Date.now() - now}ms`);
 
 /**
  * Session middleware
