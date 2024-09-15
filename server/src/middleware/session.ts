@@ -51,9 +51,10 @@ redisClient.on("error", (e) => {
   console.error("Redis client error:", e);
 });
 
-const now = Date.now();
 await redisClient.connect();
 console.log("Connected to Redis!");
+const now = Date.now();
+await redisClient.ping();
 console.log(`Cache latency: ${Date.now() - now}ms`);
 
 /**
