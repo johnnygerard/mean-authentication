@@ -24,7 +24,7 @@ export class NavigationComponent {
   isAuthenticated = this.#session.isAuthenticated;
 
   onLogout(): void {
-    this.#http.delete("/api/session").subscribe({
+    this.#http.delete("/api/user/session").subscribe({
       next: () => {
         this.#session.clear();
         this.#router.navigateByUrl("/");

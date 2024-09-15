@@ -2,8 +2,7 @@ import type { RequestHandler } from "express";
 import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
 import { hashPassword, isPasswordValid } from "../auth/password.js";
 import { User } from "../models/user.js";
-import { users } from "../database/client.js";
-import { generateSessionId } from "../middleware/session.js";
+import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
 import { generateCSRFToken } from "../auth/csrf.js";
 
@@ -58,9 +57,6 @@ export const createAccount: RequestHandler = async (req, res, next) => {
     // Save user
     const { insertedId } = await users.insertOne(user);
 
-    // Generate session ID
-    req.sessionID = await generateSessionId();
-
     // Create session
     req.session.regenerate((e) => {
       if (e) {
@@ -72,7 +68,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
         csrfToken: generateCSRFToken(),
         username,
       };
-      req.session.user = { _id: insertedId, clientSession };
+      req.session.user = { _id: insertedId.toJSON(), clientSession };
       res.status(CREATED).json(clientSession);
     });
   } catch (e) {

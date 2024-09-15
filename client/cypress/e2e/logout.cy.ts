@@ -10,7 +10,7 @@ describe("Logout button", () => {
   it("should log out the user", () => {
     // Visit a private page
     cy.visit("/account");
-    cy.intercept("DELETE", "/api/session").as("logout");
+    cy.intercept("DELETE", "/api/user/session").as("logout");
 
     // Click the logout button
     cy.getByData("logout-button").click();

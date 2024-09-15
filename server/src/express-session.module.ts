@@ -1,11 +1,10 @@
 import { ClientSession } from "./types/client-session.js";
-import { ObjectId } from "mongodb";
 
 declare module "express-session" {
   // noinspection JSUnusedGlobalSymbols
   interface SessionData {
     user: {
-      _id: ObjectId;
+      _id: string; // JSON-serialized ObjectId
       clientSession: ClientSession;
     };
   }
