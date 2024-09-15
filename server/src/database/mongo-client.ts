@@ -12,6 +12,8 @@ export const mongoClient = new MongoClient(CONNECTION_STRING, {
 
 await mongoClient.connect();
 console.log("MongoDB Atlas connection established!");
+
+// Measure and log database latency
 const now = Date.now();
 await mongoClient.db("admin").command({ ping: 1 });
 console.log(`Database latency: ${Date.now() - now}ms`);
