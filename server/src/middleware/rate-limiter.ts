@@ -1,6 +1,6 @@
 import rateLimit from "express-rate-limit";
 import type { RequestHandler } from "express";
-import { isProduction } from "../load-env.js";
+import { isRateLimiterDisabled } from "../load-env.js";
 
 /**
  * Rate limiter middleware factory
@@ -14,6 +14,5 @@ export const rateLimiter = (limit: number, windowMs: number): RequestHandler =>
     windowMs,
     standardHeaders: true,
     legacyHeaders: false,
-    // Disable rate limiting in non-production environments
-    skip: isProduction ? undefined : () => true,
+    skip: () => isRateLimiterDisabled,
   });

@@ -20,4 +20,6 @@ export const MONGODB_CONNECTION_URL = requireVariable("MONGODB_CONNECTION_URL");
 export const REDIS_CONNECTION_URL = requireVariable("REDIS_CONNECTION_URL");
 
 export const isProduction = env["NODE_ENV"] === "production";
+export const isRateLimiterDisabled =
+  !isProduction && env["DISABLE_RATE_LIMITER"] === "true";
 export const port = parseInt(env["PORT"] ?? "3000", 10);
