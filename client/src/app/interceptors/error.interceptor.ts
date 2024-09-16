@@ -71,6 +71,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
             session.clear();
             router.navigateByUrl("/sign-in");
+            notifier.send("Your session has expired. Please sign in again.");
             break;
 
           default:
