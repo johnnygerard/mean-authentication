@@ -1,23 +1,24 @@
 import session from "express-session";
-import { randomBytes } from "node:crypto";
+import { randomUUID } from "node:crypto";
 import type { CookieOptions } from "express";
 import ms from "ms";
 import { isProduction, SESSION_SECRET_1 } from "../load-env.js";
 import RedisStore from "connect-redis";
 import { redisClient } from "../database/redis-client.js";
 
-const BYTES_OF_ENTROPY = 8; // 64 bits
-
 /**
- * Generate a session ID
+ * Generate a new session ID
  *
- * The minimum recommended session ID entropy is 64 bits.
+ * This implementation uses UUIDv4 which provides 122 bits of entropy and is
+ * augmented with a timestamp to reduce the chance of collisions even further.
+ *
  * @returns A random and likely unique session ID
  * @see https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length
+ * @see https://www.rfc-editor.org/rfc/rfc9562#name-uuid-version-4
  */
 const generateSessionId = (): string => {
   const timestamp = Date.now().toString(36);
-  const random = randomBytes(BYTES_OF_ENTROPY).toString("base64url");
+  const random = randomUUID();
 
   return `${timestamp}-${random}`;
 };
