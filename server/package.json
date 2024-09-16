@@ -22,7 +22,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
     "build:dev": "tsc --watch",
-    "build:heroku": "npm ci --include=dev && npm run build:prod && npm prune",
+    "build:heroku": "npm ci --include=dev && npm run build && npm prune",
     "init-db": "node --env-file=.env dist/database/init.js",
     "start": "node dist/server.js",
     "start:dev": "node --watch --env-file=.env dist/server.js",
