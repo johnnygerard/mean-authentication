@@ -3,6 +3,7 @@
 /client/node_modules/
 /client/dist/
 /client/.angular/cache/
+/client/cypress/downloads/
 /client/cypress/screenshots/
 
 /server/node_modules/

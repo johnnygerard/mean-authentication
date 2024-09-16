@@ -9,6 +9,7 @@
       <excludeFolder url="file://$MODULE_DIR$/server/dist" />
       <excludeFolder url="file://$MODULE_DIR$/client/dist" />
       <excludeFolder url="file://$MODULE_DIR$/client/cypress/screenshots" />
+      <excludeFolder url="file://$MODULE_DIR$/client/cypress/downloads" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
