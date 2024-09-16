@@ -6,11 +6,22 @@ import { isProduction, SESSION_SECRET_1 } from "../load-env.js";
 import RedisStore from "connect-redis";
 import { redisClient } from "../database/redis-client.js";
 
-// The optimal entropy depends on multiple factors (see link below).
-// https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length
-const ENTROPY = 64;
-const ID_BYTE_SIZE = ENTROPY / 8;
-const ENCODING = "base64url";
+const BYTES_OF_ENTROPY = 8; // 64 bits
+
+/**
+ * Generate a session ID
+ *
+ * The minimum recommended session ID entropy is 64 bits.
+ * @returns A random and likely unique session ID
+ * @see https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length
+ */
+const generateSessionId = (): string => {
+  const timestamp = Date.now().toString(36);
+  const random = randomBytes(BYTES_OF_ENTROPY).toString("base64url");
+
+  return `${timestamp}-${random}`;
+};
+
 export const SESSION_LIFETIME = "2 days";
 
 // Session cookie signing keys (HMAC-256):
@@ -27,10 +38,6 @@ export const sessionCookie = {
     sameSite: "strict",
     secure: isProduction,
   } as CookieOptions,
-};
-
-const generateSessionId = (): string => {
-  return randomBytes(ID_BYTE_SIZE).toString(ENCODING);
 };
 
 /**
