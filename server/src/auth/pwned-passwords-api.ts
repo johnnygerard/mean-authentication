@@ -22,7 +22,7 @@ export const isPasswordExposed = async (password: string): Promise<boolean> => {
     response = await axios({
       method: "GET",
       baseURL: "https://api.pwnedpasswords.com",
-      url: `/rang/${partialDigest}`,
+      url: `/range/${partialDigest}`,
       responseType: "text",
       responseEncoding: "utf8",
       maxContentLength: 2 ** 20, // 1 MB
