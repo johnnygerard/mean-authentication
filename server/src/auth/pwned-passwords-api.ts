@@ -2,14 +2,16 @@ import { hash } from "node:crypto";
 import type { AxiosResponse } from "axios";
 import axios, { AxiosError } from "axios";
 import ms from "ms";
+import { OK } from "../http-status-code.js";
 
 /**
- * Check if a password has been exposed in a data breach.
+ * Check if the password has been exposed in a data breach.
  *
  * This function queries the Pwned Passwords API using the k-Anonymity model
- * (only a partial digest of the password is sent).
+ * (only a partial digest of the hashed password is sent).
  * @param password - Plaintext password
- * @returns `true` if the password has been exposed, `false` otherwise.
+ * @returns `false` if the password is not exposed or the API server did not
+ * reply with the 200 status code, `true` if the password is exposed.
  * @see https://haveibeenpwned.com/API/v3#PwnedPasswords
  */
 export const isPasswordExposed = async (password: string): Promise<boolean> => {
@@ -29,6 +31,7 @@ export const isPasswordExposed = async (password: string): Promise<boolean> => {
       maxRedirects: 0,
       signal: AbortSignal.timeout(ms("1 second")), // Handle connection timeout
       timeout: ms("1 second"), // Handle response timeout
+      validateStatus: (status: number): boolean => status === OK,
     });
   } catch (e) {
     console.error(e);
