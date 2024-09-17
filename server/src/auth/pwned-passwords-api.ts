@@ -12,7 +12,7 @@ import ms from "ms";
  * @returns `true` if the password has been exposed, `false` otherwise.
  * @see https://haveibeenpwned.com/API/v3#PwnedPasswords
  */
-export const isPasswordPwned = async (password: string): Promise<boolean> => {
+export const isPasswordExposed = async (password: string): Promise<boolean> => {
   const digest = hash("sha1", password).toUpperCase();
   const partialDigest = digest.slice(0, 5);
   const digestSuffix = digest.slice(partialDigest.length);

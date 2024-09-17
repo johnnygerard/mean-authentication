@@ -1,15 +1,15 @@
-import { isPasswordPwned } from "./pwned-passwords-api.js";
+import { isPasswordExposed } from "./pwned-passwords-api.js";
 import { faker } from "@faker-js/faker";
 
-fdescribe("The isPasswordPwned function", () => {
+fdescribe("The isPasswordExposed function", () => {
   it("should return true for a leaked password", async () => {
     const password = getLeakedPassword();
-    await expectAsync(isPasswordPwned(password)).toBeResolvedTo(true);
+    await expectAsync(isPasswordExposed(password)).toBeResolvedTo(true);
   });
 
   it("should return false for a secure password", async () => {
     const password = faker.internet.password();
-    await expectAsync(isPasswordPwned(password)).toBeResolvedTo(false);
+    await expectAsync(isPasswordExposed(password)).toBeResolvedTo(false);
   });
 });
 
