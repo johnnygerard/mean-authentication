@@ -1,5 +1,6 @@
 import { hash } from "node:crypto";
 import axios from "axios";
+import ms from "ms";
 
 /**
  * Check if a password has been exposed in a data breach.
@@ -25,6 +26,8 @@ export const isPasswordPwned = async (password: string): Promise<boolean> => {
     responseEncoding: "utf8",
     maxContentLength: 2 ** 20, // 1 MB
     maxRedirects: 0,
+    signal: AbortSignal.timeout(ms("1 second")), // Handle connection timeout
+    timeout: ms("1 second"), // Handle response timeout
   });
 
   const text = response.data as string;
