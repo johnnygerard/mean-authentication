@@ -1,5 +1,4 @@
 import { hash } from "node:crypto";
-import type { AxiosResponse } from "axios";
 import axios, { AxiosError } from "axios";
 import ms from "ms";
 import { OK } from "../http-status-code.js";
@@ -15,13 +14,14 @@ import { OK } from "../http-status-code.js";
  * @see https://haveibeenpwned.com/API/v3#PwnedPasswords
  */
 export const isPasswordExposed = async (password: string): Promise<boolean> => {
-  const digest = hash("sha1", password).toUpperCase();
+  const digest = hash("sha1", password);
   const partialDigest = digest.slice(0, 5);
   const digestSuffix = digest.slice(partialDigest.length);
-  let response: AxiosResponse;
+  const validator = new RegExp(`^${digestSuffix}`, "i");
+  let text: string;
 
   try {
-    response = await axios({
+    const response = await axios({
       method: "GET",
       baseURL: "https://api.pwnedpasswords.com",
       url: `/range/${partialDigest}`,
@@ -33,15 +33,15 @@ export const isPasswordExposed = async (password: string): Promise<boolean> => {
       timeout: ms("1 second"), // Handle response timeout
       validateStatus: (status: number): boolean => status === OK,
     });
+
+    text = response.data;
   } catch (e) {
     console.error(e);
     if (e instanceof AxiosError) return false;
     throw e;
   }
 
-  const text = response.data as string;
-  for (const line of text.split("\r\n"))
-    if (line.toUpperCase().startsWith(digestSuffix)) return true;
-
-  return false;
+  return text
+    .split("\r\n")
+    .some((line: string): boolean => validator.test(line));
 };
