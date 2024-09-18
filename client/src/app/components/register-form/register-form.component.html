@@ -18,7 +18,8 @@
           [(ngModel)]="username"
           #usernameModel="ngModel"
           appUsernameValidator
-          maxlength="100"
+          [attr.minlength]="USERNAME_MIN_LENGTH"
+          [attr.maxlength]="USERNAME_MAX_LENGTH"
           required
           spellcheck="false"
         />

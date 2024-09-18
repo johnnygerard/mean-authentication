@@ -28,6 +28,10 @@ import { CONFLICT } from "_server/http-status-code";
 import { SessionService } from "../../services/session.service";
 import { ClientSession } from "_server/types/client-session";
 import { PasswordService } from "../../services/password.service";
+import {
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+} from "_server/validation/username";
 
 @Component({
   selector: "app-register-form",
@@ -58,6 +62,8 @@ export class RegisterFormComponent {
   #router = inject(Router);
   #session = inject(SessionService);
 
+  readonly USERNAME_MIN_LENGTH = USERNAME_MIN_LENGTH;
+  readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
   username = model("");
   password = model("");
   isPasswordServiceLoaded = inject(PasswordService).isLoaded.asReadonly();

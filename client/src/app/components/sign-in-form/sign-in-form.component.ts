@@ -24,6 +24,11 @@ import { NotificationService } from "../../services/notification.service";
 import { UNAUTHORIZED } from "_server/http-status-code";
 import { SessionService } from "../../services/session.service";
 import { ClientSession } from "_server/types/client-session";
+import {
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+} from "_server/validation/username";
+import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
 
 @Component({
   selector: "app-sign-in-form",
@@ -39,6 +44,7 @@ import { ClientSession } from "_server/types/client-session";
     MatIcon,
     PasswordErrorPipe,
     UsernameErrorPipe,
+    UsernameValidatorDirective,
   ],
   templateUrl: "./sign-in-form.component.html",
   styleUrl: "./sign-in-form.component.scss",
@@ -50,6 +56,9 @@ export class SignInFormComponent {
   #notifier = inject(NotificationService);
   #router = inject(Router);
   #session = inject(SessionService);
+
+  readonly USERNAME_MIN_LENGTH = USERNAME_MIN_LENGTH;
+  readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
   password = model("");
   username = model("");
   isLoading = signal(false);

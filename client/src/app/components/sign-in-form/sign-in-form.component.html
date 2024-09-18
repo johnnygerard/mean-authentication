@@ -12,7 +12,9 @@
           autocomplete="username"
           [(ngModel)]="username"
           #usernameModel="ngModel"
-          maxlength="100"
+          appUsernameValidator
+          [attr.minlength]="USERNAME_MIN_LENGTH"
+          [attr.maxlength]="USERNAME_MAX_LENGTH"
           required
           spellcheck="false"
         />

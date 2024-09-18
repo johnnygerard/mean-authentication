@@ -1,17 +1,19 @@
 import type { RequestHandler } from "express";
 import { BAD_REQUEST, CREATED, UNAUTHORIZED } from "../http-status-code.js";
-import { USERNAME_MAX_LENGTH } from "./create-account.js";
 import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
 import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
 import { generateCSRFToken } from "../auth/csrf.js";
+import {
+  usernameHasValidType,
+  usernameHasValidValue,
+} from "../validation/username.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    // Validate username
-    if (typeof username !== "string" || username.length > USERNAME_MAX_LENGTH) {
+    if (!usernameHasValidType(username) || !usernameHasValidValue(username)) {
       res.status(BAD_REQUEST).json("Invalid username");
       return;
     }

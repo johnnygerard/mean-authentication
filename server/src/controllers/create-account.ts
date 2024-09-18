@@ -5,21 +5,10 @@ import { User } from "../models/user.js";
 import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
 import { generateCSRFToken } from "../auth/csrf.js";
-
-export const USERNAME_MAX_LENGTH = 100;
-
-/**
- * Check a username for validity.
- *
- * Validity constraints:
- * - Length: between 1 and 100 characters
- * - Characters: all Unicode codepoints outside the "Other" general category
- * @param username - Unvalidated username
- * @returns Whether the username is valid
- * @see https://unicode.org/reports/tr18/#General_Category_Property
- */
-const isUsernameValid = (username: string): boolean =>
-  username.length <= USERNAME_MAX_LENGTH && /^\P{C}+$/u.test(username);
+import {
+  usernameHasValidType,
+  usernameHasValidValue,
+} from "../validation/username.js";
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
   const reply = await users.findOne({ username }, { projection: { _id: 1 } });
@@ -30,8 +19,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    // Validate username
-    if (typeof username !== "string" || !isUsernameValid(username)) {
+    if (!usernameHasValidType(username) || !usernameHasValidValue(username)) {
       res.status(BAD_REQUEST).json("Invalid username");
       return;
     }
