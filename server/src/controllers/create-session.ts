@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import { BAD_REQUEST, CREATED, UNAUTHORIZED } from "../http-status-code.js";
-import { verifyPassword } from "../auth/password.js";
+import { verifyPassword } from "../auth/password-hashing.js";
 import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
 import { generateCSRFToken } from "../auth/csrf.js";

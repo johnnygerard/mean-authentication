@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
-import { hashPassword } from "../auth/password.js";
+import { hashPassword } from "../auth/password-hashing.js";
 import { User } from "../models/user.js";
 import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";

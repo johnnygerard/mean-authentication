@@ -4,7 +4,7 @@ import {
   isPasswordValid,
   PASSWORD_MAX_LENGTH,
   verifyPassword,
-} from "./password.js";
+} from "./password-hashing.js";
 import { cpuUsage } from "node:process";
 
 const getRandomPassword = (length?: number): string => {
