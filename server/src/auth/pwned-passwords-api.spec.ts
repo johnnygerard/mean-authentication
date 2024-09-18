@@ -2,7 +2,7 @@ import { isPasswordExposed } from "./pwned-passwords-api.js";
 import { faker } from "@faker-js/faker";
 import { leakedPasswords } from "./leaked-passwords.js";
 
-fdescribe("The isPasswordExposed function", () => {
+describe("The isPasswordExposed function", () => {
   it("should return true for a leaked password", async () => {
     const password = getLeakedPassword();
     await expectAsync(isPasswordExposed(password)).toBeResolvedTo(true);
