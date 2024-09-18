@@ -1,7 +1,7 @@
-import type { ZXCVBNResult } from "zxcvbn";
+import { ZXCVBN } from "_server/types/zxcvbn";
 
 declare global {
   interface Window {
-    zxcvbn: (password: string, userInputs?: string[]) => ZXCVBNResult;
+    zxcvbn: ZXCVBN | undefined;
   }
 }

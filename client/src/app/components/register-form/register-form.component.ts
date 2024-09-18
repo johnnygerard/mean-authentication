@@ -32,6 +32,7 @@ import {
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
 } from "_server/validation/username";
+import { PASSWORD_MAX_LENGTH } from "_server/validation/password";
 
 @Component({
   selector: "app-register-form",
@@ -64,6 +65,7 @@ export class RegisterFormComponent {
 
   readonly USERNAME_MIN_LENGTH = USERNAME_MIN_LENGTH;
   readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
+  readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
   username = model("");
   password = model("");
   isPasswordServiceLoaded = inject(PasswordService).isLoaded.asReadonly();

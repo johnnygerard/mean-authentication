@@ -6,6 +6,12 @@ import {
   Validator,
 } from "@angular/forms";
 import { PasswordService } from "../services/password.service";
+import { usernameHasValidType } from "_server/validation/username";
+import {
+  getZXCVBNResult,
+  passwordHasValidType,
+  passwordIsStrong,
+} from "_server/validation/password";
 
 /**
  * Password cross-field validator directive.
@@ -28,26 +34,33 @@ export class PasswordValidatorDirective implements Validator {
   #passwordService = inject(PasswordService);
 
   validate(form: AbstractControl): ValidationErrors | null {
-    const username = form.get("username");
-    const password = form.get("password");
+    const zxcvbn = window.zxcvbn;
+    const usernameControl = form.get("username");
+    const passwordControl = form.get("password");
+    const username = usernameControl?.value;
+    const password = passwordControl?.value;
 
-    if (
-      typeof username?.value !== "string" ||
-      typeof password?.value !== "string" ||
-      typeof window.zxcvbn === "undefined"
-    ) {
-      return null;
-    }
+    const canValidate =
+      zxcvbn &&
+      usernameControl &&
+      passwordControl &&
+      usernameHasValidType(username) &&
+      passwordHasValidType(password);
 
-    const result = window.zxcvbn(password.value, [username.value]);
+    if (!canValidate) return null;
+
+    const result = getZXCVBNResult(zxcvbn, password, username);
     this.#passwordService.result.set(result);
 
-    if (result.score < 3) {
-      password.setErrors({
-        ...password.errors,
-        strength: result.feedback.warning || "Vulnerable password",
-      });
-    }
+    if (passwordIsStrong(result)) return null;
+
+    const validationMessage: string =
+      result.feedback.warning || "Vulnerable password";
+
+    passwordControl.setErrors({
+      ...passwordControl.errors,
+      strength: validationMessage,
+    });
 
     return null;
   }

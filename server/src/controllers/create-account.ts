@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import { BAD_REQUEST, CONFLICT, CREATED } from "../http-status-code.js";
-import { hashPassword, isPasswordValid } from "../auth/password.js";
+import { hashPassword } from "../auth/password.js";
 import { User } from "../models/user.js";
 import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
@@ -9,6 +9,12 @@ import {
   usernameHasValidType,
   usernameHasValidValue,
 } from "../validation/username.js";
+import {
+  getZXCVBNResult,
+  passwordHasValidType,
+  passwordIsStrong,
+} from "../validation/password.js";
+import zxcvbn from "zxcvbn";
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
   const reply = await users.findOne({ username }, { projection: { _id: 1 } });
@@ -30,8 +36,10 @@ export const createAccount: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    // Validate password
-    if (typeof password !== "string" || !isPasswordValid(password, username)) {
+    if (
+      !passwordHasValidType(password) ||
+      !passwordIsStrong(getZXCVBNResult(zxcvbn, password, username))
+    ) {
       res.status(BAD_REQUEST).json("Invalid password");
       return;
     }

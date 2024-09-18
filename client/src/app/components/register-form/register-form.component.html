@@ -38,7 +38,7 @@
           autocomplete="new-password"
           [(ngModel)]="password"
           #passwordModel="ngModel"
-          maxlength="64"
+          [attr.maxlength]="PASSWORD_MAX_LENGTH"
           [readonly]="!isPasswordServiceLoaded()"
           [placeholder]="isPasswordServiceLoaded() ? '' : 'Loading...'"
           required

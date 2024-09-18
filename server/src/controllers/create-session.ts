@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import { BAD_REQUEST, CREATED, UNAUTHORIZED } from "../http-status-code.js";
-import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
+import { verifyPassword } from "../auth/password.js";
 import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
 import { generateCSRFToken } from "../auth/csrf.js";
@@ -8,6 +8,10 @@ import {
   usernameHasValidType,
   usernameHasValidValue,
 } from "../validation/username.js";
+import {
+  PASSWORD_MAX_LENGTH,
+  passwordHasValidType,
+} from "../validation/password.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
@@ -18,8 +22,10 @@ export const createSession: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    // Validate password
-    if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
+    if (
+      !passwordHasValidType(password) ||
+      password.length > PASSWORD_MAX_LENGTH
+    ) {
       res.status(BAD_REQUEST).json("Invalid password");
       return;
     }
