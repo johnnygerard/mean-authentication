@@ -12,13 +12,13 @@ export const createSession: RequestHandler = async (req, res, next) => {
 
     // Validate username
     if (typeof username !== "string" || username.length > USERNAME_MAX_LENGTH) {
-      res.status(BAD_REQUEST).json({ error: "Invalid username" });
+      res.status(BAD_REQUEST).json("Invalid username");
       return;
     }
 
     // Validate password
     if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
-      res.status(BAD_REQUEST).json({ error: "Invalid password" });
+      res.status(BAD_REQUEST).json("Invalid password");
       return;
     }
 
