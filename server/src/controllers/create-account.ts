@@ -9,12 +9,8 @@ import {
   usernameHasValidType,
   usernameHasValidValue,
 } from "../validation/username.js";
-import {
-  getZXCVBNResult,
-  passwordHasValidType,
-  passwordIsStrong,
-} from "../validation/password.js";
-import zxcvbn from "zxcvbn";
+import { passwordHasValidType } from "../validation/password.js";
+import { passwordIsStrong } from "../validation/password-server.js";
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
   const reply = await users.findOne({ username }, { projection: { _id: 1 } });
@@ -38,7 +34,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
 
     if (
       !passwordHasValidType(password) ||
-      !passwordIsStrong(getZXCVBNResult(zxcvbn, password, username))
+      !passwordIsStrong(password, username)
     ) {
       res.status(BAD_REQUEST).json("Invalid password");
       return;
