@@ -1,6 +1,31 @@
+// Draft 6: https://www.ietf.org/archive/id/draft-ietf-httpapi-ratelimit-headers-06.html
+// Draft 7: https://www.ietf.org/archive/id/draft-ietf-httpapi-ratelimit-headers-07.html
 import rateLimit from "express-rate-limit";
 import type { RequestHandler } from "express";
 import { isRateLimiterDisabled } from "../load-env.js";
+import ms from "ms";
+import { OutgoingHttpHeaders } from "node:http";
+import { parseRateLimit } from "ratelimit-header-parser";
+import { TOO_MANY_REQUESTS } from "../http-status-code.js";
+
+const MESSAGE = "Sorry, you have made too many requests.";
+
+const formatRateLimit = (headers: OutgoingHttpHeaders): string => {
+  const rateLimitDetails = parseRateLimit(headers, { reset: "seconds" });
+
+  if (rateLimitDetails === undefined) {
+    console.error("Rate limiting headers not found:", headers);
+  } else if (rateLimitDetails.reset === undefined) {
+    console.error("Failed to parse reset field:", headers);
+  } else {
+    const resetDate = rateLimitDetails.reset;
+    const delta = resetDate.valueOf() - Date.now();
+
+    return `${MESSAGE} Please try again in ${ms(delta, { long: true })}.`;
+  }
+
+  return `${MESSAGE} Please try again later.`;
+};
 
 /**
  * Rate limiter middleware factory
@@ -15,7 +40,9 @@ export const rateLimiter = (limit: number, windowMs: number): RequestHandler =>
     standardHeaders: true,
     legacyHeaders: false,
     skip: () => isRateLimiterDisabled,
+    statusCode: TOO_MANY_REQUESTS,
     handler: (req, res, next, options) => {
-      res.status(options.statusCode).json(options.message);
+      const message = formatRateLimit(res.getHeaders());
+      res.status(options.statusCode).json(message);
     },
   });

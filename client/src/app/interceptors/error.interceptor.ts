@@ -6,7 +6,6 @@ import {
 import { delay, EMPTY, of, retry, throwError } from "rxjs";
 import { NotificationService } from "../services/notification.service";
 import { inject } from "@angular/core";
-import { formatRateLimit } from "./format-rate-limit";
 import {
   SERVICE_UNAVAILABLE,
   TOO_MANY_REQUESTS,
@@ -65,7 +64,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           case TOO_MANY_REQUESTS:
-            notifier.send(formatRateLimit(response.headers));
+            notifier.send(response.error);
             break;
 
           case SERVICE_UNAVAILABLE:
