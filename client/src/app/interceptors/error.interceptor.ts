@@ -55,16 +55,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             );
             return of(true).pipe(delay(computeDelay(retryCount)));
 
-          case SERVICE_UNAVAILABLE:
-            notifier.send(
-              "Sorry, the server is currently unavailable. Please try again later.",
-            );
-            break;
-
-          case TOO_MANY_REQUESTS:
-            notifier.send(formatRateLimit(error.headers));
-            break;
-
           case UNAUTHORIZED:
             // Do not intercept login attempts
             if (isLoginAttempt(req)) return throwError(() => error);
@@ -72,6 +62,16 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             session.clear();
             router.navigateByUrl("/sign-in");
             notifier.send("Your session has expired. Please sign in again.");
+            break;
+
+          case TOO_MANY_REQUESTS:
+            notifier.send(formatRateLimit(error.headers));
+            break;
+
+          case SERVICE_UNAVAILABLE:
+            notifier.send(
+              "Sorry, the server is currently unavailable. Please try again later.",
+            );
             break;
 
           default:
