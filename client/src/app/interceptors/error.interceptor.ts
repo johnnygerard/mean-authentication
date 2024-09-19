@@ -47,8 +47,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     retry({
       count: 5,
-      delay: (error: HttpErrorResponse, retryCount: number) => {
-        switch (error.status) {
+      delay: (response: HttpErrorResponse, retryCount: number) => {
+        switch (response.status) {
           case NON_HTTP_ERROR:
             window.console.error(
               `Retrying failed request: attempt #${retryCount}`,
@@ -57,7 +57,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
           case UNAUTHORIZED:
             // Do not intercept login attempts
-            if (isLoginAttempt(req)) return throwError(() => error);
+            if (isLoginAttempt(req)) return throwError(() => response);
 
             session.clear();
             router.navigateByUrl("/sign-in");
@@ -65,7 +65,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           case TOO_MANY_REQUESTS:
-            notifier.send(formatRateLimit(error.headers));
+            notifier.send(formatRateLimit(response.headers));
             break;
 
           case SERVICE_UNAVAILABLE:
@@ -76,7 +76,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
           default:
             // Propagate other HTTP errors
-            return throwError(() => error);
+            return throwError(() => response);
         }
 
         // The HTTP error has been handled; complete the observable
