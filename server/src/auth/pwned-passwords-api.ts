@@ -1,7 +1,11 @@
-import { hash } from "node:crypto";
 import axios, { AxiosError } from "axios";
 import ms from "ms";
 import { OK } from "../http-status-code.js";
+import {
+  prepareRequest,
+  processResponse,
+} from "./pwned-passwords-api-helper.js";
+import { hash } from "node:crypto";
 
 /**
  * Check if the password has been exposed in a data breach.
@@ -14,17 +18,13 @@ import { OK } from "../http-status-code.js";
  * @see https://haveibeenpwned.com/API/v3#PwnedPasswords
  */
 export const isPasswordExposed = async (password: string): Promise<boolean> => {
-  const digest = hash("sha1", password);
-  const partialDigest = digest.slice(0, 5);
-  const digestSuffix = digest.slice(partialDigest.length);
-  const validator = new RegExp(`^${digestSuffix}`, "i");
-  let text: string;
-
   try {
+    const digest = hash("sha1", password);
+    const [url, validator] = prepareRequest(digest);
+
     const response = await axios({
       method: "GET",
-      baseURL: "https://api.pwnedpasswords.com",
-      url: `/range/${partialDigest}`,
+      url,
       responseType: "text",
       responseEncoding: "utf8",
       maxContentLength: 2 ** 20, // 1 MB
@@ -34,14 +34,13 @@ export const isPasswordExposed = async (password: string): Promise<boolean> => {
       validateStatus: (status: number): boolean => status === OK,
     });
 
-    text = response.data;
+    return processResponse(response.data, validator);
   } catch (e) {
-    console.error(e);
-    if (e instanceof AxiosError) return false;
+    if (e instanceof AxiosError) {
+      console.error(e);
+      return false;
+    }
+
     throw e;
   }
-
-  return text
-    .split("\r\n")
-    .some((line: string): boolean => validator.test(line));
 };
