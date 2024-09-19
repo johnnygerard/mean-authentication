@@ -15,4 +15,7 @@ export const rateLimiter = (limit: number, windowMs: number): RequestHandler =>
     standardHeaders: true,
     legacyHeaders: false,
     skip: () => isRateLimiterDisabled,
+    handler: (req, res, next, options) => {
+      res.status(options.statusCode).json(options.message);
+    },
   });
