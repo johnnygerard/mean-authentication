@@ -2,7 +2,8 @@ import type { ZXCVBNResult } from "zxcvbn";
 import type { ZXCVBN } from "../types/zxcvbn.js";
 import { appDictionary } from "./app-dictionary.js";
 
-export const PASSWORD_MAX_LENGTH = 64;
+// @see https://github.com/dropbox/zxcvbn?tab=readme-ov-file#runtime-latency
+export const PASSWORD_MAX_LENGTH = 100;
 
 export const passwordHasValidType = (password: unknown): password is string => {
   return typeof password === "string";
