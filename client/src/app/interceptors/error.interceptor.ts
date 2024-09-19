@@ -7,6 +7,7 @@ import { delay, EMPTY, of, retry, throwError } from "rxjs";
 import { NotificationService } from "../services/notification.service";
 import { inject } from "@angular/core";
 import {
+  BAD_REQUEST,
   SERVICE_UNAVAILABLE,
   TOO_MANY_REQUESTS,
   UNAUTHORIZED,
@@ -53,6 +54,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
               `Retrying failed request: attempt #${retryCount}`,
             );
             return of(true).pipe(delay(computeDelay(retryCount)));
+
+          case BAD_REQUEST:
+            window.console.error("Input validation mismatch", response);
+            notifier.send(response.error);
+            break;
 
           case UNAUTHORIZED:
             // Do not intercept login attempts
