@@ -11,6 +11,7 @@ import {
   prepareRequest,
   processResponse,
 } from "_server/auth/pwned-passwords-api-helper";
+import { PasswordHashingService } from "../services/password-hashing.service";
 
 @Directive({
   selector: "[appPwnedPasswordsApiValidator]",
@@ -24,8 +25,8 @@ import {
   ],
 })
 export class PwnedPasswordsApiValidatorDirective implements AsyncValidator {
+  #hashService = inject(PasswordHashingService);
   #http = inject(HttpClient);
-  #textEncoder = new window.TextEncoder();
 
   validate(control: AbstractControl): Observable<ValidationErrors | null> {
     const password = control.value;
@@ -33,7 +34,7 @@ export class PwnedPasswordsApiValidatorDirective implements AsyncValidator {
 
     if (!canValidate) return of(null);
 
-    return from(this.#hash(password)).pipe(
+    return from(this.#hashService.hash(password)).pipe(
       switchMap((digest) => this.#apiRequest$(digest)),
     );
   }
@@ -50,18 +51,5 @@ export class PwnedPasswordsApiValidatorDirective implements AsyncValidator {
         return of(null);
       }),
     );
-  }
-
-  async #hash(password: string): Promise<string> {
-    const buffer = await window.crypto.subtle.digest(
-      "SHA-1",
-      this.#textEncoder.encode(password),
-    );
-
-    let digest = "";
-    for (const byte of new Uint8Array(buffer))
-      digest += byte.toString(16).padStart(2, "0");
-
-    return digest;
   }
 }
