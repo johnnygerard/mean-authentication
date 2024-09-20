@@ -15,6 +15,7 @@ import {
 } from "../validation/username.js";
 import { passwordHasValidType } from "../validation/password.js";
 import { passwordIsStrong } from "../validation/password-server.js";
+import { passwordIsExposed } from "../auth/pwned-passwords-api.js";
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
   const reply = await users.findOne({ username }, { projection: { _id: 1 } });
@@ -41,6 +42,11 @@ export const createAccount: RequestHandler = async (req, res, next) => {
       !passwordIsStrong(password, username)
     ) {
       res.status(BAD_REQUEST).json("Invalid password");
+      return;
+    }
+
+    if (await passwordIsExposed(password)) {
+      res.status(BAD_REQUEST).json("Your password was leaked in a data breach");
       return;
     }
 
