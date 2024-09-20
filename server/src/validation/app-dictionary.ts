@@ -1,8 +1,11 @@
+import { APP_NAME } from "../server.js";
+
 /**
  * Application-specific vocabulary for password strength validation
  * @see https://relatedwords.org/relatedto/authentication
  */
 export const appDictionary = [
+  APP_NAME,
   "validation",
   "certification",
   "hallmark",
