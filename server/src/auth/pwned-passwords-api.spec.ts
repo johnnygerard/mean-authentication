@@ -1,6 +1,6 @@
 import { passwordIsExposed } from "./pwned-passwords-api.js";
 import { faker } from "@faker-js/faker";
-import { leakedPasswords } from "./leaked-passwords.js";
+import { leakedPasswords } from "../test/leaked-passwords.js";
 
 describe("The isPasswordExposed function", () => {
   it("should return true for a leaked password", async () => {
