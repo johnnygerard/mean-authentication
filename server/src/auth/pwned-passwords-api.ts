@@ -1,10 +1,6 @@
 import axios, { AxiosError } from "axios";
 import ms from "ms";
 import { OK } from "../http-status-code.js";
-import {
-  prepareRequest,
-  processResponse,
-} from "./pwned-passwords-api-helper.js";
 import { hash } from "node:crypto";
 
 /**
@@ -17,10 +13,13 @@ import { hash } from "node:crypto";
  * reply with the 200 status code, `true` if the password is exposed.
  * @see https://haveibeenpwned.com/API/v3#PwnedPasswords
  */
-export const isPasswordExposed = async (password: string): Promise<boolean> => {
+export const passwordIsExposed = async (password: string): Promise<boolean> => {
   try {
     const digest = hash("sha1", password);
-    const [url, validator] = prepareRequest(digest);
+    const partialDigest = digest.slice(0, 5);
+    const digestSuffix = digest.slice(partialDigest.length);
+    const validator = new RegExp(`^${digestSuffix}`, "i");
+    const url = `https://api.pwnedpasswords.com/range/${partialDigest}`;
 
     const response = await axios({
       method: "GET",
@@ -34,7 +33,11 @@ export const isPasswordExposed = async (password: string): Promise<boolean> => {
       validateStatus: (status: number): boolean => status === OK,
     });
 
-    return processResponse(response.data, validator);
+    const text = response.data as string;
+
+    return text
+      .split("\r\n")
+      .some((line: string): boolean => validator.test(line));
   } catch (e) {
     if (e instanceof AxiosError) {
       console.error(e);
