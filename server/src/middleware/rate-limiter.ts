@@ -2,7 +2,7 @@
 // Draft 7: https://www.ietf.org/archive/id/draft-ietf-httpapi-ratelimit-headers-07.html
 import rateLimit from "express-rate-limit";
 import type { RequestHandler } from "express";
-import { isRateLimiterDisabled } from "../load-env.js";
+import { isRateLimiterDisabled } from "../constants/env.js";
 import ms from "ms";
 import { OutgoingHttpHeaders } from "node:http";
 import { parseRateLimit } from "ratelimit-header-parser";

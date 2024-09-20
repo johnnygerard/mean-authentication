@@ -2,7 +2,7 @@
 // Argon2 Node.js bindings: https://github.com/ranisalt/node-argon2
 import { Buffer } from "node:buffer";
 import argon2 from "argon2";
-import { ARGON2_SECRET } from "../load-env.js";
+import { ARGON2_SECRET } from "../constants/env.js";
 
 const secret = Buffer.from(ARGON2_SECRET);
 

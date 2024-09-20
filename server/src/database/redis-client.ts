@@ -1,5 +1,5 @@
 import { createClient } from "redis";
-import { REDIS_CONNECTION_URL } from "../load-env.js";
+import { REDIS_CONNECTION_URL } from "../constants/env.js";
 
 /**
  * Redis Cloud client instance

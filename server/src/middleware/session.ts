@@ -2,7 +2,7 @@ import session from "express-session";
 import { randomUUID } from "node:crypto";
 import type { CookieOptions } from "express";
 import ms from "ms";
-import { isProduction, SESSION_SECRET_1 } from "../load-env.js";
+import { isProduction, SESSION_SECRET_1 } from "../constants/env.js";
 import RedisStore from "connect-redis";
 import { redisClient } from "../database/redis-client.js";
 
