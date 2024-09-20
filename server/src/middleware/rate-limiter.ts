@@ -6,7 +6,7 @@ import { isRateLimiterDisabled } from "../load-env.js";
 import ms from "ms";
 import { OutgoingHttpHeaders } from "node:http";
 import { parseRateLimit } from "ratelimit-header-parser";
-import { TOO_MANY_REQUESTS } from "../http-status-code.js";
+import { TOO_MANY_REQUESTS } from "../constants/http-status-code.js";
 
 const MESSAGE = "Sorry, you have made too many requests.";
 

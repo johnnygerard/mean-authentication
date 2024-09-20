@@ -1,5 +1,8 @@
 import { faker } from "@faker-js/faker";
-import { CONFLICT, CREATED } from "../../../server/src/http-status-code";
+import {
+  CONFLICT,
+  CREATED,
+} from "../../../server/src/constants/http-status-code";
 
 const REGISTER = "/register";
 

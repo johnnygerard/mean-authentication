@@ -1,5 +1,5 @@
 import cors from "cors";
-import { NO_CONTENT } from "../http-status-code.js";
+import { NO_CONTENT } from "../constants/http-status-code.js";
 import ms from "ms";
 import { CSRF_HEADER } from "./csrf.js";
 

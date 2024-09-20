@@ -1,5 +1,8 @@
 import { faker } from "@faker-js/faker";
-import { CREATED, NO_CONTENT } from "../../../server/src/http-status-code";
+import {
+  CREATED,
+  NO_CONTENT,
+} from "../../../server/src/constants/http-status-code";
 
 describe("The logout button", () => {
   const username = faker.internet.userName();

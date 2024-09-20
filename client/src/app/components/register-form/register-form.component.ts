@@ -24,7 +24,7 @@ import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
-import { CONFLICT } from "_server/http-status-code";
+import { CONFLICT } from "_server/constants/http-status-code";
 import { SessionService } from "../../services/session.service";
 import { ClientSession } from "_server/types/client-session";
 import { PasswordService } from "../../services/password.service";

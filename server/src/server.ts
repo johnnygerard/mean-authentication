@@ -1,6 +1,9 @@
 import type { ErrorRequestHandler } from "express";
 import express from "express";
-import { INTERNAL_SERVER_ERROR, NOT_FOUND } from "./http-status-code.js";
+import {
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+} from "./constants/http-status-code.js";
 import publicRouter from "./routes/public.js";
 import privateRouter from "./routes/private.js";
 import session from "./middleware/session.js";

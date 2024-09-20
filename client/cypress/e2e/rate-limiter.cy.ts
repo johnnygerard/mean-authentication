@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   TOO_MANY_REQUESTS,
   UNAUTHORIZED,
-} from "../../../server/src/http-status-code";
+} from "../../../server/src/constants/http-status-code";
 
 // This test should be run separately. To run it:
 // - Replace `describe.skip` with `describe`

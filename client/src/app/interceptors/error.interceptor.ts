@@ -11,7 +11,7 @@ import {
   SERVICE_UNAVAILABLE,
   TOO_MANY_REQUESTS,
   UNAUTHORIZED,
-} from "_server/http-status-code";
+} from "_server/constants/http-status-code";
 import { Router } from "@angular/router";
 import { SessionService } from "../services/session.service";
 import ms from "ms";

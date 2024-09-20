@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import ms from "ms";
-import { OK } from "../http-status-code.js";
+import { OK } from "../constants/http-status-code.js";
 import { hash } from "node:crypto";
 
 /**

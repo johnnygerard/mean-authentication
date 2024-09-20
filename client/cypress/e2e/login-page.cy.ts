@@ -1,5 +1,8 @@
 import { faker } from "@faker-js/faker";
-import { CREATED, UNAUTHORIZED } from "../../../server/src/http-status-code";
+import {
+  CREATED,
+  UNAUTHORIZED,
+} from "../../../server/src/constants/http-status-code";
 
 describe("The login page", () => {
   // Create a reusable user account
