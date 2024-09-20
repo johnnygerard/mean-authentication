@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="main" pattern="file[mean-authentication]:*/&amp;&amp;!file:*/package-lock.json&amp;&amp;!file:package-lock.json" />
+</component>
