@@ -5,7 +5,8 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { HttpClient } from "@angular/common/http";
 import { SessionService } from "../../services/session.service";
 import { NotificationService } from "../../services/notification.service";
-import { APP_NAME } from "_server/server";
+
+import { APP_NAME } from "_server/constants/app";
 
 @Component({
   selector: "app-navigation",

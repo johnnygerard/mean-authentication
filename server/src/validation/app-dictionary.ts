@@ -1,4 +1,4 @@
-import { APP_NAME } from "../server.js";
+import { APP_NAME } from "../constants/app.js";
 
 /**
  * Application-specific vocabulary for password strength validation

@@ -7,7 +7,8 @@ import {
 import { SessionService } from "../../services/session.service";
 import { RouterLink } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
-import { APP_NAME } from "_server/server";
+
+import { APP_NAME } from "_server/constants/app";
 
 @Component({
   selector: "app-home-page",

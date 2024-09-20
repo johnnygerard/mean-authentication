@@ -3,7 +3,8 @@ import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { isUnauthenticatedGuard } from "./guards/is-unauthenticated.guard";
 import { NotFoundPageComponent } from "./pages/not-found-page.component";
 import { isAuthenticatedGuard } from "./guards/is-authenticated.guard";
-import { APP_NAME } from "_server/server";
+
+import { APP_NAME } from "_server/constants/app";
 
 export const routes: Routes = [
   {
