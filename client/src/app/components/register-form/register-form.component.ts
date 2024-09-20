@@ -32,7 +32,8 @@ import {
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
 } from "_server/validation/username";
-import { PASSWORD_MAX_LENGTH } from "_server/validation/password";
+
+import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
 
 @Component({
   selector: "app-register-form",

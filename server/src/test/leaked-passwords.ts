@@ -1,6 +1,6 @@
-import { PASSWORD_MAX_LENGTH } from "../validation/password.js";
 import { readFile } from "node:fs/promises";
 import { faker } from "@faker-js/faker";
+import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 const leakedPasswords = (await readFile("src/test/NordVPN.txt", "utf-8"))
   .split("\n")

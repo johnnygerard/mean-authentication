@@ -1,6 +1,7 @@
 import { hashPassword, verifyPassword } from "./password-hashing.js";
 import { faker } from "@faker-js/faker";
-import { PASSWORD_MAX_LENGTH } from "../validation/password.js";
+
+import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 /**
  * Generate a fake password with random length and characters.

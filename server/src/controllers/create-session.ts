@@ -12,10 +12,8 @@ import {
   usernameHasValidType,
   usernameHasValidValue,
 } from "../validation/username.js";
-import {
-  PASSWORD_MAX_LENGTH,
-  passwordHasValidType,
-} from "../validation/password.js";
+import { passwordHasValidType } from "../validation/password.js";
+import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {

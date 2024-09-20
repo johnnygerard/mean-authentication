@@ -29,7 +29,8 @@ import {
   USERNAME_MIN_LENGTH,
 } from "_server/validation/username";
 import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
-import { PASSWORD_MAX_LENGTH } from "_server/validation/password";
+
+import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
 
 @Component({
   selector: "app-sign-in-form",
