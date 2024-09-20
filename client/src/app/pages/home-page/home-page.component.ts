@@ -7,7 +7,7 @@ import {
 import { SessionService } from "../../services/session.service";
 import { RouterLink } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
-import { AppComponent } from "../../app.component";
+import { APP_NAME } from "_server/server";
 
 @Component({
   selector: "app-home-page",
@@ -28,7 +28,7 @@ export class HomePageComponent {
       case undefined:
         return "Welcome";
       case null:
-        return `Welcome to ${AppComponent.APP_NAME}`;
+        return `Welcome to ${APP_NAME}`;
       default:
         return `Welcome back, ${user.username}!`;
     }

@@ -10,6 +10,7 @@ import { csrf } from "./middleware/csrf.js";
 import { isProduction, port } from "./load-env.js";
 
 const app = express();
+export const APP_NAME = "AuthMEAN";
 
 // Trust requests from Heroku's load balancer
 app.set("trust proxy", 1);

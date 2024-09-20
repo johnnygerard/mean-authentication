@@ -5,7 +5,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { HttpClient } from "@angular/common/http";
 import { SessionService } from "../../services/session.service";
 import { NotificationService } from "../../services/notification.service";
-import { AppComponent } from "../../app.component";
+import { APP_NAME } from "_server/server";
 
 @Component({
   selector: "app-navigation",
@@ -16,7 +16,7 @@ import { AppComponent } from "../../app.component";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
-  readonly APP_NAME = AppComponent.APP_NAME;
+  readonly APP_NAME = APP_NAME;
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
   #router = inject(Router);
