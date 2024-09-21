@@ -12,7 +12,6 @@ import {
   usernameHasValidType,
   usernameHasValidValue,
 } from "../validation/username.js";
-import { passwordHasValidType } from "../validation/password.js";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
@@ -24,10 +23,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    if (
-      !passwordHasValidType(password) ||
-      password.length > PASSWORD_MAX_LENGTH
-    ) {
+    if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
       res.status(BAD_REQUEST).json("Invalid password");
       return;
     }

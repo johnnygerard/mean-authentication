@@ -1,5 +1,7 @@
-import { Injectable, signal } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import type { ZXCVBNResult } from "zxcvbn";
+import { HttpClient } from "@angular/common/http";
+import { APP_NAME } from "_server/constants/app";
 
 /**
  * This service's main purpose is to share password strength results between
@@ -36,12 +38,18 @@ export class PasswordService {
     },
   };
 
+  #http = inject(HttpClient);
+  dictionary: string[] = [];
+  dictionaryLength = 0;
   isLoaded = signal(false);
   result = signal(this.#defaultResult);
   #isPlatformBrowser = typeof window === "object";
 
   constructor() {
-    if (this.#isPlatformBrowser) this.#loadLibrary();
+    if (this.#isPlatformBrowser) {
+      this.#loadLibrary();
+      this.#loadDictionary();
+    }
   }
 
   #loadLibrary(): void {
@@ -55,5 +63,25 @@ export class PasswordService {
     };
 
     window.document.body.appendChild(script);
+  }
+
+  #loadDictionary(): void {
+    this.#http
+      .get("app-dictionary.txt", { responseType: "text" })
+      .subscribe((response) => {
+        this.dictionary = response.split("\n");
+        this.dictionary.push(APP_NAME);
+        this.dictionaryLength = this.dictionary.length;
+      });
+  }
+
+  getDictionary(...userInputs: string[]): string[] {
+    // Truncate the dictionary to its original length
+    this.dictionary.length = this.dictionaryLength;
+
+    for (const userInput of userInputs)
+      if (userInput) this.dictionary.push(userInput);
+
+    return this.dictionary;
   }
 }

@@ -1,30 +1,28 @@
-import type { ZXCVBNResult } from "zxcvbn";
-import type { ZXCVBN } from "../types/zxcvbn.js";
-import { appDictionary } from "./app-dictionary.js";
-
-// @see https://github.com/dropbox/zxcvbn?tab=readme-ov-file#runtime-latency
-export const PASSWORD_MAX_LENGTH = 100;
-
-export const passwordHasValidType = (password: unknown): password is string => {
-  return typeof password === "string";
-};
+import zxcvbn from "zxcvbn";
+import { ZXCVBN_MIN_SCORE } from "../constants/password.js";
+import { readFile } from "node:fs/promises";
+import { APP_NAME } from "../constants/app.js";
 
 /**
- * Get ZXCVBN result for the password
- * @param zxcvbn - ZXCVBN function
+ * Application-specific vocabulary for password strength validation
+ * @see https://relatedwords.org/relatedto/authentication
+ */
+const text = await readFile("src/validation/app-dictionary.txt", "utf-8");
+export const appDictionary = text.split("\n");
+
+appDictionary.push(APP_NAME);
+
+/**
+ * Check if the password is strong enough.
  * @param password - Plaintext password
- * @param userInputs - User inputs (e.g. username) to include in dictionary checks
+ * @param userInputs - Any strings that could be used in a dictionary attack
  * @returns ZXCVBN result
  * @see https://github.com/dropbox/zxcvbn?tab=readme-ov-file#readme
  */
-export const getZXCVBNResult = (
-  zxcvbn: ZXCVBN,
+export const passwordIsStrong = (
   password: string,
   ...userInputs: string[]
-): ZXCVBNResult => {
-  return zxcvbn(password, userInputs.concat(appDictionary));
-};
-
-export const passwordIsStrong = (zxcvbnResult: ZXCVBNResult): boolean => {
-  return zxcvbnResult.score >= 3;
+): boolean => {
+  const result = zxcvbn(password, userInputs.concat(appDictionary));
+  return result.score >= ZXCVBN_MIN_SCORE;
 };

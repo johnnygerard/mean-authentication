@@ -7,11 +7,7 @@ import {
 } from "@angular/forms";
 import { PasswordService } from "../services/password.service";
 import { usernameHasValidType } from "_server/validation/username";
-import {
-  getZXCVBNResult,
-  passwordHasValidType,
-  passwordIsStrong,
-} from "_server/validation/password";
+import { ZXCVBN_MIN_SCORE } from "_server/constants/password";
 
 /**
  * Password cross-field validator directive.
@@ -45,14 +41,17 @@ export class PasswordValidatorDirective implements Validator {
       usernameControl &&
       passwordControl &&
       usernameHasValidType(username) &&
-      passwordHasValidType(password);
+      typeof password === "string";
 
     if (!canValidate) return null;
 
-    const result = getZXCVBNResult(zxcvbn, password, username);
+    const result = zxcvbn(
+      password,
+      this.#passwordService.getDictionary(username),
+    );
     this.#passwordService.result.set(result);
 
-    if (passwordIsStrong(result)) return null;
+    if (result.score >= ZXCVBN_MIN_SCORE) return null;
 
     const validationMessage: string =
       result.feedback.warning || "Vulnerable password";

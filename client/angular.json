@@ -51,6 +51,10 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "app-dictionary.txt",
+                "input": "../server/src/validation"
               }
             ],
             "stylePreprocessorOptions": {
@@ -128,6 +132,10 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "app-dictionary.txt",
+                "input": "../server/src/validation"
               }
             ],
             "stylePreprocessorOptions": {

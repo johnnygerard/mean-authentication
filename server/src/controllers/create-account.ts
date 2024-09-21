@@ -13,8 +13,7 @@ import {
   usernameHasValidType,
   usernameHasValidValue,
 } from "../validation/username.js";
-import { passwordHasValidType } from "../validation/password.js";
-import { passwordIsStrong } from "../validation/password-server.js";
+import { passwordIsStrong } from "../validation/password.js";
 import { passwordIsExposed } from "../auth/pwned-passwords-api.js";
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
@@ -37,10 +36,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    if (
-      !passwordHasValidType(password) ||
-      !passwordIsStrong(password, username)
-    ) {
+    if (typeof password !== "string" || !passwordIsStrong(password, username)) {
       res.status(BAD_REQUEST).json("Invalid password");
       return;
     }
