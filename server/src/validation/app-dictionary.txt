@@ -1,0 +1,432 @@
+validation
+certification
+hallmark
+password
+counterfeit
+assay-mark
+proof
+certificate
+key
+verification
+synchronization
+encryption
+functionality
+marker
+mark
+metadata
+interfaces
+user
+archiving
+server
+extensible
+dns
+decryption
+cryptography
+messaging
+documentation
+identification
+authenticity
+carbon dating
+veracity
+oath
+authorization
+probate
+identifier
+identity
+biometrics
+label
+personal identification number
+anthropology
+marking
+certify
+archaeologist
+counterfeit consumer goods
+attest
+substantiation
+fraud
+authenticate
+forgery
+cryptographic
+voucher
+currency
+login
+backend
+cheque
+confirm
+security printing
+retrieval
+holographic
+validate
+username
+numeric
+url
+ssl
+computer program
+greek language
+permissions
+annotation
+attestation
+evidence
+encrypted
+debug
+identifiers
+enables
+interface
+identity document
+compatibility
+ldap
+perjury
+confirmation
+virtualization
+qos
+templates
+functionalities
+proprietary
+redirection
+encrypt
+toolkit
+semantic
+transactional
+public key certificate
+prove
+formatting
+bios
+application
+accesses
+verifiable
+facilitates
+smtp
+decoding
+bibliographic
+encrypting
+encapsulation
+gui
+vouch
+biometric
+emulation
+ip
+optimized
+workflow
+trademark
+databases
+implementations
+certifying
+accreditation
+http
+protocols
+end-user
+legalization
+certified
+ratify
+back-end
+legalisation
+testimony
+certificate authorities
+truthfulness
+credential
+testify
+avowal
+web of trust
+verify
+testimonial
+two-factor
+auth
+pretty good privacy
+whois
+cloud-based
+geolocation
+built-in
+end-to-end
+closer
+provisioning
+phishing
+endpoint
+plaintext
+antivirus
+spoofing
+ssh
+interoperability
+trojans
+malware
+auditing
+scalability
+checksum
+scp
+stig
+heuristic
+security
+granularity
+ciphertext
+firmware
+configuration
+encoding
+caching
+silex
+browser
+credibility
+gnu privacy guard
+front-end
+affirm
+i/o
+pre-paid
+web-based
+industry-standard
+notarization
+passwords
+subsystem
+third-party
+cross-platform
+user-defined
+input/output
+emv
+authenticating
+log-in
+hands-free
+e-mail
+key signing parties
+pop3
+applicative
+java-based
+multi-factor
+affirmation
+add-on
+dishcloth
+software-based
+codice_1
+passphrase
+opt-in
+dnssec
+client-server
+client/server
+framebuffer
+presumption
+certifiable
+witness
+warrant
+approof
+assure
+approve
+collateral
+endorse
+visa
+han van meegeren
+convince
+nameplate
+assurance
+sanction
+mantrap
+evidentiary
+substantiate
+legitimate
+valid
+testifier
+jacques van meegeren
+avouch
+trusty
+reliable
+recognition
+warranty
+accredit
+lawfulness
+authentification
+tokenless
+firewalling
+cardholder
+coreid
+logon
+cimbal
+diaphonics
+interworking
+assentor
+antitheft
+teredo
+manageability
+stateful
+synapta
+marlinspike
+captcha
+beaconing
+oddjob
+insp
+immix
+guessable
+exclaimer
+phisher
+confident
+legalize
+credible
+probable
+authorize
+sure
+recognizance
+guarantee
+affidavit
+specification
+signatory
+clue
+assertion
+admittedly
+guarantor
+ensure
+avow
+signer
+token
+indication
+sign
+affirmative
+verity
+testator
+approbation
+testament
+stigmatize
+rely
+signature
+badge
+subscribe
+sain
+ack
+countersign
+assumptive
+demonstrative
+subscription
+credence
+probity
+validity
+fact
+ratification
+identifiable
+authentically
+troth
+trustworthy
+license
+veritable
+authentic
+passport
+markedly
+disconfirmation
+signpost
+axiom
+pfennig
+acknowledgement
+signaler
+marcus
+aver
+signalize
+certain
+truism
+depose
+rules of evidence
+declaration
+underwrite
+certainty
+identify
+unprovable
+emblem
+approval
+harbinger
+cite
+accuracy
+presumptive
+factual
+symbolize
+bulletproof
+signet
+chain of custody
+touchmark
+signable
+mothproof
+manuscript
+cosign
+approver
+consumer goods
+signation
+subsign
+undersign
+plagiarism
+declarable
+signee
+corroborate
+nonsigning
+caract
+two-factor authentication
+markable
+truth
+rubricate
+approbative
+foolproof
+legisign
+security token
+detective
+qualisign
+kinemerk
+identic
+markless
+deauthorize
+approbate
+sinsign
+cosignatory
+bear witness
+deutschmark
+markka
+foretoken
+trufax
+stigmatic
+swanmark
+mismark
+experiment
+truthy
+bemark
+wigwag
+biometric authentication
+biometric identification
+data encryption
+identity verification
+mesh topology
+magnetic stripe
+machine readable
+hypertext transfer protocol
+relational database
+terminal emulation
+identity theft
+compel testimony
+counterfeit medications
+supply chain
+adversary
+secure cryptoprocessor
+walk line
+put on stand
+packaging and labeling
+sign over
+fingerprint
+make one's mark
+self evident
+pass fail
+mark off
+radio-frequency identification
+all clear
+full mark
+electronic article surveillance
+take stand
+hostile witness
+thumb up
+tick mark
+man-in-the-middle attack
+probable cause
+man mark
+literary forgery
+spoofing attack
+e-mail headers
+fact checker
+digital signature
+british telecom
+challenge-response authentication
+access control
+strong authentication
+delegation in it
+united states
+layer 8
+credit card
+computer security
+united states government
+legal instrument
+national information assurance glossary
