@@ -41,9 +41,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-import Chainable = Cypress.Chainable;
 
-Cypress.Commands.add(
-  "getByData",
-  (attrValue: string): Chainable => cy.get(`[data-test="${attrValue}"]`),
+Cypress.Commands.add("getByData", (attrValue: string) =>
+  cy.get(`[data-test="${attrValue}"]`),
 );
