@@ -6,7 +6,7 @@ import {
 
 const REGISTER = "/register";
 
-describe("The registration page", () => {
+describe("User registration", () => {
   beforeEach(() => {
     const username = faker.internet.userName();
     cy.wrap(username).as("username");
