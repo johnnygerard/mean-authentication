@@ -1,6 +1,5 @@
-import { inject, Injectable, signal } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import type { ZXCVBNResult } from "zxcvbn";
-import { HttpClient } from "@angular/common/http";
 import { APP_NAME } from "_server/constants/app";
 
 /**
@@ -38,50 +37,114 @@ export class PasswordService {
     },
   };
 
-  #http = inject(HttpClient);
-  dictionary: string[] = [];
-  dictionaryLength = 0;
+  // dictionary: string[] = [];
+  // dictionaryLength = 0;
   isLoaded = signal(false);
   result = signal(this.#defaultResult);
+  #dictionary: string[] = [];
+  #libraryBlobUrl = "";
   #isPlatformBrowser = typeof window === "object";
+  #worker: Worker | null = null;
+  #workerIsBusy = false;
 
   constructor() {
     if (this.#isPlatformBrowser) {
-      this.#loadLibrary();
-      this.#loadDictionary();
+      this.#initialize();
     }
   }
 
-  #loadLibrary(): void {
-    const script = window.document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js";
-    script.defer = true;
-    script.integrity = "sha256-9CxlH0BQastrZiSQ8zjdR6WVHTMSA5xKuP5QkEhPNRo=";
-    script.crossOrigin = "anonymous";
-    script.onload = () => {
-      this.isLoaded.set(true);
-    };
+  async zxcvbn(
+    password: string,
+    ...userInputs: string[]
+  ): Promise<ZXCVBNResult> {
+    const worker = this.#worker;
+    if (!worker) throw new Error("Uninitialized worker");
+    if (this.#workerIsBusy) await this.#restartWorker();
+    else this.#workerIsBusy = true;
 
-    window.document.body.appendChild(script);
+    return new Promise((resolve) => {
+      const listener = (event: MessageEvent): void => {
+        const result = event.data as ZXCVBNResult;
+
+        this.result.set(result);
+        worker.removeEventListener("message", listener);
+        this.#workerIsBusy = false;
+        resolve(result);
+      };
+
+      worker.addEventListener("message", listener);
+      worker.postMessage([password, userInputs]);
+    });
   }
 
-  #loadDictionary(): void {
-    this.#http
-      .get("app-dictionary.txt", { responseType: "text" })
-      .subscribe((response) => {
-        this.dictionary = response.split("\n");
-        this.dictionary.push(APP_NAME);
-        this.dictionaryLength = this.dictionary.length;
-      });
+  async #initialize(): Promise<void> {
+    const [dictionary, libraryBlobUrl] = await Promise.all([
+      this.#loadDictionary(),
+      this.#loadLibrary(),
+    ]);
+
+    this.#dictionary = dictionary;
+    this.#libraryBlobUrl = libraryBlobUrl;
+
+    await this.#startWorker();
   }
 
-  getDictionary(...userInputs: string[]): string[] {
-    // Truncate the dictionary to its original length
-    this.dictionary.length = this.dictionaryLength;
+  async #restartWorker(): Promise<void> {
+    if (!this.#worker) throw new Error("Uninitialized worker");
 
-    for (const userInput of userInputs)
-      if (userInput) this.dictionary.push(userInput);
-
-    return this.dictionary;
+    this.#worker.terminate();
+    await this.#startWorker();
   }
+
+  async #startWorker(): Promise<void> {
+    const worker = new Worker(new URL("zxcvbn.worker.js", import.meta.url), {
+      type: "module",
+    });
+
+    this.#worker = worker;
+
+    await new Promise<void>((resolve) => {
+      const listener = (event: MessageEvent): void => {
+        console.log(event.data);
+        worker.removeEventListener("message", listener);
+        resolve();
+      };
+
+      worker.addEventListener("message", listener);
+      worker.postMessage([this.#dictionary, this.#libraryBlobUrl]);
+    });
+
+    this.isLoaded.set(true);
+  }
+
+  async #loadDictionary(): Promise<string[]> {
+    const response = await fetch("app-dictionary.txt");
+    const text = await response.text();
+    const dictionary = text.split("\n");
+
+    dictionary.push(APP_NAME);
+    return dictionary;
+  }
+
+  async #loadLibrary(): Promise<string> {
+    const response = await fetch(
+      "https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js",
+      {
+        integrity: "sha256-9CxlH0BQastrZiSQ8zjdR6WVHTMSA5xKuP5QkEhPNRo=",
+      },
+    );
+    const blob = await response.blob();
+
+    return URL.createObjectURL(blob);
+  }
+
+  // getDictionary(...userInputs: string[]): string[] {
+  //   // Truncate the dictionary to its original length
+  //   this.dictionary.length = this.dictionaryLength;
+  //
+  //   for (const userInput of userInputs)
+  //     if (userInput) this.dictionary.push(userInput);
+  //
+  //   return this.dictionary;
+  // }
 }

@@ -1,9 +1,9 @@
 import { Directive, inject } from "@angular/core";
 import {
   AbstractControl,
+  AsyncValidator,
   NG_VALIDATORS,
   ValidationErrors,
-  Validator,
 } from "@angular/forms";
 import { PasswordService } from "../services/password.service";
 import { usernameHasValidType } from "_server/validation/username";
@@ -26,31 +26,25 @@ import { ZXCVBN_MIN_SCORE } from "_server/constants/password";
     },
   ],
 })
-export class PasswordValidatorDirective implements Validator {
+export class PasswordValidatorDirective implements AsyncValidator {
   #passwordService = inject(PasswordService);
 
-  validate(form: AbstractControl): ValidationErrors | null {
-    const zxcvbn = window.zxcvbn;
+  async validate(form: AbstractControl): Promise<ValidationErrors | null> {
     const usernameControl = form.get("username");
     const passwordControl = form.get("password");
     const username = usernameControl?.value;
     const password = passwordControl?.value;
 
     const canValidate =
-      zxcvbn &&
       usernameControl &&
       passwordControl &&
       usernameHasValidType(username) &&
-      typeof password === "string";
+      typeof password === "string" &&
+      password;
 
     if (!canValidate) return null;
 
-    const result = zxcvbn(
-      password,
-      this.#passwordService.getDictionary(username),
-    );
-    this.#passwordService.result.set(result);
-
+    const result = await this.#passwordService.zxcvbn(password, username);
     if (result.score >= ZXCVBN_MIN_SCORE) return null;
 
     const validationMessage: string =
