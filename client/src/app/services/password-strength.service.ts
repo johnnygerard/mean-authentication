@@ -10,7 +10,7 @@ import { zxcvbnDefaultResult } from "_server/constants/zxcvbn-default-result";
 @Injectable({
   providedIn: "root",
 })
-export class PasswordService {
+export class PasswordStrengthService {
   isLoaded = signal(false);
   result = signal(zxcvbnDefaultResult);
   #dictionary: string[] = [];

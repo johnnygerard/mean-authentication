@@ -27,7 +27,7 @@ import { NotificationService } from "../../services/notification.service";
 import { CONFLICT } from "_server/constants/http-status-code";
 import { SessionService } from "../../services/session.service";
 import { ClientSession } from "_server/types/client-session";
-import { PasswordService } from "../../services/password.service";
+import { PasswordStrengthService } from "../../services/password-strength.service";
 import {
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
@@ -69,7 +69,9 @@ export class RegisterFormComponent {
   readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
   username = model("");
   password = model("");
-  isPasswordServiceLoaded = inject(PasswordService).isLoaded.asReadonly();
+  isPasswordServiceLoaded = inject(
+    PasswordStrengthService,
+  ).isLoaded.asReadonly();
   isLoading = signal(false);
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(

@@ -5,7 +5,7 @@ import {
   NG_VALIDATORS,
   ValidationErrors,
 } from "@angular/forms";
-import { PasswordService } from "../services/password.service";
+import { PasswordStrengthService } from "../services/password-strength.service";
 import { usernameHasValidType } from "_server/validation/username";
 import { ZXCVBN_MIN_SCORE } from "_server/constants/password";
 
@@ -27,7 +27,7 @@ import { ZXCVBN_MIN_SCORE } from "_server/constants/password";
   ],
 })
 export class PasswordValidatorDirective implements AsyncValidator {
-  #passwordService = inject(PasswordService);
+  #passwordService = inject(PasswordStrengthService);
 
   async validate(form: AbstractControl): Promise<ValidationErrors | null> {
     const usernameControl = form.get("username");
