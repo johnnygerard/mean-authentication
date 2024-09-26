@@ -37,8 +37,6 @@ export class PasswordService {
     },
   };
 
-  // dictionary: string[] = [];
-  // dictionaryLength = 0;
   isLoaded = signal(false);
   result = signal(this.#defaultResult);
   #dictionary: string[] = [];
@@ -137,14 +135,4 @@ export class PasswordService {
 
     return URL.createObjectURL(blob);
   }
-
-  // getDictionary(...userInputs: string[]): string[] {
-  //   // Truncate the dictionary to its original length
-  //   this.dictionary.length = this.dictionaryLength;
-  //
-  //   for (const userInput of userInputs)
-  //     if (userInput) this.dictionary.push(userInput);
-  //
-  //   return this.dictionary;
-  // }
 }
