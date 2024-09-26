@@ -25,7 +25,7 @@ export class PasswordStrengthService {
     }
   }
 
-  async zxcvbn(
+  async validate(
     password: string,
     ...userInputs: string[]
   ): Promise<ZXCVBNResult> {

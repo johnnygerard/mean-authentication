@@ -44,7 +44,7 @@ export class PasswordValidatorDirective implements AsyncValidator {
 
     if (!canValidate) return null;
 
-    const result = await this.#passwordService.zxcvbn(password, username);
+    const result = await this.#passwordService.validate(password, username);
     if (result.score >= ZXCVBN_MIN_SCORE) return null;
 
     const validationMessage: string =
