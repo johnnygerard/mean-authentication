@@ -21,6 +21,7 @@ const initialize = async (event) => {
   await import(event.data["libraryBlobUrl"]);
   self.removeEventListener("message", initialize);
   self.addEventListener("message", validatePassword);
+  self.postMessage("ready");
 };
 
 self.addEventListener("message", initialize);

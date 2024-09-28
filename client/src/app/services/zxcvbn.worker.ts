@@ -26,22 +26,31 @@ const createSubworker = (): Worker => {
  *
  * `zxcvbn` results are forwarded to the main thread.
  */
-const initSubworker = (): void => {
+const initSubworker = async (): Promise<void> => {
   subworker.postMessage({
     dictionary,
     libraryBlobUrl,
   });
 
-  subworker.addEventListener("message", ({ data }) => {
-    subworkerIsBusy = false;
-    self.postMessage(data);
+  return new Promise((resolve) => {
+    const initialize = (): void => {
+      subworker.removeEventListener("message", initialize);
+      subworker.addEventListener("message", ({ data }) => {
+        subworkerIsBusy = false;
+        self.postMessage(data);
+      });
+      postMessage("ready");
+      resolve();
+    };
+
+    subworker.addEventListener("message", initialize);
   });
 };
 
-const restartSubworker = (): void => {
+const restartSubworker = async (): Promise<void> => {
   subworker.terminate();
   subworker = createSubworker();
-  initSubworker();
+  await initSubworker();
 };
 
 const loadDictionary = async (): Promise<string[]> => {
@@ -79,10 +88,10 @@ const loadLibrary = async (): Promise<string> => {
     loadLibrary(),
   ]);
 
-  initSubworker();
+  await initSubworker();
 
-  addEventListener("message", (event) => {
-    if (subworkerIsBusy) restartSubworker();
+  addEventListener("message", async (event) => {
+    if (subworkerIsBusy) await restartSubworker();
     else subworkerIsBusy = true;
     subworker.postMessage(event.data);
   });
