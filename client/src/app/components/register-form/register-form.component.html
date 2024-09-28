@@ -1,12 +1,7 @@
 <mat-card>
   <mat-card-content>
     <h1 class="mat-title-medium">Create your account</h1>
-    <form
-      data-test="register-form"
-      (ngSubmit)="onSubmit(form)"
-      #form="ngForm"
-      appPasswordValidator
-    >
+    <form data-test="register-form" (ngSubmit)="onSubmit(form)" #form="ngForm">
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input

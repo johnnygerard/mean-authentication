@@ -12,7 +12,6 @@ import { Router, RouterLink } from "@angular/router";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
-import { PasswordValidatorDirective } from "../../directives/password-validator.directive";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -49,7 +48,6 @@ import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
     RouterLink,
     PasswordStrengthMeterComponent,
     UsernameValidatorDirective,
-    PasswordValidatorDirective,
     PasswordErrorPipe,
     UsernameErrorPipe,
   ],
