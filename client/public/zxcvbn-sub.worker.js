@@ -15,7 +15,7 @@ const getDictionary = (userInputs) => {
  * @param {MessageEvent} event
  */
 const validatePassword = (event) => {
-  const [password, userInputs] = event.data;
+  const { password, userInputs } = event.data;
   const result = self.zxcvbn(password, getDictionary(userInputs));
 
   self.postMessage(result);
