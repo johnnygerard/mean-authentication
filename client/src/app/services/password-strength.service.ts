@@ -13,7 +13,7 @@ export class PasswordStrengthService {
     { type: "module" },
   );
   #workerInput: ZxcvbnInput | null = null;
-  #workerIsBusy = true;
+  readonly #workerIsBusy = signal(true);
   #workerIsInitialized = false;
 
   constructor() {
@@ -38,20 +38,24 @@ export class PasswordStrengthService {
       return;
     }
 
-    this.#workerIsBusy = false;
+    this.#workerIsBusy.set(false);
   }
 
   get result() {
     return this.#result.asReadonly();
   }
 
+  get workerIsBusy() {
+    return this.#workerIsBusy.asReadonly();
+  }
+
   validate(password: string, userInputs: string[]): void {
-    if (this.#workerIsBusy || !this.#workerIsInitialized) {
+    if (this.#workerIsBusy() || !this.#workerIsInitialized) {
       this.#workerInput = { password, userInputs };
       return;
     }
 
-    this.#workerIsBusy = true;
+    this.#workerIsBusy.set(true);
     this.#worker.postMessage({ password, userInputs });
   }
 }

@@ -112,7 +112,13 @@ export class RegisterFormComponent {
   }
 
   onSubmit(): void {
-    if (!this.form.valid || this.isLoading()) return;
+    if (
+      !this.form.valid ||
+      this.isLoading() ||
+      this.#passwordStrength.workerIsBusy()
+    ) {
+      return;
+    }
     this.isLoading.set(true);
 
     this.#http
