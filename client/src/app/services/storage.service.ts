@@ -6,20 +6,19 @@ import { NotificationService } from "./notification.service";
 })
 export class StorageService {
   #isPlatformServer = typeof window === "undefined";
-  #isSupported = true;
+  readonly #isNotSupported: boolean;
   #notifier = inject(NotificationService);
 
   constructor() {
     if (this.#isPlatformServer) return;
 
     try {
-      if (window.localStorage === undefined) {
-        this.#isSupported = false;
+      this.#isNotSupported = !window.localStorage;
+
+      if (this.#isNotSupported)
         this.#notifier.send(
-          "Your browser does not support local storage." +
-            " Data will not be saved.",
+          "Your browser does not support local storage. Data will not be saved.",
         );
-      }
     } catch (e) {
       if (e instanceof DOMException && e.name === "SecurityError") {
         this.#handleSecurityError(e);
@@ -39,7 +38,7 @@ export class StorageService {
   }
 
   get #localStorage(): Storage | null {
-    if (!this.#isSupported) return null;
+    if (this.#isNotSupported) return null;
 
     try {
       return window.localStorage;
