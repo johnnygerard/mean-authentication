@@ -94,7 +94,7 @@ export class RegisterFormComponent {
     this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe((next) => {
       const { username, password } = next;
 
-      if (!password) return;
+      if (typeof password !== "string") return;
       const userInputs = username ? [username] : [];
       this.#passwordStrength.validate(password, userInputs);
     });
