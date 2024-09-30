@@ -1,10 +1,13 @@
 import type { ZXCVBNResult } from "zxcvbn";
 
-export const zxcvbnDefaultResult: ZXCVBNResult = {
+export const zxcvbnDefaultResult: ZXCVBNResult & {
+  password: string; // This property is missing from type ZXCVBNResult despite being present in the actual result
+} = {
+  password: "",
   guesses: 1,
   guesses_log10: 0,
   sequence: [],
-  calc_time: 1,
+  calc_time: 0,
   crack_times_seconds: {
     online_throttling_100_per_hour: 36,
     online_no_throttling_10_per_second: 0.1,
