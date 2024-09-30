@@ -6,7 +6,7 @@ import { NotificationService } from "./notification.service";
 })
 export class StorageService {
   #isPlatformServer = typeof window === "undefined";
-  readonly #isNotSupported: boolean;
+  readonly #isNotSupported = false;
   #notifier = inject(NotificationService);
 
   constructor() {
