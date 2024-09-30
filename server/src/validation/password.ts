@@ -7,7 +7,7 @@ import { APP_NAME } from "../constants/app.js";
  * Application-specific vocabulary for password strength validation
  * @see https://relatedwords.org/relatedto/authentication
  */
-const text = await readFile("src/validation/app-dictionary.txt", "utf-8");
+const text = await readFile("data/app-dictionary.txt", "utf-8");
 export const appDictionary = text.split("\n");
 
 appDictionary.push(APP_NAME);
