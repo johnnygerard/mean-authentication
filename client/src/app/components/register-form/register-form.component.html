@@ -53,7 +53,7 @@
           <mat-error>{{ passwordModel.errors | passwordError }}</mat-error>
         }
       </mat-form-field>
-      <app-password-strength-meter [isPasswordEmpty]="!password()" />
+      <app-password-strength-meter />
 
       <button mat-flat-button type="submit">
         @if (isLoading()) {
