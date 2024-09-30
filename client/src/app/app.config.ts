@@ -41,7 +41,9 @@ export const appConfig: ApplicationConfig = {
         credentialsInterceptor,
         csrfInterceptor,
         errorInterceptor,
-        apiBaseUrlInterceptor, // Must be last
+        // The apiBaseUrlInterceptor must be the last one because other
+        // interceptors use relative URLs.
+        apiBaseUrlInterceptor,
       ]),
     ),
     {

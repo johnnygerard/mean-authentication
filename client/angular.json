@@ -51,6 +51,10 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "app-dictionary.txt",
+                "input": "../server/src/validation"
               }
             ],
             "stylePreprocessorOptions": {
@@ -62,7 +66,8 @@
             "prerender": true,
             "ssr": {
               "entry": "server.ts"
-            }
+            },
+            "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {
             "production": {
@@ -128,13 +133,18 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "app-dictionary.txt",
+                "input": "../server/src/validation"
               }
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]
             },
             "styles": ["src/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "webWorkerTsConfig": "tsconfig.worker.json"
           }
         },
         "cypress-run": {

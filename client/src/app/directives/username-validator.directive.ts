@@ -5,6 +5,10 @@ import {
   ValidationErrors,
   Validator,
 } from "@angular/forms";
+import {
+  usernameHasValidCharacters,
+  usernameHasValidType,
+} from "_server/validation/username";
 
 @Directive({
   selector: "[appUsernameValidator]",
@@ -21,7 +25,9 @@ export class UsernameValidatorDirective implements Validator {
   validate(control: AbstractControl): ValidationErrors | null {
     const username = control.value;
 
-    if (typeof username !== "string" || /^\P{C}+$/u.test(username)) return null;
-    return { pattern: "Invalid Unicode characters" };
+    return usernameHasValidType(username) &&
+      !usernameHasValidCharacters(username)
+      ? { pattern: "Invalid characters" }
+      : null;
   }
 }

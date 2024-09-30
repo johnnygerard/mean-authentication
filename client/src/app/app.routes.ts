@@ -3,14 +3,15 @@ import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { isUnauthenticatedGuard } from "./guards/is-unauthenticated.guard";
 import { NotFoundPageComponent } from "./pages/not-found-page.component";
 import { isAuthenticatedGuard } from "./guards/is-authenticated.guard";
-import { AppComponent } from "./app.component";
+
+import { APP_NAME } from "_server/constants/app";
 
 export const routes: Routes = [
   {
     path: "",
     pathMatch: "full",
     component: HomePageComponent,
-    title: AppComponent.APP_NAME,
+    title: APP_NAME,
   },
   {
     path: "account",

@@ -8,7 +8,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   #notifier = inject(NotificationService);
 
   handleError(e: unknown): void {
-    window.console.error(e);
+    console.error(e);
     this.#notifier.send(
       "An unknown error has occurred. Please try again later.",
     );

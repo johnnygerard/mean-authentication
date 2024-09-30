@@ -1,0 +1,10 @@
+/* This file is only needed for the WebStorm IDE's TypeScript language service to work correctly. */
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "lib": ["es2018", "webworker"],
+    "types": []
+  },
+  "include": ["*.worker.ts"]
+}

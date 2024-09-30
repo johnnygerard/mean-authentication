@@ -1,24 +1,30 @@
 import type { RequestHandler } from "express";
-import { BAD_REQUEST, CREATED, UNAUTHORIZED } from "../http-status-code.js";
-import { USERNAME_MAX_LENGTH } from "./create-account.js";
-import { PASSWORD_MAX_LENGTH, verifyPassword } from "../auth/password.js";
+import {
+  BAD_REQUEST,
+  CREATED,
+  UNAUTHORIZED,
+} from "../constants/http-status-code.js";
+import { verifyPassword } from "../auth/password-hashing.js";
 import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
 import { generateCSRFToken } from "../auth/csrf.js";
+import {
+  usernameHasValidType,
+  usernameHasValidValue,
+} from "../validation/username.js";
+import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    // Validate username
-    if (typeof username !== "string" || username.length > USERNAME_MAX_LENGTH) {
-      res.status(BAD_REQUEST).json({ error: "Invalid username" });
+    if (!usernameHasValidType(username) || !usernameHasValidValue(username)) {
+      res.status(BAD_REQUEST).json("Invalid username");
       return;
     }
 
-    // Validate password
     if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
-      res.status(BAD_REQUEST).json({ error: "Invalid password" });
+      res.status(BAD_REQUEST).json("Invalid password");
       return;
     }
 

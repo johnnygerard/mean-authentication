@@ -13,7 +13,6 @@ import { progressActivity } from "./svg/progress-activity";
   styleUrl: "./app.component.scss",
 })
 export class AppComponent implements OnInit {
-  static readonly APP_NAME = "AuthMEAN";
   #iconRegistry = inject(MatIconRegistry);
   #sanitizer = inject(DomSanitizer);
 

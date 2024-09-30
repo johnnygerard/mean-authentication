@@ -21,9 +21,16 @@ import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { finalize } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NotificationService } from "../../services/notification.service";
-import { UNAUTHORIZED } from "_server/http-status-code";
+import { UNAUTHORIZED } from "_server/constants/http-status-code";
 import { SessionService } from "../../services/session.service";
 import { ClientSession } from "_server/types/client-session";
+import {
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+} from "_server/validation/username";
+import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
+
+import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
 
 @Component({
   selector: "app-sign-in-form",
@@ -39,6 +46,7 @@ import { ClientSession } from "_server/types/client-session";
     MatIcon,
     PasswordErrorPipe,
     UsernameErrorPipe,
+    UsernameValidatorDirective,
   ],
   templateUrl: "./sign-in-form.component.html",
   styleUrl: "./sign-in-form.component.scss",
@@ -50,6 +58,10 @@ export class SignInFormComponent {
   #notifier = inject(NotificationService);
   #router = inject(Router);
   #session = inject(SessionService);
+
+  readonly USERNAME_MIN_LENGTH = USERNAME_MIN_LENGTH;
+  readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
+  readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
   password = model("");
   username = model("");
   isLoading = signal(false);
@@ -86,7 +98,7 @@ export class SignInFormComponent {
             return;
           }
 
-          window.console.error(e);
+          console.error(e);
           this.#notifier.send("Sign-in failed. Please try again later.");
         },
       });

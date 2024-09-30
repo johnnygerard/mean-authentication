@@ -1,9 +1,12 @@
 import { faker } from "@faker-js/faker";
-import { CONFLICT, CREATED } from "../../../server/src/http-status-code";
+import {
+  CONFLICT,
+  CREATED,
+} from "../../../server/src/constants/http-status-code";
 
 const REGISTER = "/register";
 
-describe("The registration page", () => {
+describe("User registration", () => {
   beforeEach(() => {
     const username = faker.internet.userName();
     cy.wrap(username).as("username");

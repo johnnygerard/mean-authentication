@@ -3,9 +3,8 @@ import {
   Component,
   computed,
   inject,
-  input,
 } from "@angular/core";
-import { PasswordService } from "../../services/password.service";
+import { PasswordStrengthService } from "../../services/password-strength.service";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatIconModule } from "@angular/material/icon";
 
@@ -18,9 +17,8 @@ import { MatIconModule } from "@angular/material/icon";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordStrengthMeterComponent {
-  result = inject(PasswordService).result;
+  result = inject(PasswordStrengthService).result;
   suggestions = computed(() => this.result().feedback.suggestions);
-  isPasswordEmpty = input.required<boolean>();
   isPasswordValid = computed(() => this.result().score >= 3);
   ariaValueText = computed(() => {
     const score = this.result().score;
@@ -42,8 +40,8 @@ export class PasswordStrengthMeterComponent {
   });
 
   tooltip = computed(() => {
-    // Hide tooltip if password field is empty
-    if (this.isPasswordEmpty()) return "";
+    // Hide tooltip when the password is empty
+    if (this.result().password === "") return "";
 
     const estimation =
       this.result().crack_times_display.offline_slow_hashing_1e4_per_second;

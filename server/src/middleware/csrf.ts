@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { FORBIDDEN } from "../http-status-code.js";
+import { FORBIDDEN } from "../constants/http-status-code.js";
 
 export const CSRF_HEADER = "X-CSRF-Token";
 export const safeMethods = ["GET", "HEAD", "OPTIONS", "TRACE"];

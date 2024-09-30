@@ -1,5 +1,5 @@
 import { createClient } from "redis";
-import { REDIS_CONNECTION_URL } from "../load-env.js";
+import { REDIS_CONNECTION_URL } from "../constants/env.js";
 
 /**
  * Redis Cloud client instance
@@ -17,6 +17,7 @@ await redisClient.connect();
 console.log("Connected to Redis!");
 
 // Log session store latency
-const now = Date.now();
+const TIMER_LABEL = "Session store latency";
+console.time(TIMER_LABEL);
 await redisClient.ping();
-console.log(`Session store latency: ${Date.now() - now}ms`);
+console.timeEnd(TIMER_LABEL);

@@ -1,12 +1,14 @@
 {
   "dependencies": {
     "argon2": "^0.40.3",
+    "axios": "^1.7.7",
     "connect-redis": "^7.1.1",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "express-rate-limit": "^7.4.0",
     "express-session": "^1.18.0",
     "mongodb": "^6.8.0",
+    "ratelimit-header-parser": "^0.1.0",
     "redis": "^4.7.0",
     "zxcvbn": "4.4.2"
   },
@@ -21,7 +23,7 @@
   },
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
-    "build:dev": "tsc --watch",
+    "build:dev": "tsc",
     "build:heroku": "npm ci --include=dev && npm run build && npm prune",
     "init-db": "node --env-file=.env dist/database/init.js",
     "start": "node dist/server.js",

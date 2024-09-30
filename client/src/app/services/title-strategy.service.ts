@@ -1,7 +1,8 @@
 import { inject, Injectable } from "@angular/core";
 import { RouterStateSnapshot, TitleStrategy } from "@angular/router";
 import { Title } from "@angular/platform-browser";
-import { AppComponent } from "../app.component";
+
+import { APP_NAME } from "_server/constants/app";
 
 /**
  * Service that updates the title of the page based on the current route.
@@ -20,11 +21,11 @@ export class TitleStrategyService extends TitleStrategy {
     switch (title) {
       case undefined:
         return;
-      case AppComponent.APP_NAME:
+      case APP_NAME:
         fullTitle = `${title} - The Future of Authentication`;
         break;
       default:
-        fullTitle = `${title} | ${AppComponent.APP_NAME}`;
+        fullTitle = `${title} | ${APP_NAME}`;
         break;
     }
 

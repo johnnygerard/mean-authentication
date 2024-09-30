@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { NO_CONTENT } from "../http-status-code.js";
+import { NO_CONTENT } from "../constants/http-status-code.js";
 import { sessionCookie } from "../middleware/session.js";
 
 export const deleteSession: RequestHandler = (req, res, next) => {
