@@ -26,5 +26,5 @@ fetchDictionary().then((dictionary) => {
     self.postMessage(result);
   };
 
-  self.postMessage("ready");
+  self.postMessage("Password strength worker initialized!");
 });
