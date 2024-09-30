@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { PASSWORD_MAX_LENGTH } from "../../../server/src/constants/password";
 
-describe("Password form control", () => {
+describe("The password form control", () => {
   beforeEach(() => {
     cy.visit("/register");
   });
@@ -29,6 +29,24 @@ describe("Password form control", () => {
         "value",
         password.slice(0, PASSWORD_MAX_LENGTH),
       );
+    });
+  });
+
+  it("should validate the password strength", () => {
+    const username = faker.internet.userName();
+    const weakPassword = `${username}123`;
+    const strongPassword = faker.internet.password({ length: 20 });
+
+    cy.getByData("register-form").within(() => {
+      cy.getByData("username").type(username);
+      cy.getByData("password").type(weakPassword);
+
+      cy.root().should("have.class", "ng-invalid");
+
+      cy.getByData("password").clear();
+      cy.getByData("password").type(strongPassword);
+
+      cy.root().should("have.class", "ng-valid");
     });
   });
 });
