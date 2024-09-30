@@ -6,7 +6,7 @@ import type zxcvbn from "zxcvbn";
 
 declare global {
   interface WorkerGlobalScope {
-    zxcvbn: typeof zxcvbn | undefined;
+    zxcvbn: typeof zxcvbn;
   }
 }
 
@@ -28,7 +28,7 @@ const fetchDictionary = async (): Promise<string[]> => {
 fetchDictionary().then((dictionary) => {
   self.onmessage = (event: MessageEvent<ZxcvbnInput>): void => {
     const { password, userInputs } = event.data;
-    const result = self.zxcvbn!(password, userInputs.concat(dictionary));
+    const result = self.zxcvbn(password, userInputs.concat(dictionary));
 
     self.postMessage(result);
   };
