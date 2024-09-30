@@ -18,7 +18,7 @@ import { MatIconModule } from "@angular/material/icon";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordStrengthMeterComponent {
-  result = inject(PasswordStrengthService).result.asReadonly();
+  result = inject(PasswordStrengthService).result;
   suggestions = computed(() => this.result().feedback.suggestions);
   isPasswordEmpty = input.required<boolean>();
   isPasswordValid = computed(() => this.result().score >= 3);
