@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   signal,
 } from "@angular/core";
@@ -30,7 +31,10 @@ import {
   USERNAME_MIN_LENGTH,
 } from "_server/validation/username";
 
-import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
+import {
+  PASSWORD_MAX_LENGTH,
+  ZXCVBN_MIN_SCORE,
+} from "_server/constants/password";
 import { PasswordStrengthService } from "../../services/password-strength.service";
 
 @Component({
@@ -93,6 +97,17 @@ export class RegisterFormComponent {
       if (!password) return;
       const userInputs = username ? [username] : [];
       this.#passwordStrength.validate(password, userInputs);
+    });
+
+    effect((): void => {
+      const result = this.#passwordStrength.result();
+      if (result.score >= ZXCVBN_MIN_SCORE) return;
+      const passwordControl = this.form.controls.password;
+
+      passwordControl.setErrors({
+        ...passwordControl.errors,
+        strength: result.feedback.warning || "Vulnerable password",
+      });
     });
   }
 
