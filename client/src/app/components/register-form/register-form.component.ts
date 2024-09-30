@@ -98,7 +98,7 @@ export class RegisterFormComponent {
             return;
           }
 
-          window.console.error(e);
+          console.error(e);
           this.#notifier.send("Registration failed. Please try again later.");
         },
       });

@@ -50,13 +50,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       delay: (response: HttpErrorResponse, retryCount: number) => {
         switch (response.status) {
           case NON_HTTP_ERROR:
-            window.console.error(
-              `Retrying failed request: attempt #${retryCount}`,
-            );
+            console.error(`Retrying failed request: attempt #${retryCount}`);
             return of(true).pipe(delay(computeDelay(retryCount)));
 
           case BAD_REQUEST:
-            window.console.error("Input validation mismatch", response);
+            console.error("Input validation mismatch", response);
             notifier.send(response.error);
             break;
 

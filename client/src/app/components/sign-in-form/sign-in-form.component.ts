@@ -98,7 +98,7 @@ export class SignInFormComponent {
             return;
           }
 
-          window.console.error(e);
+          console.error(e);
           this.#notifier.send("Sign-in failed. Please try again later.");
         },
       });

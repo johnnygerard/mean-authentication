@@ -31,7 +31,7 @@ export class StorageService {
   }
 
   #handleSecurityError(e: DOMException): void {
-    window.console.error(e);
+    console.error(e);
     this.#notifier.send(
       "Your browser or site settings do not allow local storage." +
         " Data will not be saved.",

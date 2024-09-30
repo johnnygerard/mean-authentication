@@ -31,7 +31,7 @@ export class NavigationComponent {
         this.#router.navigateByUrl("/");
       },
       error: (e) => {
-        window.console.error(e);
+        console.error(e);
         this.#notifier.send("Logout failed. Please try again later.");
       },
     });

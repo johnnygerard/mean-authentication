@@ -36,7 +36,7 @@ export class AccountPageComponent implements OnInit {
       .subscribe({
         next: (value) => this.account.set(value),
         error: (e) => {
-          window.console.error(e);
+          console.error(e);
           this.#notifier.send(
             "Failed to load account data. Please try reloading the page.",
           );
