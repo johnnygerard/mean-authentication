@@ -87,7 +87,7 @@ export class RegisterFormComponent {
   );
 
   constructor() {
-    this.form.valueChanges.subscribe((next) => {
+    this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe((next) => {
       const { username, password } = next;
 
       if (!password) return;
