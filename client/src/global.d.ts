@@ -1,7 +1,7 @@
 import { ZXCVBN } from "_server/types/zxcvbn";
 
 declare global {
-  interface Window {
+  interface WorkerGlobalScope {
     zxcvbn: ZXCVBN | undefined;
   }
 }
