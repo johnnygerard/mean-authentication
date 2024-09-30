@@ -2,6 +2,13 @@
 import "https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js";
 import { APP_NAME } from "_server/constants/app";
 import { ZxcvbnInput } from "_server/types/zxcvbn-input";
+import type zxcvbn from "zxcvbn";
+
+declare global {
+  interface WorkerGlobalScope {
+    zxcvbn: typeof zxcvbn | undefined;
+  }
+}
 
 const fetchDictionary = async (): Promise<string[]> => {
   const response = await fetch("app-dictionary.txt");
