@@ -4,10 +4,9 @@ import {
   computed,
   DestroyRef,
   inject,
-  model,
   signal,
 } from "@angular/core";
-import { FormsModule, NgForm } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
@@ -32,12 +31,13 @@ import {
 } from "_server/validation/username";
 
 import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
+import { PasswordStrengthService } from "../../services/password-strength.service";
 
 @Component({
   selector: "app-register-form",
   standalone: true,
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatButtonModule,
     MatCardModule,
@@ -60,27 +60,48 @@ export class RegisterFormComponent {
   #notifier = inject(NotificationService);
   #router = inject(Router);
   #session = inject(SessionService);
+  #passwordStrength = inject(PasswordStrengthService);
 
-  readonly USERNAME_MIN_LENGTH = USERNAME_MIN_LENGTH;
   readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
   readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
-  username = model("");
-  password = model("");
+
+  form = inject(FormBuilder).group({
+    username: [
+      "",
+      [
+        Validators.required,
+        Validators.minLength(USERNAME_MIN_LENGTH),
+        Validators.maxLength(USERNAME_MAX_LENGTH),
+      ],
+    ],
+    password: [
+      "",
+      [Validators.required, Validators.maxLength(PASSWORD_MAX_LENGTH)],
+    ],
+  });
+
   isLoading = signal(false);
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(
     () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
   );
 
-  onSubmit(form: NgForm): void {
-    if (!form.valid || this.isLoading()) return;
+  constructor() {
+    this.form.valueChanges.subscribe((next) => {
+      const { username, password } = next;
+
+      if (!password) return;
+      const userInputs = username ? [username] : [];
+      this.#passwordStrength.validate(password, userInputs);
+    });
+  }
+
+  onSubmit(): void {
+    if (!this.form.valid || this.isLoading()) return;
     this.isLoading.set(true);
 
     this.#http
-      .post<ClientSession>("/api/account", {
-        username: this.username(),
-        password: this.password(),
-      })
+      .post<ClientSession>("/api/account", this.form.value)
       .pipe(
         finalize(() => {
           this.isLoading.set(false);

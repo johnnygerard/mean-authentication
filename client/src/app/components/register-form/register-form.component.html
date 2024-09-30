@@ -1,25 +1,23 @@
 <mat-card>
   <mat-card-content>
     <h1 class="mat-title-medium">Create your account</h1>
-    <form data-test="register-form" (ngSubmit)="onSubmit(form)" #form="ngForm">
+    <form data-test="register-form" (ngSubmit)="onSubmit()" [formGroup]="form">
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input
           data-test="username"
           matInput
-          name="username"
           type="text"
           autocomplete="username"
-          [(ngModel)]="username"
-          #usernameModel="ngModel"
+          formControlName="username"
           appUsernameValidator
-          [attr.minlength]="USERNAME_MIN_LENGTH"
           [attr.maxlength]="USERNAME_MAX_LENGTH"
-          required
           spellcheck="false"
         />
-        @if (usernameModel.errors) {
-          <mat-error>{{ usernameModel.errors | usernameError }}</mat-error>
+        @if (form.controls.username.errors) {
+          <mat-error>{{
+            form.controls.username.errors | usernameError
+          }}</mat-error>
         }
       </mat-form-field>
 
@@ -28,13 +26,10 @@
         <input
           data-test="password"
           matInput
-          name="password"
           [type]="isPasswordVisible() ? 'text' : 'password'"
           autocomplete="new-password"
-          [(ngModel)]="password"
-          #passwordModel="ngModel"
+          formControlName="password"
           [attr.maxlength]="PASSWORD_MAX_LENGTH"
-          required
         />
         <button
           data-test="password-visibility"
@@ -49,8 +44,10 @@
             [svgIcon]="isPasswordVisible() ? 'visibility_off' : 'visibility'"
           />
         </button>
-        @if (passwordModel.errors) {
-          <mat-error>{{ passwordModel.errors | passwordError }}</mat-error>
+        @if (form.controls.password.errors) {
+          <mat-error>{{
+            form.controls.password.errors | passwordError
+          }}</mat-error>
         }
       </mat-form-field>
       <app-password-strength-meter />

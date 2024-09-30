@@ -45,7 +45,7 @@ export class PasswordStrengthService {
     return this.#result.asReadonly();
   }
 
-  validate(password: string, ...userInputs: string[]): void {
+  validate(password: string, userInputs: string[]): void {
     if (this.#workerIsBusy || !this.#workerIsInitialized) {
       this.#workerInput = { password, userInputs };
       return;
