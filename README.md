@@ -54,11 +54,11 @@ you may experience a few seconds of delay on the first API request.
 
 ## Lighthouse Reports
 
-Version audited: v0.14.0
+Version audited: v0.19.0
 
-- [Home page](https://googlechrome.github.io/lighthouse/viewer/?gist=8a2dd7b07bb5108fdddf0c0b85471839)
-- [Registration page](https://googlechrome.github.io/lighthouse/viewer/?gist=ad49f017ce5653d1abb7ace3375c4906)
-- [Login page](https://googlechrome.github.io/lighthouse/viewer/?gist=942eb80d2aaf63bdf2329a16f8823a09)
+- [Home page](https://googlechrome.github.io/lighthouse/viewer/?gist=c57216d3b70a42c74d21b6bccc66a57b)
+- [Registration page](https://googlechrome.github.io/lighthouse/viewer/?gist=a8c3b920ce36abfc5973bd60459409cc)
+- [Login page](https://googlechrome.github.io/lighthouse/viewer/?gist=5cff44991036ae26c29fd741bc6ec5e2)
 
 ## Dev Environment & Tools
 
