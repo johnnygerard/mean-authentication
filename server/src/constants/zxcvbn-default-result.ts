@@ -1,8 +1,6 @@
-import type { ZXCVBNResult } from "zxcvbn";
+import { ZxcvbnResult } from "../types/zxcvbn-result.js";
 
-export const zxcvbnDefaultResult: ZXCVBNResult & {
-  password: string; // This property is missing from type ZXCVBNResult despite being present in the actual result
-} = {
+export const zxcvbnDefaultResult: ZxcvbnResult = {
   password: "",
   guesses: 1,
   guesses_log10: 0,
