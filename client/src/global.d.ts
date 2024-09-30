@@ -1,7 +1,7 @@
-import { ZXCVBN } from "_server/types/zxcvbn";
+import type zxcvbn from "zxcvbn";
 
 declare global {
   interface WorkerGlobalScope {
-    zxcvbn: ZXCVBN | undefined;
+    zxcvbn: typeof zxcvbn | undefined;
   }
 }
