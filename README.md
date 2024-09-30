@@ -33,6 +33,7 @@ you may experience a few seconds of delay on the first API request.
 - Username and password authentication
 - Password strength validation with [zxcvbn](https://github.com/dropbox/zxcvbn?tab=readme-ov-file#readme)
 - Password hashing using [Argon2](https://github.com/P-H-C/phc-winner-argon2?tab=readme-ov-file#readme) algorithm
+- [Pwned Passwords API](https://haveibeenpwned.com/API/v3#PwnedPasswords) validation
 - Cookie-based server-side session authentication
 - CSRF protection using the [synchronizer token pattern](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#synchronizer-token-pattern)
 - Rate limiting with [express-rate-limit](https://express-rate-limit.mintlify.app/overview)
@@ -43,6 +44,7 @@ you may experience a few seconds of delay on the first API request.
 - [Prerendering (SSG)](https://angular.dev/guide/prerendering)
 - Lazy-loaded components
 - `OnPush` change detection strategy
+- Web workers for CPU-intensive tasks
 
 ### Testing
 
