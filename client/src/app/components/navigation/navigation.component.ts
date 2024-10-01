@@ -18,16 +18,15 @@ import { APP_NAME } from "_server/constants/app";
 })
 export class NavigationComponent {
   readonly APP_NAME = APP_NAME;
+  session = inject(SessionService);
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
   #router = inject(Router);
-  #session = inject(SessionService);
-  isAuthenticated = this.#session.isAuthenticated;
 
   onLogout(): void {
     this.#http.delete("/api/user/session").subscribe({
       next: () => {
-        this.#session.clear();
+        this.session.clear();
         this.#router.navigateByUrl("/");
       },
       error: (e) => {
