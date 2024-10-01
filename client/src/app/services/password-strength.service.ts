@@ -7,13 +7,13 @@ import { ZxcvbnResult } from "_server/types/zxcvbn-result";
   providedIn: "root",
 })
 export class PasswordStrengthService {
-  readonly #result = signal(zxcvbnDefaultResult);
+  #result = signal(zxcvbnDefaultResult);
   readonly #worker = new Worker(
     new URL("../workers/password-strength.worker.js", import.meta.url),
     { type: "module" },
   );
   #workerInput: ZxcvbnInput | null = null;
-  readonly #workerIsBusy = signal(true);
+  #workerIsBusy = signal(true);
   #workerIsInitialized = false;
 
   constructor() {
