@@ -1,53 +1,53 @@
 <mat-card>
   <mat-card-content>
     <h1 class="mat-title-medium">Create your account</h1>
-    <form data-test="register-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" data-test="register-form">
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input
-          data-test="username"
-          matInput
-          type="text"
-          autocomplete="username"
-          formControlName="username"
-          appUsernameValidator
           [attr.maxlength]="USERNAME_MAX_LENGTH"
+          appUsernameValidator
+          autocomplete="username"
+          data-test="username"
+          formControlName="username"
+          matInput
           spellcheck="false"
+          type="text"
         />
         @if (form.controls.username.errors) {
-          <mat-error>{{
-            form.controls.username.errors | usernameError
-          }}</mat-error>
+          <mat-error
+            >{{ form.controls.username.errors | usernameError }}
+          </mat-error>
         }
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Password</mat-label>
         <input
-          data-test="password"
-          matInput
+          [attr.maxlength]="PASSWORD_MAX_LENGTH"
           [type]="isPasswordVisible() ? 'text' : 'password'"
           autocomplete="new-password"
+          data-test="password"
           formControlName="password"
-          [attr.maxlength]="PASSWORD_MAX_LENGTH"
+          matInput
         />
         <button
-          data-test="password-visibility"
-          type="button"
-          [matTooltip]="visibilityTooltip()"
-          [attr.aria-label]="visibilityTooltip()"
-          matSuffix
-          mat-icon-button
           (click)="togglePasswordVisibility($event)"
+          [attr.aria-label]="visibilityTooltip()"
+          [matTooltip]="visibilityTooltip()"
+          data-test="password-visibility"
+          mat-icon-button
+          matSuffix
+          type="button"
         >
           <mat-icon
             [svgIcon]="isPasswordVisible() ? 'visibility_off' : 'visibility'"
           />
         </button>
         @if (form.controls.password.errors) {
-          <mat-error>{{
-            form.controls.password.errors | passwordError
-          }}</mat-error>
+          <mat-error
+            >{{ form.controls.password.errors | passwordError }}
+          </mat-error>
         }
       </mat-form-field>
       <app-password-strength-meter />

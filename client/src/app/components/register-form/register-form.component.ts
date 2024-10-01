@@ -59,16 +59,8 @@ import { PasswordStrengthService } from "../../services/password-strength.servic
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterFormComponent {
-  #destroyRef = inject(DestroyRef);
-  #http = inject(HttpClient);
-  #notifier = inject(NotificationService);
-  #router = inject(Router);
-  #session = inject(SessionService);
-  #passwordStrength = inject(PasswordStrengthService);
-
   readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
   readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
-
   form = inject(FormBuilder).group({
     username: [
       "",
@@ -83,25 +75,34 @@ export class RegisterFormComponent {
       [Validators.required, Validators.maxLength(PASSWORD_MAX_LENGTH)],
     ],
   });
-
   isLoading = signal(false);
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(
     () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
   );
+  #destroyRef = inject(DestroyRef);
+  #http = inject(HttpClient);
+  #notifier = inject(NotificationService);
+  #router = inject(Router);
+  #session = inject(SessionService);
+  #passwordStrength = inject(PasswordStrengthService);
 
   constructor() {
     this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe((next) => {
       const { username, password } = next;
 
-      if (typeof password !== "string") return;
+      if (typeof password !== "string") {
+        return;
+      }
       const userInputs = username ? [username] : [];
       this.#passwordStrength.validate(password, userInputs);
     });
 
     effect((): void => {
       const result = this.#passwordStrength.result();
-      if (result.score >= ZXCVBN_MIN_SCORE) return;
+      if (result.score >= ZXCVBN_MIN_SCORE) {
+        return;
+      }
       const passwordControl = this.form.controls.password;
 
       passwordControl.setErrors({
