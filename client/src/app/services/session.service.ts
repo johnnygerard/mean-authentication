@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { ClientSession } from "_server/types/client-session";
-import { StorageService } from "./storage.service";
 import { isPlatformServer } from "../constants";
+import { StorageService } from "./storage.service";
 
 const SESSION_KEY = "session";
 
@@ -9,15 +9,14 @@ const SESSION_KEY = "session";
   providedIn: "root",
 })
 export class SessionService {
-  #storage = inject(StorageService);
   user = signal<ClientSession | null | undefined>(undefined);
-
   isAuthenticated = computed<boolean | null>(() => {
     const user = this.user();
 
     if (user === undefined) return null;
     return user !== null;
   });
+  #storage = inject(StorageService);
 
   constructor() {
     if (isPlatformServer) return;

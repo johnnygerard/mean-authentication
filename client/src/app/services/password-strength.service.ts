@@ -8,12 +8,12 @@ import { ZxcvbnResult } from "_server/types/zxcvbn-result";
 })
 export class PasswordStrengthService {
   result = signal(zxcvbnDefaultResult);
+  isWorkerBusy = signal(true);
   readonly #worker = new Worker(
     new URL("../workers/password-strength.worker.js", import.meta.url),
     { type: "module" },
   );
   #workerInput: ZxcvbnInput | null = null;
-  isWorkerBusy = signal(true);
   #isWorkerInitialized = false;
 
   constructor() {
@@ -31,16 +31,6 @@ export class PasswordStrengthService {
     };
   }
 
-  #checkWorkerInput(): void {
-    if (this.#workerInput) {
-      this.#worker.postMessage(this.#workerInput);
-      this.#workerInput = null;
-      return;
-    }
-
-    this.isWorkerBusy.set(false);
-  }
-
   validate(password: string, userInputs: string[]): void {
     if (this.isWorkerBusy() || !this.#isWorkerInitialized) {
       this.#workerInput = { password, userInputs };
@@ -49,5 +39,15 @@ export class PasswordStrengthService {
 
     this.isWorkerBusy.set(true);
     this.#worker.postMessage({ password, userInputs });
+  }
+
+  #checkWorkerInput(): void {
+    if (this.#workerInput) {
+      this.#worker.postMessage(this.#workerInput);
+      this.#workerInput = null;
+      return;
+    }
+
+    this.isWorkerBusy.set(false);
   }
 }

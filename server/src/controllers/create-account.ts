@@ -1,20 +1,20 @@
 import type { RequestHandler } from "express";
+import { generateCSRFToken } from "../auth/csrf.js";
+import { hashPassword } from "../auth/password-hashing.js";
+import { isPasswordExposed } from "../auth/pwned-passwords-api.js";
 import {
   BAD_REQUEST,
   CONFLICT,
   CREATED,
 } from "../constants/http-status-code.js";
-import { hashPassword } from "../auth/password-hashing.js";
-import { User } from "../models/user.js";
 import { users } from "../database/mongo-client.js";
+import { User } from "../models/user.js";
 import { ClientSession } from "../types/client-session.js";
-import { generateCSRFToken } from "../auth/csrf.js";
+import { isPasswordStrong } from "../validation/password.js";
 import {
   usernameHasValidType,
   usernameHasValidValue,
 } from "../validation/username.js";
-import { isPasswordStrong } from "../validation/password.js";
-import { isPasswordExposed } from "../auth/pwned-passwords-api.js";
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
   const reply = await users.findOne({ username }, { projection: { _id: 1 } });

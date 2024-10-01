@@ -2,11 +2,13 @@
 
 ![project status](https://img.shields.io/badge/project_status-active_development-green?style=for-the-badge)
 
-This project provides a reusable authentication system for applications built on the [MEAN stack](https://www.mongodb.com/resources/languages/mean-stack).
+This project provides a reusable authentication system for applications built on
+the [MEAN stack](https://www.mongodb.com/resources/languages/mean-stack).
 
 [![live demo](https://img.shields.io/badge/live_demo-blue?style=for-the-badge)](https://mean-authentication.app.jgerard.dev/)
 
-Warning: Because the API server sleeps after 30 minutes of inactivity (see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)),
+Warning: Because the API server sleeps after 30 minutes of inactivity (
+see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)),
 you may experience a few seconds of delay on the first API request.
 
 ## Tech Stack & Architecture
@@ -35,7 +37,8 @@ you may experience a few seconds of delay on the first API request.
 - Password hashing using [Argon2](https://github.com/P-H-C/phc-winner-argon2?tab=readme-ov-file#readme) algorithm
 - [Pwned Passwords API](https://haveibeenpwned.com/API/v3#PwnedPasswords) validation
 - Cookie-based server-side session authentication
-- CSRF protection using the [synchronizer token pattern](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#synchronizer-token-pattern)
+- CSRF protection using
+  the [synchronizer token pattern](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#synchronizer-token-pattern)
 - Rate limiting with [express-rate-limit](https://express-rate-limit.mintlify.app/overview)
 - CORS-enabled REST API
 

@@ -1,5 +1,5 @@
-import { mongoClient } from "./mongo-client.js";
 import type { User } from "../models/user.js";
+import { mongoClient } from "./mongo-client.js";
 
 const indexName = await mongoClient
   .db("app")

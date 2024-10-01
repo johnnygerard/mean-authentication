@@ -1,3 +1,4 @@
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,35 +8,33 @@ import {
   inject,
   signal,
 } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Router, RouterLink } from "@angular/router";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
-import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
-import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { MatInput } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
+import { MatInput } from "@angular/material/input";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
-import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
-import { finalize } from "rxjs";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { NotificationService } from "../../services/notification.service";
+import { Router, RouterLink } from "@angular/router";
 import { CONFLICT } from "_server/constants/http-status-code";
-import { SessionService } from "../../services/session.service";
+import {
+  PASSWORD_MAX_LENGTH,
+  ZXCVBN_MIN_SCORE,
+} from "_server/constants/password";
 import { ClientSession } from "_server/types/client-session";
 import {
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
 } from "_server/validation/username";
-
-import {
-  PASSWORD_MAX_LENGTH,
-  ZXCVBN_MIN_SCORE,
-} from "_server/constants/password";
+import { finalize } from "rxjs";
+import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
+import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
+import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
+import { NotificationService } from "../../services/notification.service";
 import { PasswordStrengthService } from "../../services/password-strength.service";
+import { SessionService } from "../../services/session.service";
+import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 
 @Component({
   selector: "app-register-form",

@@ -1,7 +1,7 @@
-import zxcvbn from "zxcvbn";
-import { ZXCVBN_MIN_SCORE } from "../constants/password.js";
 import { readFile } from "node:fs/promises";
+import zxcvbn from "zxcvbn";
 import { APP_NAME } from "../constants/app.js";
+import { ZXCVBN_MIN_SCORE } from "../constants/password.js";
 
 /**
  * Application-specific vocabulary for password strength validation

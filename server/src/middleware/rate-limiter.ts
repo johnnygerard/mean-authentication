@@ -1,11 +1,11 @@
 // Draft 6: https://www.ietf.org/archive/id/draft-ietf-httpapi-ratelimit-headers-06.html
 // Draft 7: https://www.ietf.org/archive/id/draft-ietf-httpapi-ratelimit-headers-07.html
-import rateLimit from "express-rate-limit";
 import type { RequestHandler } from "express";
-import { isRateLimiterDisabled } from "../constants/env.js";
+import rateLimit from "express-rate-limit";
 import ms from "ms";
 import { OutgoingHttpHeaders } from "node:http";
 import { parseRateLimit } from "ratelimit-header-parser";
+import { isRateLimiterDisabled } from "../constants/env.js";
 import { TOO_MANY_REQUESTS } from "../constants/http-status-code.js";
 
 const MESSAGE = "Sorry, you have made too many requests.";

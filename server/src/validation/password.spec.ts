@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { appDictionary, isPasswordStrong } from "./password.js";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
+import { appDictionary, isPasswordStrong } from "./password.js";
 
 describe("The isPasswordStrong function", () => {
   it("should return true for a strong password", () => {

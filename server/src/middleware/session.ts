@@ -1,9 +1,9 @@
-import session from "express-session";
-import { randomUUID } from "node:crypto";
-import type { CookieOptions } from "express";
-import ms from "ms";
-import { isProduction, SESSION_SECRET_1 } from "../constants/env.js";
 import RedisStore from "connect-redis";
+import type { CookieOptions } from "express";
+import session from "express-session";
+import ms from "ms";
+import { randomUUID } from "node:crypto";
+import { isProduction, SESSION_SECRET_1 } from "../constants/env.js";
 import { redisClient } from "../database/redis-client.js";
 
 /**

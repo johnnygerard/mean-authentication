@@ -1,9 +1,9 @@
-import { CanActivateFn, Router } from "@angular/router";
 import { inject } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
+import { CanActivateFn, Router } from "@angular/router";
 import { filter, map } from "rxjs";
-import { SessionService } from "../services/session.service";
 import { isPlatformServer } from "../constants";
+import { SessionService } from "../services/session.service";
 
 export function authGuardFactory(isAuthenticatedGuard: boolean): CanActivateFn {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

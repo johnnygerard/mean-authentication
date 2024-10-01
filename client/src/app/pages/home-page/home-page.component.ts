@@ -4,11 +4,11 @@ import {
   computed,
   inject,
 } from "@angular/core";
-import { SessionService } from "../../services/session.service";
-import { RouterLink } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
+import { RouterLink } from "@angular/router";
 
 import { APP_NAME } from "_server/constants/app";
+import { SessionService } from "../../services/session.service";
 
 @Component({
   selector: "app-home-page",

@@ -1,3 +1,5 @@
+import { DatePipe } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,11 +9,9 @@ import {
   OnInit,
   signal,
 } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { AccountData } from "_server/types/account-data";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { AccountData } from "_server/types/account-data";
 import { NotificationService } from "../../services/notification.service";
-import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-account-page",
@@ -22,12 +22,12 @@ import { DatePipe } from "@angular/common";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountPageComponent implements OnInit {
-  #destroyRef = inject(DestroyRef);
-  #http = inject(HttpClient);
-  #notifier = inject(NotificationService);
   account = signal<AccountData | null>(null);
   createdAt = computed(() => this.account()?.createdAt);
   username = computed(() => this.account()?.username);
+  #destroyRef = inject(DestroyRef);
+  #http = inject(HttpClient);
+  #notifier = inject(NotificationService);
 
   ngOnInit(): void {
     this.#http

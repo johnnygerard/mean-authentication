@@ -4,10 +4,10 @@ import {
   inject,
   OnInit,
 } from "@angular/core";
-import { NavigationComponent } from "./components/navigation/navigation.component";
-import { RouterOutlet } from "@angular/router";
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
+import { RouterOutlet } from "@angular/router";
+import { NavigationComponent } from "./components/navigation/navigation.component";
 import { progressActivity } from "./svg/progress-activity";
 
 @Component({

@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
-import { NotificationService } from "./notification.service";
 import { isPlatformServer } from "../constants";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: "root",
@@ -27,14 +27,6 @@ export class StorageService {
 
       throw e;
     }
-  }
-
-  #handleSecurityError(e: DOMException): void {
-    console.error(e);
-    this.#notifier.send(
-      "Your browser or site settings do not allow local storage." +
-        " Data will not be saved.",
-    );
   }
 
   get #localStorage(): Storage | null {
@@ -87,5 +79,13 @@ export class StorageService {
    */
   removeItem(key: string): void {
     this.#localStorage?.removeItem(key);
+  }
+
+  #handleSecurityError(e: DOMException): void {
+    console.error(e);
+    this.#notifier.send(
+      "Your browser or site settings do not allow local storage." +
+        " Data will not be saved.",
+    );
   }
 }
