@@ -4,9 +4,9 @@ import {
   computed,
   inject,
 } from "@angular/core";
-import { PasswordStrengthService } from "../../services/password-strength.service";
-import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { PasswordStrengthService } from "../../services/password-strength.service";
 
 @Component({
   selector: "app-password-strength-meter",
@@ -20,7 +20,10 @@ export class PasswordStrengthMeterComponent {
   result = inject(PasswordStrengthService).result;
   suggestions = computed(() => this.result().feedback.suggestions);
   isPasswordValid = computed(() => this.result().score >= 3);
-  ariaValueText = computed(() => {
+  ariaValueText = computed(() => this.#scoreLabel);
+  tooltip = computed(() => this.#tooltipText);
+
+  get #scoreLabel(): string {
     const score = this.result().score;
 
     switch (score) {
@@ -37,9 +40,9 @@ export class PasswordStrengthMeterComponent {
       default:
         return ((_: never) => _)(score); // Exhaustive check
     }
-  });
+  }
 
-  tooltip = computed(() => {
+  get #tooltipText(): string {
     // Hide tooltip when the password is empty
     if (this.result().password === "") return "";
 
@@ -47,5 +50,5 @@ export class PasswordStrengthMeterComponent {
       this.result().crack_times_display.offline_slow_hashing_1e4_per_second;
 
     return `Estimated time to crack: ${estimation}`;
-  });
+  }
 }
