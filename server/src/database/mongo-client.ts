@@ -1,6 +1,6 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
-import type { User } from "../models/user.js";
 import { MONGODB_CONNECTION_URL } from "../constants/env.js";
+import type { User } from "../models/user.js";
 
 /**
  * MongoDB Atlas client instance

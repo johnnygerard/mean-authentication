@@ -1,16 +1,16 @@
 import { inject, Injectable } from "@angular/core";
+import { isPlatformServer } from "../constants";
 import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class StorageService {
-  #isPlatformServer = typeof window === "undefined";
   readonly #isNotSupported = false;
   #notifier = inject(NotificationService);
 
   constructor() {
-    if (this.#isPlatformServer) return;
+    if (isPlatformServer) return;
 
     try {
       this.#isNotSupported = !window.localStorage;
@@ -27,14 +27,6 @@ export class StorageService {
 
       throw e;
     }
-  }
-
-  #handleSecurityError(e: DOMException): void {
-    console.error(e);
-    this.#notifier.send(
-      "Your browser or site settings do not allow local storage." +
-        " Data will not be saved.",
-    );
   }
 
   get #localStorage(): Storage | null {
@@ -87,5 +79,13 @@ export class StorageService {
    */
   removeItem(key: string): void {
     this.#localStorage?.removeItem(key);
+  }
+
+  #handleSecurityError(e: DOMException): void {
+    console.error(e);
+    this.#notifier.send(
+      "Your browser or site settings do not allow local storage." +
+        " Data will not be saved.",
+    );
   }
 }

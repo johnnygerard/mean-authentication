@@ -1,7 +1,7 @@
 <mat-toolbar role="navigation">
   <a mat-button routerLink="/">{{ APP_NAME }}</a>
   <span class="spacer"></span>
-  @switch (isAuthenticated()) {
+  @switch (session.isAuthenticated()) {
     @case (true) {
       <button
         data-test="logout-button"

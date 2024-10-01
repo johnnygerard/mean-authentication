@@ -1,13 +1,13 @@
 import { faker } from "@faker-js/faker";
-import { appDictionary, passwordIsStrong } from "./password.js";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
+import { appDictionary, isPasswordStrong } from "./password.js";
 
-describe("The passwordIsStrong function", () => {
+describe("The isPasswordStrong function", () => {
   it("should return true for a strong password", () => {
     const username = faker.internet.userName();
     const password = faker.internet.password({ length: 20 });
 
-    expect(passwordIsStrong(password, username)).toBeTrue();
+    expect(isPasswordStrong(password, username)).toBeTrue();
   });
 
   it("should return false for a weak password", () => {
@@ -16,7 +16,7 @@ describe("The passwordIsStrong function", () => {
     // while adding LUDS characters is not enough to make it strong
     const password = username + "aB1@";
 
-    expect(passwordIsStrong(password, username)).toBeFalse();
+    expect(isPasswordStrong(password, username)).toBeFalse();
   });
 
   it("should have a valid dictionary", () => {

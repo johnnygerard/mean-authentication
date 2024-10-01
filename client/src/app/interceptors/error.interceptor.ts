@@ -3,18 +3,18 @@ import {
   HttpInterceptorFn,
   HttpRequest,
 } from "@angular/common/http";
-import { delay, EMPTY, of, retry, throwError } from "rxjs";
-import { NotificationService } from "../services/notification.service";
 import { inject } from "@angular/core";
+import { Router } from "@angular/router";
 import {
   BAD_REQUEST,
   SERVICE_UNAVAILABLE,
   TOO_MANY_REQUESTS,
   UNAUTHORIZED,
 } from "_server/constants/http-status-code";
-import { Router } from "@angular/router";
-import { SessionService } from "../services/session.service";
 import ms from "ms";
+import { delay, EMPTY, of, retry, throwError } from "rxjs";
+import { NotificationService } from "../services/notification.service";
+import { SessionService } from "../services/session.service";
 
 const NON_HTTP_ERROR = 0; // Network or connection error
 const baseDelay = ms("50 milliseconds");

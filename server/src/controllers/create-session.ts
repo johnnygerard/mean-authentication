@@ -1,18 +1,18 @@
 import type { RequestHandler } from "express";
+import { generateCSRFToken } from "../auth/csrf.js";
+import { verifyPassword } from "../auth/password-hashing.js";
 import {
   BAD_REQUEST,
   CREATED,
   UNAUTHORIZED,
 } from "../constants/http-status-code.js";
-import { verifyPassword } from "../auth/password-hashing.js";
+import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 import { users } from "../database/mongo-client.js";
 import { ClientSession } from "../types/client-session.js";
-import { generateCSRFToken } from "../auth/csrf.js";
 import {
   usernameHasValidType,
   usernameHasValidValue,
 } from "../validation/username.js";
-import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {

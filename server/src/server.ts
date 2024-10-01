@@ -1,16 +1,16 @@
 import type { ErrorRequestHandler } from "express";
 import express from "express";
+import { isProduction, port } from "./constants/env.js";
 import {
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
 } from "./constants/http-status-code.js";
-import publicRouter from "./routes/public.js";
-import privateRouter from "./routes/private.js";
-import session from "./middleware/session.js";
 import cors from "./middleware/cors.js";
-import { isAuthenticated } from "./middleware/is-authenticated.js";
 import { csrf } from "./middleware/csrf.js";
-import { isProduction, port } from "./constants/env.js";
+import { isAuthenticated } from "./middleware/is-authenticated.js";
+import session from "./middleware/session.js";
+import privateRouter from "./routes/private.js";
+import publicRouter from "./routes/public.js";
 
 const app = express();
 

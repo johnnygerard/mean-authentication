@@ -1,10 +1,10 @@
 import { Routes } from "@angular/router";
-import { HomePageComponent } from "./pages/home-page/home-page.component";
-import { isUnauthenticatedGuard } from "./guards/is-unauthenticated.guard";
-import { NotFoundPageComponent } from "./pages/not-found-page.component";
-import { isAuthenticatedGuard } from "./guards/is-authenticated.guard";
 
 import { APP_NAME } from "_server/constants/app";
+import { isAuthenticatedGuard } from "./guards/is-authenticated.guard";
+import { isUnauthenticatedGuard } from "./guards/is-unauthenticated.guard";
+import { HomePageComponent } from "./pages/home-page/home-page.component";
+import { NotFoundPageComponent } from "./pages/not-found-page.component";
 
 export const routes: Routes = [
   {

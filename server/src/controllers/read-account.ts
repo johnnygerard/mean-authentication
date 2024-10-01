@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
-import { users } from "../database/mongo-client.js";
-import { NOT_FOUND, OK, UNAUTHORIZED } from "../constants/http-status-code.js";
 import { ObjectId } from "mongodb";
+import { NOT_FOUND, OK, UNAUTHORIZED } from "../constants/http-status-code.js";
+import { users } from "../database/mongo-client.js";
 
 export const readAccount: RequestHandler = async (req, res, next) => {
   try {
