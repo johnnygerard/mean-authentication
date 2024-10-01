@@ -18,13 +18,14 @@ import { PasswordStrengthService } from "../../services/password-strength.servic
 })
 export class PasswordStrengthMeterComponent {
   result = inject(PasswordStrengthService).result;
-  suggestions = computed(() => this.result().feedback.suggestions);
-  isPasswordValid = computed(() => this.result().score >= 3);
+  score = computed(() => this.result().score);
   ariaValueText = computed(() => this.#scoreLabel);
+  isPasswordValid = computed(() => this.score() >= 3);
+  suggestions = computed(() => this.result().feedback.suggestions);
   tooltip = computed(() => this.#tooltipText);
 
   get #scoreLabel(): string {
-    const score = this.result().score;
+    const score = this.score();
 
     switch (score) {
       case 0:
