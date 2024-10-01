@@ -13,8 +13,8 @@ import {
   usernameHasValidType,
   usernameHasValidValue,
 } from "../validation/username.js";
-import { passwordIsStrong } from "../validation/password.js";
-import { passwordIsExposed } from "../auth/pwned-passwords-api.js";
+import { isPasswordStrong } from "../validation/password.js";
+import { isPasswordExposed } from "../auth/pwned-passwords-api.js";
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
   const reply = await users.findOne({ username }, { projection: { _id: 1 } });
@@ -36,12 +36,12 @@ export const createAccount: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    if (typeof password !== "string" || !passwordIsStrong(password, username)) {
+    if (typeof password !== "string" || !isPasswordStrong(password, username)) {
       res.status(BAD_REQUEST).json("Invalid password");
       return;
     }
 
-    if (await passwordIsExposed(password)) {
+    if (await isPasswordExposed(password)) {
       res.status(BAD_REQUEST).json("Your password was leaked in a data breach");
       return;
     }

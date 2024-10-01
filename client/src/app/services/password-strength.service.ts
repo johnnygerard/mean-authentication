@@ -14,9 +14,9 @@ export class PasswordStrengthService {
     { type: "module" },
   );
   #workerInput: ZxcvbnInput | null = null;
-  #workerIsBusy = signal(true);
-  workerIsBusy = this.#workerIsBusy.asReadonly();
-  #workerIsInitialized = false;
+  #isWorkerBusy = signal(true);
+  isWorkerBusy = this.#isWorkerBusy.asReadonly();
+  #isWorkerInitialized = false;
 
   constructor() {
     const mainListener = (event: MessageEvent<ZxcvbnResult>): void => {
@@ -27,7 +27,7 @@ export class PasswordStrengthService {
     // Set up initial listener
     this.#worker.onmessage = (event: MessageEvent<string>): void => {
       console.log(event.data);
-      this.#workerIsInitialized = true;
+      this.#isWorkerInitialized = true;
       this.#worker.onmessage = mainListener; // Overwrite current listener
       this.#checkWorkerInput();
     };
@@ -40,16 +40,16 @@ export class PasswordStrengthService {
       return;
     }
 
-    this.#workerIsBusy.set(false);
+    this.#isWorkerBusy.set(false);
   }
 
   validate(password: string, userInputs: string[]): void {
-    if (this.#workerIsBusy() || !this.#workerIsInitialized) {
+    if (this.#isWorkerBusy() || !this.#isWorkerInitialized) {
       this.#workerInput = { password, userInputs };
       return;
     }
 
-    this.#workerIsBusy.set(true);
+    this.#isWorkerBusy.set(true);
     this.#worker.postMessage({ password, userInputs });
   }
 }

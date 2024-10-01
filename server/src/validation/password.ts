@@ -19,7 +19,7 @@ appDictionary.push(APP_NAME);
  * @returns ZXCVBN result
  * @see https://github.com/dropbox/zxcvbn?tab=readme-ov-file#readme
  */
-export const passwordIsStrong = (
+export const isPasswordStrong = (
   password: string,
   ...userInputs: string[]
 ): boolean => {

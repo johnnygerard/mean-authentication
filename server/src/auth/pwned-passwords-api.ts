@@ -13,7 +13,7 @@ import { hash } from "node:crypto";
  * reply with the 200 status code, `true` if the password is exposed.
  * @see https://haveibeenpwned.com/API/v3#PwnedPasswords
  */
-export const passwordIsExposed = async (password: string): Promise<boolean> => {
+export const isPasswordExposed = async (password: string): Promise<boolean> => {
   try {
     const digest = hash("sha1", password);
     const partialDigest = digest.slice(0, 5);

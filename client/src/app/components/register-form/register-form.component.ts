@@ -115,7 +115,7 @@ export class RegisterFormComponent {
     if (
       !this.form.valid ||
       this.isLoading() ||
-      this.#passwordStrength.workerIsBusy()
+      this.#passwordStrength.isWorkerBusy()
     ) {
       return;
     }
