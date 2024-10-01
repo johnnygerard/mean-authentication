@@ -8,12 +8,14 @@ import { ZxcvbnResult } from "_server/types/zxcvbn-result";
 })
 export class PasswordStrengthService {
   #result = signal(zxcvbnDefaultResult);
+  result = this.#result.asReadonly();
   readonly #worker = new Worker(
     new URL("../workers/password-strength.worker.js", import.meta.url),
     { type: "module" },
   );
   #workerInput: ZxcvbnInput | null = null;
   #workerIsBusy = signal(true);
+  workerIsBusy = this.#workerIsBusy.asReadonly();
   #workerIsInitialized = false;
 
   constructor() {
@@ -39,14 +41,6 @@ export class PasswordStrengthService {
     }
 
     this.#workerIsBusy.set(false);
-  }
-
-  get result() {
-    return this.#result.asReadonly();
-  }
-
-  get workerIsBusy() {
-    return this.#workerIsBusy.asReadonly();
   }
 
   validate(password: string, userInputs: string[]): void {
