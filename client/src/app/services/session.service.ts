@@ -10,11 +10,10 @@ const SESSION_KEY = "session";
 })
 export class SessionService {
   #storage = inject(StorageService);
-  #user = signal<ClientSession | null | undefined>(undefined);
-  user = this.#user.asReadonly();
+  user = signal<ClientSession | null | undefined>(undefined);
 
   isAuthenticated = computed<boolean | null>(() => {
-    const user = this.#user();
+    const user = this.user();
 
     if (user === undefined) return null;
     return user !== null;
@@ -25,16 +24,16 @@ export class SessionService {
 
     // Restore session from storage
     const session = this.#storage.getItem(SESSION_KEY);
-    this.#user.set(session === null ? null : JSON.parse(session));
+    this.user.set(session === null ? null : JSON.parse(session));
   }
 
   clear(): void {
-    this.#user.set(null);
+    this.user.set(null);
     this.#storage.removeItem(SESSION_KEY);
   }
 
   store(user: ClientSession): void {
-    this.#user.set(user);
+    this.user.set(user);
     this.#storage.setItem(SESSION_KEY, JSON.stringify(user));
   }
 }
