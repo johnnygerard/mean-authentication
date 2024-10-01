@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { ClientSession } from "_server/types/client-session";
 import { StorageService } from "./storage.service";
+import { isPlatformServer } from "../constants";
 
 const SESSION_KEY = "session";
 
@@ -8,7 +9,6 @@ const SESSION_KEY = "session";
   providedIn: "root",
 })
 export class SessionService {
-  #isPlatformServer = typeof window === "undefined";
   #storage = inject(StorageService);
   #user = signal<ClientSession | null | undefined>(undefined);
   user = this.#user.asReadonly();
@@ -21,7 +21,7 @@ export class SessionService {
   });
 
   constructor() {
-    if (this.#isPlatformServer) return;
+    if (isPlatformServer) return;
 
     // Restore session from storage
     const session = this.#storage.getItem(SESSION_KEY);

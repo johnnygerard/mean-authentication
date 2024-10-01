@@ -3,8 +3,7 @@ import { inject } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
 import { filter, map } from "rxjs";
 import { SessionService } from "../services/session.service";
-
-const isPlatformServer = typeof window === "undefined";
+import { isPlatformServer } from "../constants";
 
 export function authGuardFactory(isAuthenticatedGuard: boolean): CanActivateFn {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

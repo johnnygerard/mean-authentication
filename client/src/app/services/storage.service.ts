@@ -1,16 +1,16 @@
 import { inject, Injectable } from "@angular/core";
 import { NotificationService } from "./notification.service";
+import { isPlatformServer } from "../constants";
 
 @Injectable({
   providedIn: "root",
 })
 export class StorageService {
-  #isPlatformServer = typeof window === "undefined";
   readonly #isNotSupported = false;
   #notifier = inject(NotificationService);
 
   constructor() {
-    if (this.#isPlatformServer) return;
+    if (isPlatformServer) return;
 
     try {
       this.#isNotSupported = !window.localStorage;
