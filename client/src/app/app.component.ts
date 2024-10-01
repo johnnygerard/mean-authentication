@@ -1,4 +1,9 @@
-import { Component, inject, OnInit } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from "@angular/core";
 import { NavigationComponent } from "./components/navigation/navigation.component";
 import { RouterOutlet } from "@angular/router";
 import { MatIconRegistry } from "@angular/material/icon";
@@ -11,6 +16,7 @@ import { progressActivity } from "./svg/progress-activity";
   imports: [RouterOutlet, NavigationComponent],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   #iconRegistry = inject(MatIconRegistry);
