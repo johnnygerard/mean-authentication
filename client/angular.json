@@ -146,6 +146,9 @@
             "scripts": [],
             "webWorkerTsConfig": "tsconfig.worker.json"
           }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright"
         }
       }
     }

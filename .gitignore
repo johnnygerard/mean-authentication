@@ -6,7 +6,10 @@
 /client/.angular/cache/
 /client/cypress/downloads/
 /client/cypress/screenshots/
+/client/playwright-report/
+/client/test-results/
 
 /server/node_modules/
 /server/dist/
 /server/.env
+
