@@ -45,7 +45,7 @@
     "cy:run": "cypress run",
     "start": "ng serve",
     "test": "ng test",
-    "e2e": "ng e2e"
+    "e2e": "playwright test"
   },
   "version": "0.0.0"
 }
