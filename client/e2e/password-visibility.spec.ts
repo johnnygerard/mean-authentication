@@ -12,11 +12,11 @@ test.beforeEach(async ({ page }) => {
   await password.fill(faker.internet.password());
 });
 
-test("The password is hidden by default.", async ({ page }) => {
+test("The password is hidden by default.", async () => {
   await expect(password).toHaveAttribute("type", "password");
 });
 
-test("The password's visibility can be toggled.", async ({ page }) => {
+test("The password's visibility can be toggled.", async () => {
   await toggle.click();
   await expect(password).toHaveAttribute("type", "text");
 
@@ -24,7 +24,7 @@ test("The password's visibility can be toggled.", async ({ page }) => {
   await expect(password).toHaveAttribute("type", "password");
 });
 
-test("The toggle button retains focus when clicked on.", async ({ page }) => {
+test("The toggle button retains focus when clicked on.", async () => {
   await toggle.click();
   await expect(toggle).toBeFocused();
 });
