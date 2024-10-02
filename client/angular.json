@@ -54,7 +54,7 @@
               },
               {
                 "glob": "app-dictionary.txt",
-                "input": "../server/src/validation"
+                "input": "../server/data"
               }
             ],
             "stylePreprocessorOptions": {
@@ -136,7 +136,7 @@
               },
               {
                 "glob": "app-dictionary.txt",
-                "input": "../server/src/validation"
+                "input": "../server/data"
               }
             ],
             "stylePreprocessorOptions": {
