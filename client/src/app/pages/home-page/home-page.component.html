@@ -5,7 +5,7 @@
 @switch (isAuthenticated()) {
   @case (true) {
     <a
-      data-test="account-link"
+      data-testid="account-link"
       class="cta-link"
       mat-stroked-button
       routerLink="/account"
@@ -14,7 +14,7 @@
   }
   @case (false) {
     <a
-      data-test="register-link"
+      data-testid="register-link"
       class="cta-link"
       mat-flat-button
       routerLink="/register"

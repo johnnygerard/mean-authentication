@@ -1,14 +1,18 @@
 <mat-card>
   <mat-card-content>
     <h1 class="mat-title-medium">Create your account</h1>
-    <form (ngSubmit)="onSubmit()" [formGroup]="form" data-test="register-form">
+    <form
+      (ngSubmit)="onSubmit()"
+      [formGroup]="form"
+      data-testid="register-form"
+    >
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input
           [attr.maxlength]="USERNAME_MAX_LENGTH"
           appUsernameValidator
           autocomplete="username"
-          data-test="username"
+          data-testid="username"
           formControlName="username"
           matInput
           spellcheck="false"
@@ -27,7 +31,7 @@
           [attr.maxlength]="PASSWORD_MAX_LENGTH"
           [type]="isPasswordVisible() ? 'text' : 'password'"
           autocomplete="new-password"
-          data-test="password"
+          data-testid="password"
           formControlName="password"
           matInput
         />
@@ -35,7 +39,7 @@
           (click)="togglePasswordVisibility($event)"
           [attr.aria-label]="visibilityTooltip()"
           [matTooltip]="visibilityTooltip()"
-          data-test="password-visibility"
+          data-testid="password-visibility"
           mat-icon-button
           matSuffix
           type="button"
