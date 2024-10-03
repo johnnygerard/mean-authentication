@@ -85,6 +85,7 @@ export class RegisterFormComponent {
   #router = inject(Router);
   #session = inject(SessionService);
   #passwordStrength = inject(PasswordStrengthService);
+  #shouldResubmit = false;
 
   constructor() {
     this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe((next) => {
@@ -97,26 +98,32 @@ export class RegisterFormComponent {
       this.#passwordStrength.validate(password, userInputs);
     });
 
-    effect((): void => {
-      const result = this.#passwordStrength.result();
-      if (result.score >= ZXCVBN_MIN_SCORE) {
-        return;
-      }
-      const passwordControl = this.form.controls.password;
+    effect(
+      (): void => {
+        try {
+          const result = this.#passwordStrength.result();
+          if (result.score >= ZXCVBN_MIN_SCORE) return;
+          const passwordControl = this.form.controls.password;
 
-      passwordControl.setErrors({
-        ...passwordControl.errors,
-        strength: result.feedback.warning || "Vulnerable password",
-      });
-    });
+          passwordControl.setErrors({
+            ...passwordControl.errors,
+            strength: result.feedback.warning || "Vulnerable password",
+          });
+        } finally {
+          if (this.#shouldResubmit) {
+            this.#shouldResubmit = false;
+            this.onSubmit();
+          }
+        }
+      },
+      { allowSignalWrites: true },
+    );
   }
 
   onSubmit(): void {
-    if (
-      !this.form.valid ||
-      this.isLoading() ||
-      this.#passwordStrength.isWorkerBusy()
-    ) {
+    if (!this.form.valid || this.isLoading()) return;
+    if (this.#passwordStrength.isWorkerBusy()) {
+      this.#shouldResubmit = true;
       return;
     }
     this.isLoading.set(true);
