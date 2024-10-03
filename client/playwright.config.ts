@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import ms from "ms";
 
 /**
  * Read environment variables from file.
@@ -10,6 +11,8 @@ import { defineConfig, devices } from "@playwright/test";
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  timeout: ms("5 seconds"),
+  globalTimeout: ms("30 seconds"),
   testDir: "./e2e",
   /* Run tests in files in parallel */
   fullyParallel: true,
