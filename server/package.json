@@ -22,7 +22,7 @@
     "jasmine": "^5.3.0"
   },
   "scripts": {
-    "build": "npm ci --include=dev && tsc --project tsconfig.prod.json && npm prune",
+    "build": "npm ci --include=dev && tsc && npm prune",
     "build:dev": "tsc",
     "init-db": "node --env-file=.env dist/database/init.js",
     "start": "node dist/server.js",
