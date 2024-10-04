@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="cy:open" type="js.build_tools.npm" nameIsGenerated="true">
-    <package-json value="$PROJECT_DIR$/client/package.json" />
+  <configuration default="false" name="build:server" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/server/package.json" />
     <command value="run" />
     <scripts>
-      <script value="cy:open" />
+      <script value="build:dev" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
