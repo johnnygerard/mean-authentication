@@ -21,9 +21,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "heroku-cleanup": "cd server && rm -rf src/",
-    "heroku-postbuild": "npm ci --include=dev && cd server && npm run build:heroku",
+    "heroku-postbuild": "npm ci --include=dev && cd server && npm run build",
     "lint": "eslint .",
-    "start:heroku": "cd server && npm start"
+    "start": "cd server && npm start"
   },
   "type": "module"
 }
