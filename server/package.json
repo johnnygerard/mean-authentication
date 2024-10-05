@@ -24,7 +24,6 @@
     "build": "npm ci --include=dev && tsc && npm prune",
     "build:dev": "tsc",
     "init-db": "node --env-file=.env dist/database/init.js",
-    "start": "node dist/server.js",
     "start:dev": "node --watch --env-file=.env dist/server.js",
     "start:e2e": "node --watch --env-file=.env dist/test/e2e-server.js",
     "test": ". ./.env && jasmine --config=jasmine.json"
