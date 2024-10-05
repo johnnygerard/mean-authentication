@@ -22,7 +22,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "heroku-cleanup": "cd server && rm -rf src/",
-    "heroku-postbuild": "npm ci --include=dev && cd server && npm run build",
+    "heroku-postbuild": "npm ci --include=dev && cd server && npm ci --include=dev && tsc && npm prune",
     "lint": "eslint ."
   },
   "type": "module"
