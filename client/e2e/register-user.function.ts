@@ -2,6 +2,12 @@ import { faker } from "@faker-js/faker";
 import { expect, Page } from "@playwright/test";
 import { CREATED } from "_server/constants/http-status-code";
 
+/**
+ * Fill out and submit the registration form while verifying the response status.
+ * @param page - The registration page
+ * @param credentials - The user's credentials to register with
+ * @param expectedStatus - The expected response status code
+ */
 export const registerUser = async (
   page: Page,
   credentials?: Partial<{
