@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { expect, test } from "@playwright/test";
 import { CONFLICT } from "_server/constants/http-status-code";
-import { globalUser } from "../global-user";
+import { globalCredentials } from "../global-credentials";
 import { registerUser } from "../register-user.function";
 
 test.describe("User registration", () => {
@@ -31,6 +31,10 @@ test.describe("User registration", () => {
   });
 
   test("User cannot register with an existing username", async ({ page }) => {
-    await registerUser(page, { username: globalUser.username }, CONFLICT);
+    await registerUser(
+      page,
+      { username: globalCredentials.username },
+      CONFLICT,
+    );
   });
 });

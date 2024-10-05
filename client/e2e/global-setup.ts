@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
-import { globalUser } from "./global-user";
+import { globalCredentials } from "./global-credentials";
 import { registerUser } from "./register-user.function";
 
 test("Register a new user", async ({ page }) => {
-  await registerUser(page, globalUser);
+  await registerUser(page, globalCredentials);
 });

@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { UNAUTHORIZED } from "_server/constants/http-status-code";
-import { globalUser } from "../global-user";
+import { globalCredentials } from "../global-credentials";
 import { logInUser } from "../log-in-user.function";
 
 test.describe("User login", () => {
-  const { username, password } = globalUser;
+  const { username, password } = globalCredentials;
 
   test("User login is successful", async ({ page }) => {
     const expectUserToBeLoggedIn = async (): Promise<void> => {
@@ -13,7 +13,7 @@ test.describe("User login", () => {
     };
 
     await test.step("Form submission is successful", async () => {
-      await logInUser(page, globalUser);
+      await logInUser(page, globalCredentials);
       await expectUserToBeLoggedIn();
     });
 
