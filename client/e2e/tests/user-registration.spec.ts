@@ -30,11 +30,8 @@ test.describe("User registration", () => {
     });
   });
 
-  test("User cannot register with an existing username", async ({ page }) => {
-    await registerUser(
-      page,
-      { username: globalCredentials.username },
-      CONFLICT,
-    );
+  test("User cannot reuse a registered username", async ({ page }) => {
+    const username = globalCredentials.username;
+    await registerUser(page, { username }, CONFLICT);
   });
 });
