@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="build:angular" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/client/package.json" />
+  <configuration default="false" name="serve:e2e" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/server/package.json" />
     <command value="run" />
     <scripts>
-      <script value="build" />
+      <script value="serve:e2e" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

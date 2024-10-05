@@ -1,12 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="e2e" type="js.build_tools.npm" nameIsGenerated="true">
-    <package-json value="$PROJECT_DIR$/client/package.json" />
-    <command value="run" />
-    <scripts>
-      <script value="e2e" />
-    </scripts>
-    <node-interpreter value="project" />
-    <envs />
+  <configuration default="false" name="e2e" type="CompoundRunConfigurationType">
+    <toRun name="pw" type="js.build_tools.npm" />
+    <toRun name="serve:api" type="js.build_tools.npm" />
+    <toRun name="serve:e2e" type="js.build_tools.npm" />
+    <toRun name="serve:ng" type="js.build_tools.npm" />
     <method v="2" />
   </configuration>
 </component>

@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="e2e:serve" type="CompoundRunConfigurationType">
+  <configuration default="false" name="e2e" type="CompoundRunConfigurationType">
+    <toRun name="e2e" type="js.build_tools.npm" />
     <toRun name="start:angular" type="js.build_tools.npm" />
     <toRun name="start:e2e-server" type="js.build_tools.npm" />
     <toRun name="start:server" type="js.build_tools.npm" />
