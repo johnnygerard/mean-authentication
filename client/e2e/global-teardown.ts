@@ -1,6 +1,6 @@
-import { test as teardown } from "@playwright/test";
+import { test } from "@playwright/test";
 
-teardown("Delete all user accounts", async ({ playwright }) => {
+test("Delete all user accounts", async ({ playwright }) => {
   const request = await playwright.request.newContext({
     baseURL: "http://localhost:3001",
   });
