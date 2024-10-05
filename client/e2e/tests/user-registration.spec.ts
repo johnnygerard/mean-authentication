@@ -4,7 +4,7 @@ import { CONFLICT } from "_server/constants/http-status-code";
 import { globalUser } from "../global-user";
 import { registerUser } from "../register-user.function";
 
-test.describe("User Registration", () => {
+test.describe("User registration", () => {
   const REGISTER = "/register";
   const REDIRECT = "/";
 
