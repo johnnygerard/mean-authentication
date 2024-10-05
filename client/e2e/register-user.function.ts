@@ -4,7 +4,7 @@ import { CREATED } from "_server/constants/http-status-code";
 
 export const registerUser = async (
   page: Page,
-  user?: Partial<{
+  credentials?: Partial<{
     username: string;
     password: string;
   }>,
@@ -12,8 +12,8 @@ export const registerUser = async (
 ): Promise<void> => {
   await page.goto("/register");
 
-  const username = user?.username ?? faker.internet.userName();
-  const password = user?.password ?? faker.internet.password();
+  const username = credentials?.username ?? faker.internet.userName();
+  const password = credentials?.password ?? faker.internet.password();
   const form = page.getByTestId("register-form");
   const usernameInput = form.getByTestId("username");
   const passwordInput = form.getByTestId("password");

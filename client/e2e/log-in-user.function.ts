@@ -4,12 +4,12 @@ import { CREATED } from "_server/constants/http-status-code";
 /**
  * Fill out and submit the login form while verifying the response status.
  * @param page - The login page
- * @param user - The user to log in
+ * @param credentials - The user's login credentials
  * @param expectedStatus - The expected response status code
  */
 export const logInUser = async (
   page: Page,
-  user: {
+  credentials: {
     username: string;
     password: string;
   },
@@ -17,7 +17,7 @@ export const logInUser = async (
 ): Promise<void> => {
   await page.goto("/sign-in");
 
-  const { username, password } = user;
+  const { username, password } = credentials;
   const form = page.getByTestId("login-form");
   const usernameInput = form.getByTestId("username");
   const passwordInput = form.getByTestId("password");
