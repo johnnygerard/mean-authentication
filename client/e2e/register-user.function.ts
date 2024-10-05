@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { Page } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 import { CREATED } from "_server/constants/http-status-code";
 
 export const registerUser = async (
@@ -17,18 +17,15 @@ export const registerUser = async (
   const form = page.getByTestId("register-form");
   const usernameInput = form.getByTestId("username");
   const passwordInput = form.getByTestId("password");
-  
-  const responsePromise = page.waitForResponse((response) => {
-    const request = response.request();
-    return (
-      request.method() === "POST" &&
-      new URL(request.url()).pathname === "/api/account" &&
-      response.status() === expectedStatus
-    );
-  });
+  const responsePromise = page.waitForResponse("/api/account");
 
   await usernameInput.fill(username);
   await passwordInput.fill(password);
   await passwordInput.press("Enter");
-  await responsePromise.then((response) => response.finished());
+
+  await responsePromise.then((response) => {
+    expect(response.request().method()).toBe("POST");
+    expect(response.status()).toBe(expectedStatus);
+    return response.finished();
+  });
 };
