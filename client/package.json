@@ -40,7 +40,7 @@
   "scripts": {
     "build": "ng build",
     "build:vercel": "ng version && ng build --configuration \"$VERCEL_ENV\"",
-    "e2e": "playwright test",
+    "e2e": "node wait-e2e.mjs && playwright test",
     "start": "ng serve",
     "test": "ng test"
   },
