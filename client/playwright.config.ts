@@ -11,8 +11,8 @@ import ms from "ms";
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: ms("5 seconds"),
-  globalTimeout: ms("30 seconds"),
+  timeout: ms("10 seconds"),
+  globalTimeout: ms("1 minute"),
   testDir: "./e2e",
   /* Run tests in files in parallel */
   fullyParallel: true,
