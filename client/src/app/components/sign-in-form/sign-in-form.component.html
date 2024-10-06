@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content>
     <h1 class="mat-title-medium">Sign in to your account</h1>
-    <form #form="ngForm" (ngSubmit)="onSubmit(form)" data-test="login-form">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" data-testid="login-form">
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input
@@ -11,7 +11,7 @@
           [attr.minlength]="USERNAME_MIN_LENGTH"
           appUsernameValidator
           autocomplete="username"
-          data-test="username"
+          data-testid="username"
           matInput
           name="username"
           required
@@ -31,7 +31,7 @@
           [attr.maxlength]="PASSWORD_MAX_LENGTH"
           [type]="isPasswordVisible() ? 'text' : 'password'"
           autocomplete="current-password"
-          data-test="password"
+          data-testid="password"
           matInput
           name="password"
           required
@@ -40,7 +40,7 @@
           (click)="togglePasswordVisibility($event)"
           [attr.aria-label]="visibilityTooltip()"
           [matTooltip]="visibilityTooltip()"
-          data-test="password-visibility"
+          data-testid="visibility-toggle"
           mat-icon-button
           matSuffix
           type="button"

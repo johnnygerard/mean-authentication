@@ -1,1 +1,1 @@
-web: npm run start:heroku
+web: cd server && node dist/server.js

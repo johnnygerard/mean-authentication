@@ -1,4 +1,6 @@
-/.github/
 /.idea/
+/.github/
 /client/
 /docs/
+/server/src/**/*.spec.ts
+/server/src/test/

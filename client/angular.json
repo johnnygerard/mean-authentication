@@ -147,36 +147,8 @@
             "webWorkerTsConfig": "tsconfig.worker.json"
           }
         },
-        "cypress-run": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "mean-authentication:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "mean-authentication:serve:production"
-            }
-          }
-        },
-        "cypress-open": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "watch": true,
-            "headless": false
-          }
-        },
         "e2e": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "mean-authentication:serve",
-            "watch": true,
-            "headless": false
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "mean-authentication:serve:production"
-            }
-          }
+          "builder": "playwright-ng-schematics:playwright"
         }
       }
     }
@@ -185,8 +157,7 @@
     "schematicCollections": [
       "@schematics/angular",
       "@angular/material",
-      "@angular/cdk",
-      "@cypress/schematic"
+      "@angular/cdk"
     ]
   }
 }

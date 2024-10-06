@@ -4,7 +4,7 @@
   @switch (session.isAuthenticated()) {
     @case (true) {
       <button
-        data-test="logout-button"
+        data-testid="logout-button"
         mat-button
         type="button"
         (click)="onLogout()"
@@ -13,7 +13,7 @@
       </button>
     }
     @case (false) {
-      <a data-test="login-link" mat-button routerLink="/sign-in">Sign in</a>
+      <a data-testid="login-link" mat-button routerLink="/sign-in">Sign in</a>
     }
   }
 </mat-toolbar>
