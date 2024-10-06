@@ -1,0 +1,4 @@
+# See link below for path configuration
+# https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#specifying-directories-to-scan
+paths-ignore:
+  - "**/*.spec.ts"
