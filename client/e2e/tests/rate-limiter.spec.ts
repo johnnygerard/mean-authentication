@@ -21,7 +21,7 @@ test.describe.skip("Rate limiter", () => {
       const responsePromise = page.waitForResponse("/api/session");
 
       await passwordInput.fill(faker.internet.password());
-      await passwordInput.press("Enter");
+      await page.keyboard.press("Enter");
 
       if ((await responsePromise).status() !== TOO_MANY_REQUESTS)
         await tryToLogin(loginAttempts + 1);

@@ -31,13 +31,11 @@ test.describe("Password visibility", () => {
   });
 
   test("The toggle button is keyboard-accessible.", async ({ page }) => {
-    await passwordInput.press("Tab");
-    const toggle = page.locator(":focus");
-
-    await toggle.press("Enter");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Enter");
     await expect(passwordInput).toHaveAttribute("type", "text");
 
-    await toggle.press("Space");
+    await page.keyboard.press("Space");
     await expect(passwordInput).toHaveAttribute("type", "password");
   });
 });

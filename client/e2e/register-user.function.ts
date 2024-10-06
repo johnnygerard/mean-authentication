@@ -27,7 +27,7 @@ export const registerUser = async (
 
   await usernameInput.fill(username);
   await passwordInput.fill(password);
-  await passwordInput.press("Enter");
+  await page.keyboard.press("Enter");
 
   await responsePromise.then((response) => {
     expect(response.request().method()).toBe("POST");
