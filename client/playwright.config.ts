@@ -11,7 +11,7 @@ import ms from "ms";
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: ms("10 seconds"),
+  timeout: ms("5 seconds"),
   globalTimeout: ms("1 minute"),
   testDir: "./e2e",
   /* Run tests in files in parallel */
@@ -62,22 +62,22 @@ export default defineConfig({
 
     /* Test against mobile viewports. */
     // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
+    //   name: "Mobile Chrome",
+    //   use: { ...devices["Pixel 5"] },
     // },
     // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
+    //   name: "Mobile Safari",
+    //   use: { ...devices["iPhone 12"] },
     // },
 
     /* Test against branded browsers. */
     // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
+    //   name: "Microsoft Edge",
+    //   use: { ...devices["Desktop Edge"], channel: "msedge" },
     // },
     // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    //   name: "Google Chrome",
+    //   use: { ...devices["Desktop Chrome"], channel: "chrome" },
     // },
   ],
 
