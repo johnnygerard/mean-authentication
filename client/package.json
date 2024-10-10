@@ -39,6 +39,7 @@
     "build": "ng build",
     "build:vercel": "ng version && ng build --configuration \"$VERCEL_ENV\"",
     "pw": "node wait-e2e.mjs && playwright test",
+    "pw:failed": "playwright test --last-failed",
     "pw:headed": "playwright test --headed",
     "pw:report": "playwright show-report",
     "pw:ui": "playwright test --ui",
