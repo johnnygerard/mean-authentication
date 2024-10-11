@@ -22,7 +22,7 @@
     "@angular-devkit/build-angular": "^18.2.6",
     "@angular/cli": "^18.2.6",
     "@angular/compiler-cli": "^18.2.6",
-    "@playwright/test": "1.47.2",
+    "@playwright/test": "^1.48.0",
     "@types/express": "^4.17.21",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
@@ -31,7 +31,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "playwright-ng-schematics": "^1.0.1"
+    "playwright-ng-schematics": "^1.0.2"
   },
   "name": "mean-authentication",
   "private": true,
@@ -39,6 +39,7 @@
     "build": "ng build",
     "build:vercel": "ng version && ng build --configuration \"$VERCEL_ENV\"",
     "pw": "node wait-e2e.mjs && playwright test",
+    "pw:failed": "playwright test --last-failed",
     "pw:headed": "playwright test --headed",
     "pw:report": "playwright show-report",
     "pw:ui": "playwright test --ui",

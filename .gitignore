@@ -4,8 +4,11 @@
 /client/node_modules/
 /client/dist/
 /client/.angular/cache/
-/client/playwright-report/
+
+# Playwright
 /client/test-results/
+/client/playwright-report/
+/client/playwright/.cache/
 
 /server/node_modules/
 /server/dist/

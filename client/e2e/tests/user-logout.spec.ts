@@ -9,7 +9,7 @@ test.describe("User logout", () => {
     await page.goto("/account"); // Visit a private page for the redirect test
     const responsePromise = page.waitForResponse("/api/user/session");
     const logoutButton = page.getByTestId("logout-button");
-    await logoutButton.click();
+    await logoutButton.press("Enter");
 
     await responsePromise.then((response) => {
       expect(response.request().method()).toBe("DELETE");

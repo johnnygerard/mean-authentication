@@ -18,14 +18,15 @@ test.describe("Password visibility", () => {
   });
 
   test("The password's visibility can be toggled.", async () => {
-    await toggle.click();
+    await toggle.press("Enter");
     await expect(passwordInput).toHaveAttribute("type", "text");
 
-    await toggle.click();
+    await toggle.press("Enter");
     await expect(passwordInput).toHaveAttribute("type", "password");
   });
 
-  test("The toggle button retains focus when clicked on.", async () => {
+  // Test skipped because of https://github.com/microsoft/playwright/issues/33057
+  test.skip("The toggle button retains focus when clicked on.", async () => {
     await toggle.click();
     await expect(toggle).toBeFocused();
   });
