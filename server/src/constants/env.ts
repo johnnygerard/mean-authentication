@@ -22,5 +22,7 @@ const getProdVar = (key: string): string | null => {
 
 export const ARGON2_SECRET = getProdVar("ARGON2_SECRET");
 export const SESSION_SECRET_1 = getProdVar("SESSION_SECRET_1");
-export const MONGODB_CONNECTION_URL = getProdVar("MONGODB_CONNECTION_URL");
+export const MONGODB_CONNECTION_URL =
+  getProdVar("MONGODB_CONNECTION_URL") ??
+  "mongodb://localhost:27017/?directConnection=true";
 export const REDIS_CONNECTION_URL = getProdVar("REDIS_CONNECTION_URL");
