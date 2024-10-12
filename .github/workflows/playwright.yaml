@@ -1,8 +1,5 @@
 name: Playwright Tests
 on:
-  # TODO remove after test
-  push:
-    branches: [build]
   pull_request:
     branches: [main]
 jobs:
