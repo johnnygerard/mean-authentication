@@ -22,6 +22,8 @@ jobs:
         run: npm ci
       - name: Install Playwright Browsers
         run: cd client && npx playwright install --with-deps
+      - name: Build server
+        run: cd server && npm run build
       - name: Start servers
         run: |
           docker compose up -d &&
