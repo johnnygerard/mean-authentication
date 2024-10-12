@@ -27,11 +27,12 @@ jobs:
       - name: Start servers
         run: |
           docker compose up -d &&
+          npx wait-on tcp:6379 tcp:27017 &&
           cd client && npm run serve &
           cd server && npm run serve:api &
           cd server && npm run serve:e2e &
       - name: Run Playwright tests
-        run: cd client && npx playwright test
+        run: cd client && npm run pw
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
