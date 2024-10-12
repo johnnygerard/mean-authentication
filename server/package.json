@@ -22,10 +22,11 @@
   },
   "scripts": {
     "build": "tsc",
-    "init-db": "node --env-file=.env dist/database/init.js",
-    "serve:api": "node --watch --env-file=.env dist/server.js",
-    "serve:e2e": "node --watch --env-file=.env dist/test/e2e-server.js",
-    "test": ". ./.env && jasmine --config=jasmine.json"
+    "init-db": "node dist/database/init.js",
+    "serve:api": "node --watch dist/server.js",
+    "serve:api-rate-limited": "ENABLE_RATE_LIMITER= npm run serve:api",
+    "serve:e2e": "node --watch dist/test/e2e-server.js",
+    "test": "jasmine --config=jasmine.json"
   },
   "type": "module"
 }

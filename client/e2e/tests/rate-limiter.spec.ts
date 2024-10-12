@@ -4,7 +4,7 @@ import { TOO_MANY_REQUESTS } from "_server/constants/http-status-code";
 
 // This test should be run separately. To run it:
 // - Replace `describe.skip` with `describe.only`
-// - Set DISABLE_RATE_LIMITER to any value other than "true" in the .env file
+// - Set the `ENABLE_RATE_LIMITER` environment variable
 test.describe.skip("Rate limiter", () => {
   test("Requests above the rate limit are blocked", async ({ page }) => {
     // Simulate a password brute force attack
