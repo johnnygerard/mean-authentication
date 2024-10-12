@@ -38,13 +38,14 @@
   "scripts": {
     "build": "ng build",
     "build:vercel": "ng version && ng build --configuration \"$VERCEL_ENV\"",
-    "pw": "node wait-e2e.mjs && playwright test",
+    "pw": "npm run wait:servers && playwright test",
     "pw:failed": "playwright test --last-failed",
     "pw:headed": "playwright test --headed",
     "pw:report": "playwright show-report",
     "pw:ui": "playwright test --ui",
     "serve": "ng serve",
-    "test": "ng test"
+    "test": "ng test",
+    "wait:servers": "wait-on tcp:3000 tcp:3001 tcp:4200 tcp:6379 tcp:27017"
   },
   "version": "0.0.0"
 }
