@@ -1,9 +1,15 @@
 name: Playwright Tests
 on:
+  # TODO remove after test
+  push:
+    branches: [build]
   pull_request:
     branches: [main]
 jobs:
   test:
+    defaults:
+      run:
+        shell: bash # Required for Bash jobs
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -16,6 +22,12 @@ jobs:
         run: npm ci
       - name: Install Playwright Browsers
         run: cd client && npx playwright install --with-deps
+      - name: Start servers
+        run: |
+          docker compose up -d &&
+          cd client && npm run serve &
+          cd server && npm run serve:api &
+          cd server && npm run serve:e2e &
       - name: Run Playwright tests
         run: cd client && npx playwright test
       - uses: actions/upload-artifact@v4
