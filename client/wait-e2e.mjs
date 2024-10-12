@@ -29,7 +29,22 @@ const waitServer = async (port) => {
   console.log(`Server on port ${port} is ready`);
 };
 
-const ports = [3000, 3001, 4200];
+const EXPRESS = 3000;
+const EXPRESS_E2E = 3001;
+const ANGULAR = 4200;
+const REDIS_STACK = 6379;
+const REDIS_INSIGHT = 8001;
+const MONGODB = 27017;
+
+const ports = [
+  EXPRESS,
+  EXPRESS_E2E,
+  ANGULAR,
+  REDIS_STACK,
+  REDIS_INSIGHT,
+  MONGODB,
+];
+
 console.log("Waiting for servers on ports:", ports);
 await Promise.all(ports.map(waitServer));
 console.log("All servers ready! 🚀");
