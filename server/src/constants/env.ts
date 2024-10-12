@@ -1,18 +1,31 @@
+import { faker } from "@faker-js/faker";
 import { env } from "node:process";
 
 export const isProduction = env["NODE_ENV"] === "production";
 export const isRateLimiterDisabled =
-  !isProduction && env["DISABLE_RATE_LIMITER"] === "true";
+  !isProduction && env["ENABLE_RATE_LIMITER"] === undefined;
 export const port = parseInt(env["PORT"] ?? "3000", 10);
 
 /**
- * Retrieve a variable from the production environment.
- * @param key - Variable name
- * @returns The variable value in production or `null` in other environments
- * @throws {Error} if the variable value is falsy in production
+ * Generate a fake secret for non-production environments.
  */
-const getProdVar = (key: string): string | null => {
-  if (!isProduction) return null;
+const getFakeSecret = (): string => {
+  return faker.string.hexadecimal({
+    length: 40,
+    casing: "upper",
+    prefix: "",
+  });
+};
+
+/**
+ * Retrieve a variable value from the environment.
+ * @param key - Variable name
+ * @param fallback - Variable value to use in non-production environments
+ * @returns The variable value in production or the fallback value in other environments
+ * @throws {Error} if the variable is empty or unset in production
+ */
+const getVar = (key: string, fallback: string): string => {
+  if (!isProduction) return fallback;
   const value = env[key];
   if (value) return value;
 
@@ -20,9 +33,15 @@ const getProdVar = (key: string): string | null => {
   throw new Error(`Environment variable ${key} is ${state}`);
 };
 
-export const ARGON2_SECRET = getProdVar("ARGON2_SECRET");
-export const SESSION_SECRET_1 = getProdVar("SESSION_SECRET_1");
-export const MONGODB_CONNECTION_URL =
-  getProdVar("MONGODB_CONNECTION_URL") ??
-  "mongodb://localhost:27017/?directConnection=true";
-export const REDIS_CONNECTION_URL = getProdVar("REDIS_CONNECTION_URL");
+export const ARGON2_SECRET = getVar("ARGON2_SECRET", getFakeSecret());
+export const SESSION_SECRET_1 = getVar("SESSION_SECRET_1", getFakeSecret());
+
+export const MONGODB_CONNECTION_URL = getVar(
+  "MONGODB_CONNECTION_URL",
+  "mongodb://localhost:27017/?directConnection=true",
+);
+
+export const REDIS_CONNECTION_URL = getVar(
+  "REDIS_CONNECTION_URL",
+  "redis://localhost:6379",
+);
