@@ -1,0 +1,18 @@
+name: mean-auth
+services:
+  mongodb:
+    image: mongodb/mongodb-atlas-local:7
+    networks:
+      - mongodb
+    ports:
+      - "127.0.0.1:27017:27017"
+  redis:
+    image: redis/redis-stack:7.2.0-v13
+    networks:
+      - redis
+    ports:
+      - "127.0.0.1:6379:6379" # Redis Stack
+      - "127.0.0.1:8001:8001" # Redis Insight
+networks:
+  mongodb:
+  redis:
