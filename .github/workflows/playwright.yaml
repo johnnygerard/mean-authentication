@@ -13,7 +13,7 @@ jobs:
           node-version-file: "package.json"
           cache: "npm"
       - name: Install dependencies
-        run: npm ci && cd client && npm ci
+        run: npm ci
       - name: Install Playwright Browsers
         run: cd client && npx playwright install --with-deps
       - name: Run Playwright tests
