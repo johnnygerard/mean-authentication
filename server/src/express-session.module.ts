@@ -4,7 +4,8 @@ declare module "express-session" {
   // noinspection JSUnusedGlobalSymbols
   interface SessionData {
     user: {
-      _id: string; // JSON-serialized ObjectId
+      // User ID stored as a JSON-serialized ObjectId
+      _id: string;
       clientSession: ClientSession;
     };
   }

@@ -4,9 +4,11 @@ import type { RequestHandler } from "express";
 import rateLimit from "express-rate-limit";
 import ms from "ms";
 import { OutgoingHttpHeaders } from "node:http";
+import { RedisStore } from "rate-limit-redis";
 import { parseRateLimit } from "ratelimit-header-parser";
 import { isRateLimiterDisabled } from "../constants/env.js";
 import { TOO_MANY_REQUESTS } from "../constants/http-status-code.js";
+import { redisClient } from "../database/redis-client.js";
 
 const MESSAGE = "Sorry, you have made too many requests.";
 
@@ -28,10 +30,15 @@ const formatRateLimit = (headers: OutgoingHttpHeaders): string => {
 };
 
 /**
- * Rate limiter middleware factory
+ * Rate limiter middleware factory.
+ *
+ * The factory uses Redis as a store for synchronization across processes and
+ * servers. If performance is deemed more important, the built-in memory store
+ * can be used instead.
  * @param limit - Maximum number of allowed requests
  * @param windowMs - Time frame in milliseconds for which requests are checked
  * @see https://express-rate-limit.mintlify.app/reference/configuration
+ * @see https://github.com/express-rate-limit/rate-limit-redis
  */
 export const rateLimiter = (limit: number, windowMs: number): RequestHandler =>
   rateLimit({
@@ -45,4 +52,11 @@ export const rateLimiter = (limit: number, windowMs: number): RequestHandler =>
       const message = formatRateLimit(res.getHeaders());
       res.status(options.statusCode).json(message);
     },
+    keyGenerator: (req) => {
+      const user = req.session.user;
+      return user ? user._id : (req.ip ?? "");
+    },
+    store: new RedisStore({
+      sendCommand: (...args: string[]) => redisClient.sendCommand(args),
+    }),
   });
