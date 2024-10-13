@@ -36,7 +36,10 @@ export const createAccount: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    if (typeof password !== "string" || !isPasswordStrong(password, username)) {
+    if (
+      typeof password !== "string" ||
+      !(await isPasswordStrong(password, username))
+    ) {
       res.status(BAD_REQUEST).json("Invalid password");
       return;
     }

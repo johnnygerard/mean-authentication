@@ -3,20 +3,24 @@ import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 import { appDictionary, isPasswordStrong } from "./password.js";
 
 describe("The isPasswordStrong function", () => {
-  it("should return true for a strong password", () => {
+  it("should return true for a strong password", async () => {
     const username = faker.internet.userName();
     const password = faker.internet.password({ length: 20 });
 
-    expect(isPasswordStrong(password, username)).toBeTrue();
+    await expectAsync(isPasswordStrong(password, username)).toBeResolvedTo(
+      true,
+    );
   });
 
-  it("should return false for a weak password", () => {
+  it("should return false for a weak password", async () => {
     const username = faker.internet.userName();
     // Reusing the username in the password is vulnerable to dictionary attacks
     // while adding LUDS characters is not enough to make it strong
     const password = username + "aB1@";
 
-    expect(isPasswordStrong(password, username)).toBeFalse();
+    await expectAsync(isPasswordStrong(password, username)).toBeResolvedTo(
+      false,
+    );
   });
 
   it("should have a valid dictionary", () => {

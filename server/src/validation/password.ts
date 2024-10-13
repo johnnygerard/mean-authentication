@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import zxcvbn from "zxcvbn";
+import { Piscina } from "piscina";
 import { APP_NAME } from "../constants/app.js";
 import { ZXCVBN_MIN_SCORE } from "../constants/password.js";
 
@@ -16,13 +16,21 @@ appDictionary.push(APP_NAME);
  * Check if the password is strong enough.
  * @param password - Plaintext password
  * @param userInputs - Any strings that could be used in a dictionary attack
- * @returns ZXCVBN result
+ * @returns `true` if the password is strong enough, `false` otherwise
  * @see https://github.com/dropbox/zxcvbn?tab=readme-ov-file#readme
  */
-export const isPasswordStrong = (
+export const isPasswordStrong = async (
   password: string,
   ...userInputs: string[]
-): boolean => {
-  const result = zxcvbn(password, userInputs.concat(appDictionary));
+): Promise<boolean> => {
+  const piscina = new Piscina({
+    filename: new URL("zxcvbn.worker.js", import.meta.url).href,
+  });
+
+  const result = await piscina.run([
+    password,
+    userInputs.concat(appDictionary),
+  ]);
+
   return result.score >= ZXCVBN_MIN_SCORE;
 };
