@@ -9,6 +9,7 @@
     "express-session": "^1.18.0",
     "mongodb": "^6.9.0",
     "piscina": "^4.7.0",
+    "rate-limit-redis": "^4.2.0",
     "ratelimit-header-parser": "^0.1.0",
     "redis": "^4.7.0",
     "zxcvbn": "4.4.2"
