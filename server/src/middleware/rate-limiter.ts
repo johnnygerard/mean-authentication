@@ -45,4 +45,8 @@ export const rateLimiter = (limit: number, windowMs: number): RequestHandler =>
       const message = formatRateLimit(res.getHeaders());
       res.status(options.statusCode).json(message);
     },
+    keyGenerator: (req) => {
+      const user = req.session.user;
+      return user ? user._id : (req.ip ?? "");
+    },
   });
