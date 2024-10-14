@@ -25,7 +25,7 @@
     "format:check": "prettier --check .",
     "heroku-cleanup": "cd server && rm -rf src/",
     "heroku-postbuild": "npm ci --include=dev && cd server && npm ci --include=dev && tsc && npm prune",
-    "install": "cd client && npm ci && cd ../server && npm ci",
+    "install:all": "npm ci && cd client && npm ci && cd ../server && npm ci",
     "lint": "eslint ."
   },
   "type": "module"

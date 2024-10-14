@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { Buffer } from "node:buffer";
 import { env } from "node:process";
 
 export const isProduction = env["NODE_ENV"] === "production";
@@ -10,11 +10,11 @@ export const port = parseInt(env["PORT"] ?? "3000", 10);
  * Generate a fake secret for non-production environments.
  */
 const getFakeSecret = (): string => {
-  return faker.string.hexadecimal({
-    length: 40,
-    casing: "upper",
-    prefix: "",
-  });
+  const randomBytes = Array.from({ length: 40 }, () =>
+    Math.floor(Math.random() * 256),
+  );
+
+  return Buffer.from(randomBytes).toString("base64");
 };
 
 /**
