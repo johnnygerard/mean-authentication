@@ -16,7 +16,7 @@ jobs:
           node-version-file: "package.json"
           cache: "npm"
       - name: Install dependencies
-        run: npm ci
+        run: npm run install:all
       - name: Install Playwright Browsers
         run: cd client && npx playwright install --with-deps
       - name: Build server
