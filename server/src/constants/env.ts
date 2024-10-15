@@ -1,21 +1,9 @@
-import { Buffer } from "node:buffer";
 import { env } from "node:process";
 
 export const isProduction = env["NODE_ENV"] === "production";
 export const isRateLimiterDisabled =
   !isProduction && env["ENABLE_RATE_LIMITER"] === undefined;
 export const port = parseInt(env["PORT"] ?? "3000", 10);
-
-/**
- * Generate a fake secret for non-production environments.
- */
-const getFakeSecret = (): string => {
-  const randomBytes = Array.from({ length: 40 }, () =>
-    Math.floor(Math.random() * 256),
-  );
-
-  return Buffer.from(randomBytes).toString("base64");
-};
 
 /**
  * Retrieve a variable value from the environment.
@@ -33,8 +21,8 @@ const getVar = (key: string, fallback: string): string => {
   throw new Error(`Environment variable ${key} is ${state}`);
 };
 
-export const ARGON2_SECRET = getVar("ARGON2_SECRET", getFakeSecret());
-export const SESSION_SECRET_1 = getVar("SESSION_SECRET_1", getFakeSecret());
+export const ARGON2_SECRET = getVar("ARGON2_SECRET", "argon2-secret");
+export const SESSION_SECRET_1 = getVar("SESSION_SECRET_1", "session-secret-1");
 
 export const MONGODB_CONNECTION_URL = getVar(
   "MONGODB_CONNECTION_URL",

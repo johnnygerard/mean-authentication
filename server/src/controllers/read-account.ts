@@ -22,6 +22,7 @@ export const readAccount: RequestHandler = async (req, res, next) => {
       return;
     }
 
+    res.set("Cache-Control", "no-store");
     res.status(OK).json(user);
   } catch (e) {
     next(e);

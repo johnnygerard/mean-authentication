@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="e2e" type="CompoundRunConfigurationType">
+    <toRun name="Compose" type="docker-deploy" />
     <toRun name="pw" type="js.build_tools.npm" />
     <toRun name="serve:api" type="js.build_tools.npm" />
     <toRun name="serve:e2e" type="js.build_tools.npm" />
