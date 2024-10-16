@@ -1,4 +1,8 @@
-import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
+import {
+  HttpErrorResponse,
+  HttpInterceptorFn,
+  HttpRequest,
+} from "@angular/common/http";
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
 import {
@@ -29,6 +33,9 @@ const computeDelay = (retryCount: number): number => {
   return Math.floor(delay + jitter);
 };
 
+const isLogoutAttempt = (req: HttpRequest<unknown>): boolean =>
+  req.url === "/api/user/session" && req.method === "DELETE";
+
 /**
  * HTTP error interceptor
  * @see https://angular.dev/guide/http/making-requests#handling-request-failure
@@ -53,8 +60,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           case UNAUTHORIZED:
-            if (response.error !== ApiError.UNAUTHENTICATED)
+            if (
+              response.error !== ApiError.UNAUTHENTICATED ||
+              isLogoutAttempt(req)
+            ) {
               return throwError(() => response);
+            }
             session.clear();
             router.navigateByUrl("/sign-in");
             notifier.send(response.error);
