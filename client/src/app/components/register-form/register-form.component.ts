@@ -9,7 +9,12 @@ import {
   signal,
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -102,8 +107,12 @@ export class RegisterFormComponent {
       (): void => {
         try {
           const result = this.#passwordStrength.result();
-          if (result.score >= ZXCVBN_MIN_SCORE) return;
           const passwordControl = this.form.controls.password;
+
+          if (result.score >= ZXCVBN_MIN_SCORE) {
+            this.#removeError(passwordControl, "strength");
+            return;
+          }
 
           passwordControl.setErrors({
             ...passwordControl.errors,
@@ -158,5 +167,14 @@ export class RegisterFormComponent {
 
     // Avoid losing focus due to event bubbling to the password input
     event.stopPropagation();
+  }
+
+  #removeError(control: FormControl, error: string): void {
+    if (control.errors === null) return;
+
+    delete control.errors[error];
+    control.setErrors(
+      Object.keys(control.errors).length ? control.errors : null,
+    );
   }
 }
