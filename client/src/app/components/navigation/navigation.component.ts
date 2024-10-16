@@ -27,10 +27,11 @@ export class NavigationComponent {
       next: () => {
         this.session.clear();
         this.#router.navigateByUrl("/");
+        this.#notifier.send("You’ve successfully signed out. Have a nice day!");
       },
       error: (e) => {
         console.error(e);
-        this.#notifier.send("Logout failed. Please try again later.");
+        this.#notifier.send("Sign-out failed. Please try again later.");
       },
     });
   }
