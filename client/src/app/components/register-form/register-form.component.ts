@@ -93,6 +93,7 @@ export class RegisterFormComponent {
   #shouldResubmit = false;
 
   constructor() {
+    // Send form inputs to password strength validation worker service
     this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe((next) => {
       const { username, password } = next;
 
@@ -103,19 +104,22 @@ export class RegisterFormComponent {
       this.#passwordStrength.validate(password, userInputs);
     });
 
+    // Listen for password strength validation results from the worker service
+    // and set validation errors on the password control
     effect(
       (): void => {
         try {
           const result = this.#passwordStrength.result();
-          const passwordControl = this.form.controls.password;
+          const control = this.form.controls.password;
 
           if (result.score >= ZXCVBN_MIN_SCORE) {
-            this.#removeError(passwordControl, "strength");
+            this.#removeStrengthError(control);
             return;
           }
 
-          passwordControl.setErrors({
-            ...passwordControl.errors,
+          // Add validation error
+          control.setErrors({
+            ...control.errors,
             strength: result.feedback.warning || "Vulnerable password",
           });
         } finally {
@@ -169,10 +173,10 @@ export class RegisterFormComponent {
     event.stopPropagation();
   }
 
-  #removeError(control: FormControl, error: string): void {
+  #removeStrengthError(control: FormControl): void {
     if (control.errors === null) return;
 
-    delete control.errors[error];
+    delete control.errors["strength"];
     control.setErrors(
       Object.keys(control.errors).length ? control.errors : null,
     );
