@@ -81,6 +81,12 @@ Version audited: v0.19.0
 
 ![login page](docs/screenshots/login-page.avif)
 
+## Credits
+
+- Password strength meter design derived
+  from [Memorisely : Password Challenge](https://www.figma.com/community/file/1332443075558142445/memorisely-password-challenge)
+  by [Adil D](https://www.figma.com/@adildahmani)
+
 ## Copyright
 
 © 2024 Johnny Gérard
