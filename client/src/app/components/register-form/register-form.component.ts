@@ -94,15 +94,23 @@ export class RegisterFormComponent {
 
   constructor() {
     // Send form inputs to password strength validation worker service
-    this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe((next) => {
-      const { username, password } = next;
+    this.form.valueChanges
+      .pipe(
+        takeUntilDestroyed(),
+        finalize(() => {
+          // Reset strength meter when the component is destroyed
+          this.#passwordStrength.validate("", []);
+        }),
+      )
+      .subscribe((next) => {
+        const { username, password } = next;
 
-      if (typeof password !== "string") {
-        return;
-      }
-      const userInputs = username ? [username] : [];
-      this.#passwordStrength.validate(password, userInputs);
-    });
+        if (typeof password !== "string") {
+          return;
+        }
+        const userInputs = username ? [username] : [];
+        this.#passwordStrength.validate(password, userInputs);
+      });
 
     // Listen for password strength validation results from the worker service
     // and set validation errors on the password control
