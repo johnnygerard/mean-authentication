@@ -11,6 +11,7 @@ export class PasswordErrorPipe implements PipeTransform {
     if (errors["required"]) return "This field is required";
     if (errors["maxlength"]) return "Maximum length exceeded";
     if (errors["strength"]) return errors["strength"];
-    throw new Error("Unexpected validation error");
+
+    throw new Error(`Unexpected validation error: ${JSON.stringify(errors)}`);
   }
 }

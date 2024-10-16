@@ -9,7 +9,12 @@ import {
   signal,
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -88,25 +93,41 @@ export class RegisterFormComponent {
   #shouldResubmit = false;
 
   constructor() {
-    this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe((next) => {
-      const { username, password } = next;
+    // Send form inputs to password strength validation worker service
+    this.form.valueChanges
+      .pipe(
+        takeUntilDestroyed(),
+        finalize(() => {
+          // Reset strength meter when the component is destroyed
+          this.#passwordStrength.validate("", []);
+        }),
+      )
+      .subscribe((next) => {
+        const { username, password } = next;
 
-      if (typeof password !== "string") {
-        return;
-      }
-      const userInputs = username ? [username] : [];
-      this.#passwordStrength.validate(password, userInputs);
-    });
+        if (typeof password !== "string") {
+          return;
+        }
+        const userInputs = username ? [username] : [];
+        this.#passwordStrength.validate(password, userInputs);
+      });
 
+    // Listen for password strength validation results from the worker service
+    // and set validation errors on the password control
     effect(
       (): void => {
         try {
           const result = this.#passwordStrength.result();
-          if (result.score >= ZXCVBN_MIN_SCORE) return;
-          const passwordControl = this.form.controls.password;
+          const control = this.form.controls.password;
 
-          passwordControl.setErrors({
-            ...passwordControl.errors,
+          if (result.score >= ZXCVBN_MIN_SCORE) {
+            this.#removeStrengthError(control);
+            return;
+          }
+
+          // Add validation error
+          control.setErrors({
+            ...control.errors,
             strength: result.feedback.warning || "Vulnerable password",
           });
         } finally {
@@ -158,5 +179,14 @@ export class RegisterFormComponent {
 
     // Avoid losing focus due to event bubbling to the password input
     event.stopPropagation();
+  }
+
+  #removeStrengthError(control: FormControl): void {
+    if (control.errors === null) return;
+
+    delete control.errors["strength"];
+    control.setErrors(
+      Object.keys(control.errors).length ? control.errors : null,
+    );
   }
 }
