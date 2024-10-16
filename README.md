@@ -7,8 +7,8 @@ the [MEAN stack](https://www.mongodb.com/resources/languages/mean-stack).
 
 [![live demo](https://img.shields.io/badge/live_demo-blue?style=for-the-badge)](https://mean-authentication.app.jgerard.dev/)
 
-Warning: Because the API server sleeps after 30 minutes of inactivity (
-see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)),
+Warning: Because the API server sleeps after 30 minutes of inactivity
+(see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)),
 you may experience a few seconds of delay on the first API request.
 
 ## Tech Stack & Architecture
