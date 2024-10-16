@@ -141,13 +141,13 @@ export class RegisterFormComponent {
           this.#session.store(user);
           await this.#router.navigateByUrl("/");
         },
-        error: (e: HttpErrorResponse) => {
-          if (e.status === CONFLICT) {
+        error: (response: HttpErrorResponse) => {
+          if (response.status === CONFLICT) {
             this.#notifier.send("Sorry, this username is not available.");
             return;
           }
 
-          console.error(e);
+          console.error(response);
           this.#notifier.send("Registration failed. Please try again later.");
         },
       });

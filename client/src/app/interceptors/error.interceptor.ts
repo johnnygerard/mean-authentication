@@ -1,8 +1,4 @@
-import {
-  HttpErrorResponse,
-  HttpInterceptorFn,
-  HttpRequest,
-} from "@angular/common/http";
+import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
 import {
@@ -11,6 +7,7 @@ import {
   TOO_MANY_REQUESTS,
   UNAUTHORIZED,
 } from "_server/constants/http-status-code";
+import { ApiError } from "_server/types/api-error.enum";
 import ms from "ms";
 import { delay, EMPTY, of, retry, throwError } from "rxjs";
 import { NotificationService } from "../services/notification.service";
@@ -31,9 +28,6 @@ const computeDelay = (retryCount: number): number => {
 
   return Math.floor(delay + jitter);
 };
-
-const isLoginAttempt = (req: HttpRequest<unknown>): boolean =>
-  req.method === "POST" && req.url === "/api/session";
 
 /**
  * HTTP error interceptor
@@ -59,12 +53,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           case UNAUTHORIZED:
-            // Do not intercept login attempts
-            if (isLoginAttempt(req)) return throwError(() => response);
-
+            if (response.error !== ApiError.UNAUTHENTICATED)
+              return throwError(() => response);
             session.clear();
             router.navigateByUrl("/sign-in");
-            notifier.send("Your session has expired. Please sign in again.");
+            notifier.send(response.error);
             break;
 
           case TOO_MANY_REQUESTS:

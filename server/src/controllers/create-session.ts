@@ -8,6 +8,7 @@ import {
 } from "../constants/http-status-code.js";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 import { users } from "../database/mongo-client.js";
+import { ApiError } from "../types/api-error.enum.js";
 import { ClientSession } from "../types/client-session.js";
 import {
   usernameHasValidType,
@@ -36,7 +37,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
 
     // Check if user exists
     if (!user) {
-      res.status(UNAUTHORIZED).end();
+      res.status(UNAUTHORIZED).json(ApiError.BAD_CREDENTIALS);
       return;
     }
 
@@ -44,7 +45,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
     const matches = await verifyPassword(user.password, password);
 
     if (!matches) {
-      res.status(UNAUTHORIZED).end();
+      res.status(UNAUTHORIZED).json(ApiError.BAD_CREDENTIALS);
       return;
     }
 

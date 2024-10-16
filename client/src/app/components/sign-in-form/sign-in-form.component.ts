@@ -20,6 +20,7 @@ import { Router, RouterLink } from "@angular/router";
 import { UNAUTHORIZED } from "_server/constants/http-status-code";
 
 import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
+import { ApiError } from "_server/types/api-error.enum";
 import { ClientSession } from "_server/types/client-session";
 import {
   USERNAME_MAX_LENGTH,
@@ -89,15 +90,16 @@ export class SignInFormComponent {
           this.#session.store(user);
           await this.#router.navigateByUrl("/");
         },
-        error: (e: HttpErrorResponse) => {
-          if (e.status === UNAUTHORIZED) {
-            this.#notifier.send(
-              "Sorry, these credentials are incorrect. Please try again.",
-            );
+        error: (response: HttpErrorResponse) => {
+          if (
+            response.status === UNAUTHORIZED &&
+            response.error === ApiError.BAD_CREDENTIALS
+          ) {
+            this.#notifier.send(response.error);
             return;
           }
 
-          console.error(e);
+          console.error(response);
           this.#notifier.send("Sign-in failed. Please try again later.");
         },
       });
