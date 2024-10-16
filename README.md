@@ -7,8 +7,8 @@ the [MEAN stack](https://www.mongodb.com/resources/languages/mean-stack).
 
 [![live demo](https://img.shields.io/badge/live_demo-blue?style=for-the-badge)](https://mean-authentication.app.jgerard.dev/)
 
-Warning: Because the API server sleeps after 30 minutes of inactivity (
-see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)),
+Warning: Because the API server sleeps after 30 minutes of inactivity
+(see [Dyno Sleeping](https://devcenter.heroku.com/articles/eco-dyno-hours#dyno-sleeping)),
 you may experience a few seconds of delay on the first API request.
 
 ## Tech Stack & Architecture
@@ -80,6 +80,12 @@ Version audited: v0.19.0
 ### Login Page
 
 ![login page](docs/screenshots/login-page.avif)
+
+## Credits
+
+- Password strength meter design derived
+  from [Memorisely : Password Challenge](https://www.figma.com/community/file/1332443075558142445/memorisely-password-challenge)
+  by [Adil D](https://www.figma.com/@adildahmani)
 
 ## Copyright
 
