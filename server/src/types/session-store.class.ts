@@ -1,3 +1,5 @@
+import { randomBytes } from "node:crypto";
+import { SESSION_ID_ENTROPY } from "../constants/security.js";
 import { ServerSession } from "./server-session.js";
 
 /**
@@ -31,4 +33,12 @@ export abstract class SessionStore {
    * @param id - The session ID
    */
   abstract delete(parentKey: string, id: string): Promise<void>;
+
+  /**
+   * Generate a new session ID.
+   * @returns A random and likely unique session ID
+   */
+  protected generateId(): string {
+    return randomBytes(SESSION_ID_ENTROPY / 8).toString("base64url");
+  }
 }
