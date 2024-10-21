@@ -1,26 +1,34 @@
-import { faker } from "@faker-js/faker";
-import { Buffer } from "node:buffer";
-import crypto from "node:crypto";
-import { promisify } from "node:util";
+import { getRandomBuffer } from "../test/faker-extensions.js";
 import { decrypt, encrypt } from "./aes.js";
 
-const randomBytes = promisify(crypto.randomBytes);
+const KEY_LENGTH = 16; // 128-bit key
 
-fdescribe("AES encryption and decryption", () => {
+describe("AES encryption and decryption", () => {
   it("should encrypt and decrypt data", async () => {
     const data = getRandomBuffer();
-    const key = await randomBytes(16); // 128-bit key
+    const key = getRandomBuffer(KEY_LENGTH);
     const encrypted = await encrypt(data, key);
     const decrypted = decrypt(encrypted, key);
 
     expect(data.equals(encrypted)).toBeFalse();
     expect(data.equals(decrypted)).toBeTrue();
   });
+
+  it("should throw an error when decrypting with an incorrect key", async () => {
+    const data = getRandomBuffer();
+    const key = getRandomBuffer(KEY_LENGTH);
+    const encrypted = await encrypt(data, key);
+    const incorrectKey = getRandomBuffer(KEY_LENGTH);
+
+    expect(() => decrypt(encrypted, incorrectKey)).toThrow();
+  });
+
+  it("should encrypt the same data differently each time", async () => {
+    const data = getRandomBuffer();
+    const key = getRandomBuffer(KEY_LENGTH);
+    const encrypted1 = await encrypt(data, key);
+    const encrypted2 = await encrypt(data, key);
+
+    expect(encrypted1.equals(encrypted2)).toBeFalse();
+  });
 });
-
-const getRandomBuffer = (): Buffer => {
-  const count = faker.number.int({ min: 1, max: 1024 });
-  return Buffer.from(faker.helpers.multiple(getRandomByte, { count }));
-};
-
-const getRandomByte = (): number => faker.number.int({ max: 255 });
