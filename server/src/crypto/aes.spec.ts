@@ -1,12 +1,19 @@
+import type { Buffer } from "node:buffer";
 import { getRandomBuffer } from "../test/faker-extensions.js";
 import { decrypt, encrypt } from "./aes.js";
 
 const KEY_LENGTH = 16; // 128-bit key
 
 describe("AES encryption and decryption", () => {
+  let data: Buffer;
+  let key: Buffer;
+
+  beforeEach(() => {
+    data = getRandomBuffer();
+    key = getRandomBuffer(KEY_LENGTH);
+  });
+
   it("should encrypt and decrypt data", async () => {
-    const data = getRandomBuffer();
-    const key = getRandomBuffer(KEY_LENGTH);
     const encrypted = await encrypt(data, key);
     const decrypted = decrypt(encrypted, key);
 
@@ -15,8 +22,6 @@ describe("AES encryption and decryption", () => {
   });
 
   it("should throw an error when decrypting with an incorrect key", async () => {
-    const data = getRandomBuffer();
-    const key = getRandomBuffer(KEY_LENGTH);
     const encrypted = await encrypt(data, key);
     const incorrectKey = getRandomBuffer(KEY_LENGTH);
 
@@ -24,8 +29,6 @@ describe("AES encryption and decryption", () => {
   });
 
   it("should encrypt the same data differently each time", async () => {
-    const data = getRandomBuffer();
-    const key = getRandomBuffer(KEY_LENGTH);
     const encrypted1 = await encrypt(data, key);
     const encrypted2 = await encrypt(data, key);
 
