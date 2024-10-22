@@ -2,8 +2,8 @@ import { CookieOptions } from "express";
 import ms from "ms";
 import { Buffer } from "node:buffer";
 import { isProduction, SESSION_SECRETS } from "../constants/env.js";
+import { SESSION_MAX_TTL } from "../constants/security.js";
 import { decrypt, encrypt } from "../crypto/aes.js";
-import { SESSION_LIFETIME } from "../middleware/session.js";
 import type { JsonObjectId } from "../types/json-object-id.js";
 
 type UserId = JsonObjectId;
@@ -19,7 +19,7 @@ const SEPARATOR = ":";
 
 const cookieOptions: CookieOptions = {
   httpOnly: true,
-  maxAge: ms(SESSION_LIFETIME),
+  maxAge: ms(SESSION_MAX_TTL),
   path: "/api/user", // Only send the session cookie to private endpoints
   sameSite: "strict",
   secure: isProduction,
