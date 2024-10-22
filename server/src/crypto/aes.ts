@@ -14,6 +14,7 @@ const randomBytes = promisify(crypto.randomBytes);
 const ALGORITHM: CipherGCMTypes = "aes-128-gcm";
 const IV_LENGTH = 12;
 const DEFAULT_AUTH_TAG_LENGTH = 16;
+export const KEY_LENGTH = 16;
 
 /**
  * Encrypt data using AES-GCM
