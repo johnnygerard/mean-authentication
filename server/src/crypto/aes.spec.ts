@@ -15,16 +15,16 @@ describe("AES encryption and decryption", () => {
     encrypted = await encrypt(data, key);
   });
 
-  it("should successfully encrypt data", async () => {
+  it("should successfully encrypt data", () => {
     expect(data.equals(encrypted)).toBeFalse();
   });
 
-  it("should successfully decrypt encrypted data", async () => {
+  it("should successfully decrypt encrypted data", () => {
     const decrypted = decrypt(encrypted, key);
     expect(data.equals(decrypted)).toBeTrue();
   });
 
-  it("should throw an error when decrypting with an incorrect key", async () => {
+  it("should throw an error when decrypting with an incorrect key", () => {
     const incorrectKey = getRandomBuffer(KEY_LENGTH);
     expect(() => decrypt(encrypted, incorrectKey)).toThrow();
   });
