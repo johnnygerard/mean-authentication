@@ -33,4 +33,9 @@ describe("AES encryption and decryption", () => {
     const other = await encrypt(data, key);
     expect(encrypted.equals(other)).toBeFalse();
   });
+
+  it("should throw when decrypting tampered data", () => {
+    encrypted[encrypted.length - 1] += 1;
+    expect(() => decrypt(encrypted, key)).toThrow();
+  });
 });
