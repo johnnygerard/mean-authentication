@@ -38,4 +38,12 @@ describe("AES encryption and decryption", () => {
     encrypted[encrypted.length - 1] += 1;
     expect(() => decrypt(encrypted, key)).toThrow();
   });
+
+  it("should throw when the encryption key length is invalid", async () => {
+    const shortKey = getRandomBuffer(KEY_LENGTH - 1);
+    const longKey = getRandomBuffer(KEY_LENGTH + 1);
+
+    await expectAsync(encrypt(data, shortKey)).toBeRejected();
+    await expectAsync(encrypt(data, longKey)).toBeRejected();
+  });
 });
