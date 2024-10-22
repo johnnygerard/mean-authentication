@@ -4,3 +4,5 @@
  * @see https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length
  */
 export const SESSION_ID_ENTROPY = 64;
+
+export const SESSION_MAX_TTL = "10 days";
