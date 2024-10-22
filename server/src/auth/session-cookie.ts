@@ -1,4 +1,4 @@
-import { CookieOptions } from "express";
+import type { CookieOptions } from "express";
 import ms from "ms";
 import { Buffer } from "node:buffer";
 import { isProduction, SESSION_SECRETS } from "../constants/env.js";
