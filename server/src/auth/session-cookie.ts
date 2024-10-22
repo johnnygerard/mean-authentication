@@ -3,7 +3,7 @@ import ms from "ms";
 import { Buffer } from "node:buffer";
 import { isProduction, SESSION_SECRETS } from "../constants/env.js";
 import { SESSION_MAX_TTL } from "../constants/security.js";
-import { decrypt, encrypt } from "../crypto/aes.js";
+import { decrypt, encrypt, KEY_LENGTH } from "../crypto/aes.js";
 import type { JsonObjectId } from "../types/json-object-id.js";
 
 type UserId = JsonObjectId;
@@ -30,9 +30,24 @@ const cookieOptions: CookieOptions = {
  *
  * Encryption always uses the first key, while decryption tries each key in order.
  */
-const keys = SESSION_SECRETS.split(",").map((key) =>
-  Buffer.from(key, "base64"),
-);
+const keys = SESSION_SECRETS.split(",").map((key) => {
+  const buffer = Buffer.from(key, "base64");
+
+  if (buffer.length !== KEY_LENGTH) {
+    throw new Error(
+      [
+        "Invalid session secret byte length",
+        `Expected: ${KEY_LENGTH}`,
+        `Actual: ${buffer.length}`,
+      ].join("\n"),
+    );
+  }
+
+  if (key !== buffer.toString("base64"))
+    throw new Error(`Session secret is not base64-encoded: "${key}"`);
+
+  return buffer;
+});
 
 /**
  * Generate an encrypted session cookie from the user ID and session ID.
