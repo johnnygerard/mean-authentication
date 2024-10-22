@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import { env } from "node:process";
 
 export const isProduction = env["NODE_ENV"] === "production";
@@ -25,17 +26,33 @@ export const ARGON2_SECRET = getVar("ARGON2_SECRET", "argon2-secret");
 export const SESSION_SECRET_1 = getVar("SESSION_SECRET_1", "session-secret-1");
 
 /**
- * Comma-separated list of session secrets to secure session cookies while
- * allowing for secret rotation.
+ * Comma-separated list of session secrets to secure session cookies.
  *
- * The first secret is always used to secure new session cookies.
- * Subsequent secrets are used in order if verification fails with the first secret.
- * Old secrets must be removed after the maximum session timeout has passed.
+ * Main requirements:
+ * - Secrets must be rotated periodically.
+ * - Secrets must be encoded in base64.
+ * - Secret byte length must be exactly 16 for use with AES-128.
+ *
+ * The following command can be used to generate a new cryptographically secure
+ * secret:
+ * ```sh
+ * openssl rand -base64 16
+ * ```
+ *
  * @example
- * SESSION_SECRETS=old_secret
- * SESSION_SECRETS=new_secret,old_secret
+ * // Assume a max TTL of 10 days and a rotation period of 30 days
+ * // Day 0
+ * SESSION_SECRETS=secret1
+ * // Day 30
+ * SESSION_SECRETS=secret2,secret1
+ * // Day 40
+ * SESSION_SECRETS=secret2
+ * // Keep rotating...
  */
-export const SESSION_SECRETS = getVar("SESSION_SECRETS", "session-secret");
+export const SESSION_SECRETS = getVar(
+  "SESSION_SECRETS",
+  Buffer.from("session-secret-1").toString("base64"),
+);
 
 export const MONGODB_CONNECTION_URL = getVar(
   "MONGODB_CONNECTION_URL",

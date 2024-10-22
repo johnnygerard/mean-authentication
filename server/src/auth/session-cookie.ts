@@ -30,7 +30,9 @@ const cookieOptions: CookieOptions = {
  *
  * Encryption always uses the first key, while decryption tries each key in order.
  */
-const keys = SESSION_SECRETS.split(",").map((key) => Buffer.from(key));
+const keys = SESSION_SECRETS.split(",").map((key) =>
+  Buffer.from(key, "base64"),
+);
 
 /**
  * Generate an encrypted session cookie from the user ID and session ID.
