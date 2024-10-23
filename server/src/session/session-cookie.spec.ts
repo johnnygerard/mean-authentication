@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { CookieOptions } from "express";
 import { generateSessionCookie, parseSessionCookie } from "./session-cookie.js";
 
-fdescribe("The session cookie", () => {
+describe("The session cookie", () => {
   let userId: string;
   let sessionId: string;
   let cookieName: "id";
