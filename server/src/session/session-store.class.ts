@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { SESSION_ID_ENTROPY } from "../constants/security.js";
-import { ServerSession } from "./server-session.js";
+import { ServerSession } from "../types/server-session.js";
 
 /**
  * Session store abstraction.
