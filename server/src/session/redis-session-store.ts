@@ -1,3 +1,5 @@
+import ms from "ms";
+import { SESSION_MAX_TTL } from "../constants/security.js";
 import { redisClient } from "../database/redis-client.js";
 import { ServerSession } from "../types/server-session.js";
 import { SessionStore } from "./session-store.js";
@@ -16,7 +18,10 @@ export class RedisSessionStore extends SessionStore {
       const sessionId = this.generateSessionId();
       const isCreated = await redisClient.hSetNX(key, sessionId, jsonSession);
 
-      if (isCreated) return sessionId;
+      if (isCreated) {
+        await redisClient.hpExpire(key, sessionId, ms(SESSION_MAX_TTL));
+        return sessionId;
+      }
     }
 
     throw new Error("Failed to create a new session");
