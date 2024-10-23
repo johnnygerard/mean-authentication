@@ -41,6 +41,6 @@ export abstract class SessionStore {
    * @returns A random and likely unique session ID
    */
   protected generateSessionId(): string {
-    return randomBytes(SESSION_ID_ENTROPY / 8).toString("base64url");
+    return randomBytes(SESSION_ID_ENTROPY).toString("base64url");
   }
 }
