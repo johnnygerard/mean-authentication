@@ -9,13 +9,12 @@ const getKey = (userId: string): string => {
 
 export class RedisSessionStore extends SessionStore {
   async create(session: ServerSession, userId: string): Promise<string> {
+    const jsonSession = JSON.stringify(session);
+    const key = getKey(userId);
+
     for (let i = 0; i < 5; i++) {
       const sessionId = this.generateSessionId();
-      const isCreated = await redisClient.hSetNX(
-        getKey(userId),
-        sessionId,
-        JSON.stringify(session),
-      );
+      const isCreated = await redisClient.hSetNX(key, sessionId, jsonSession);
 
       if (isCreated) return sessionId;
     }
