@@ -1,8 +1,6 @@
 import { Buffer } from "node:buffer";
 import { getRandomBuffer } from "../test/faker-extensions.js";
-import { decrypt, encrypt } from "./aes.js";
-
-const KEY_LENGTH = 16; // 128-bit key
+import { decrypt, encrypt, KEY_LENGTH } from "./aes.js";
 
 describe("AES encryption and decryption", () => {
   let data: Buffer;
