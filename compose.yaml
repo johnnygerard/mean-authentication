@@ -7,7 +7,7 @@ services:
     ports:
       - "127.0.0.1:27017:27017"
   redis:
-    image: redis/redis-stack:7.2.0-v13
+    image: redis/redis-stack:7.4.0-v1
     networks:
       - redis
     ports:
