@@ -13,7 +13,7 @@ type CookieValue = string;
 type CookieArgs = [CookieName, CookieValue, CookieOptions];
 
 const COOKIE_ENCODING = "base64url";
-const COOKIE_NAME = "id";
+export const COOKIE_NAME = "id";
 const SEPARATOR = ":";
 
 const cookieOptions: CookieOptions = {
