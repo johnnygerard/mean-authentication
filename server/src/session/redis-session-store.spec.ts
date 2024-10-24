@@ -3,7 +3,7 @@ import { SESSION_MAX_TTL } from "../constants/security.js";
 import { redisClient } from "../database/redis-client.js";
 import { getRandomBuffer } from "../test/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
-import store from "./redis-session-store.js";
+import { sessionStore } from "./redis-session-store.js";
 
 describe("The Redis session store", () => {
   let userId: string;
@@ -21,27 +21,33 @@ describe("The Redis session store", () => {
   });
 
   it("should create a new session", async () => {
-    await expectAsync(store.create(session, userId)).toBeResolved();
+    await expectAsync(sessionStore.create(session, userId)).toBeResolved();
   });
 
   it("should read the created session", async () => {
-    const sessionId = await store.create(session, userId);
-    await expectAsync(store.read(userId, sessionId)).toBeResolvedTo(session);
+    const sessionId = await sessionStore.create(session, userId);
+    await expectAsync(sessionStore.read(userId, sessionId)).toBeResolvedTo(
+      session,
+    );
   });
 
   it("should delete the created session", async () => {
-    const sessionId = await store.create(session, userId);
+    const sessionId = await sessionStore.create(session, userId);
 
-    await expectAsync(store.read(userId, sessionId)).toBeResolvedTo(session);
-    await store.delete(userId, sessionId);
-    await expectAsync(store.read(userId, sessionId)).toBeResolvedTo(null);
+    await expectAsync(sessionStore.read(userId, sessionId)).toBeResolvedTo(
+      session,
+    );
+    await sessionStore.delete(userId, sessionId);
+    await expectAsync(sessionStore.read(userId, sessionId)).toBeResolvedTo(
+      null,
+    );
   });
 
   it("should set a TTL on the created session", async () => {
-    const sessionId = await store.create(session, userId);
+    const sessionId = await sessionStore.create(session, userId);
 
     const result = await redisClient.hpTTL(
-      store.KEY_PREFIX + userId,
+      sessionStore.KEY_PREFIX + userId,
       sessionId,
     );
 
