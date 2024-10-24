@@ -53,8 +53,7 @@ export const rateLimiter = (limit: number, windowMs: number): RequestHandler =>
       res.status(options.statusCode).json(message);
     },
     keyGenerator: (req) => {
-      const user = req.session.user;
-      return user ? user._id : (req.ip ?? "");
+      return req.session?.userId ?? req.ip ?? "";
     },
     store: new RedisStore({
       sendCommand: (...args: string[]) => redisClient.sendCommand(args),
