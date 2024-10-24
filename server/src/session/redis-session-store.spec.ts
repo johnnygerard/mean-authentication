@@ -1,4 +1,7 @@
 import { faker } from "@faker-js/faker";
+import ms from "ms";
+import { SESSION_MAX_TTL } from "../constants/security.js";
+import { redisClient } from "../database/redis-client.js";
 import { getRandomBuffer } from "../test/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
 import { RedisSessionStore } from "./redis-session-store.js";
@@ -35,5 +38,17 @@ describe("The Redis session store", () => {
     await expectAsync(store.read(userId, sessionId)).toBeResolvedTo(session);
     await store.delete(userId, sessionId);
     await expectAsync(store.read(userId, sessionId)).toBeResolvedTo(null);
+  });
+
+  it("should set a TTL on the created session", async () => {
+    const sessionId = await store.create(session, userId);
+
+    const result = await redisClient.hpTTL(
+      RedisSessionStore.KEY_PREFIX + userId,
+      sessionId,
+    );
+
+    if (result === null) throw new Error("Session TTL not set");
+    expect(result[0]).toBeCloseTo(ms(SESSION_MAX_TTL), -2); // within 100ms
   });
 });
