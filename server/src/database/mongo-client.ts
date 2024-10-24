@@ -1,4 +1,5 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
+import ms from "ms";
 import { MONGODB_CONNECTION_URL } from "../constants/env.js";
 import type { User } from "../models/user.js";
 
@@ -17,13 +18,14 @@ export const mongoClient = new MongoClient(MONGODB_CONNECTION_URL, {
 });
 
 await mongoClient.connect();
-console.log("MongoDB Atlas connection established!");
 
-// Measure and log database latency
-const TIMER_LABEL = "Database latency";
-console.time(TIMER_LABEL);
+// Log database latency
+const now = Date.now();
 await mongoClient.db("admin").command({ ping: 1 });
-console.timeEnd(TIMER_LABEL);
+console.log(
+  "Connected to Atlas!",
+  `- Latency: ${ms(Date.now() - now, { long: true })}`,
+);
 
 export const database = mongoClient.db("app");
 export const users = database.collection<User>("users");
