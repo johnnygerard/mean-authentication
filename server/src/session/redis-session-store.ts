@@ -1,4 +1,3 @@
-import ms from "ms";
 import { SESSION_MAX_TTL } from "../constants/security.js";
 import { redisClient } from "../database/redis-client.js";
 import { ServerSession } from "../types/server-session.js";
@@ -28,7 +27,7 @@ export class RedisSessionStore extends SessionStore {
         return true`,
         {
           keys: [key],
-          arguments: [sessionId, jsonSession, ms(SESSION_MAX_TTL).toString()],
+          arguments: [sessionId, jsonSession, SESSION_MAX_TTL.toString()],
         },
       );
 

@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import ms from "ms";
 import { SESSION_MAX_TTL } from "../constants/security.js";
 import { redisClient } from "../database/redis-client.js";
 import { getRandomBuffer } from "../test/faker-extensions.js";
@@ -49,6 +48,6 @@ describe("The Redis session store", () => {
     );
 
     if (result === null) throw new Error("Session TTL not set");
-    expect(result[0]).toBeCloseTo(ms(SESSION_MAX_TTL), -2); // within 100ms
+    expect(result[0]).toBeCloseTo(SESSION_MAX_TTL, -2); // within 100ms
   });
 });
