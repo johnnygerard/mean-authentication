@@ -3,8 +3,8 @@ import { redisClient } from "../database/redis-client.js";
 import { ServerSession } from "../types/server-session.js";
 import { SessionStore } from "./session-store.js";
 
-export class RedisSessionStore extends SessionStore {
-  static readonly KEY_PREFIX = "sessions:";
+class RedisSessionStore extends SessionStore {
+  readonly KEY_PREFIX = "sessions:";
 
   async create(session: ServerSession, userId: string): Promise<string> {
     const jsonSession = JSON.stringify(session);
@@ -49,6 +49,8 @@ export class RedisSessionStore extends SessionStore {
   }
 
   #getKey(userId: string): string {
-    return RedisSessionStore.KEY_PREFIX + userId;
+    return this.KEY_PREFIX + userId;
   }
 }
+
+export default new RedisSessionStore();

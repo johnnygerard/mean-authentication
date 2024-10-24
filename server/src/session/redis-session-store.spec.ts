@@ -3,12 +3,11 @@ import { SESSION_MAX_TTL } from "../constants/security.js";
 import { redisClient } from "../database/redis-client.js";
 import { getRandomBuffer } from "../test/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
-import { RedisSessionStore } from "./redis-session-store.js";
+import store from "./redis-session-store.js";
 
 describe("The Redis session store", () => {
   let userId: string;
   let session: ServerSession;
-  let store: RedisSessionStore;
 
   beforeEach(() => {
     userId = faker.database.mongodbObjectId();
@@ -19,7 +18,6 @@ describe("The Redis session store", () => {
         csrfToken: getRandomBuffer(32).toString("base64url"),
       },
     };
-    store = new RedisSessionStore();
   });
 
   it("should create a new session", async () => {
@@ -43,7 +41,7 @@ describe("The Redis session store", () => {
     const sessionId = await store.create(session, userId);
 
     const result = await redisClient.hpTTL(
-      RedisSessionStore.KEY_PREFIX + userId,
+      store.KEY_PREFIX + userId,
       sessionId,
     );
 
