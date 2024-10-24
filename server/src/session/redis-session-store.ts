@@ -4,15 +4,12 @@ import { redisClient } from "../database/redis-client.js";
 import { ServerSession } from "../types/server-session.js";
 import { SessionStore } from "./session-store.js";
 
-const KEY_PREFIX = "sessions:";
-const getKey = (userId: string): string => {
-  return KEY_PREFIX + userId;
-};
-
 export class RedisSessionStore extends SessionStore {
+  static readonly KEY_PREFIX = "sessions:";
+
   async create(session: ServerSession, userId: string): Promise<string> {
     const jsonSession = JSON.stringify(session);
-    const key = getKey(userId);
+    const key = this.#getKey(userId);
 
     for (let i = 0; i < 5; i++) {
       const sessionId = this.generateSessionId();
@@ -28,11 +25,17 @@ export class RedisSessionStore extends SessionStore {
   }
 
   async read(userId: string, sessionId: string): Promise<ServerSession | null> {
-    const session = await redisClient.hGet(getKey(userId), sessionId);
+    const key = this.#getKey(userId);
+    const session = await redisClient.hGet(key, sessionId);
     return session === undefined ? null : JSON.parse(session);
   }
 
   async delete(userId: string, sessionId: string): Promise<void> {
-    await redisClient.hDel(getKey(userId), sessionId);
+    const key = this.#getKey(userId);
+    await redisClient.hDel(key, sessionId);
+  }
+
+  #getKey(userId: string): string {
+    return RedisSessionStore.KEY_PREFIX + userId;
   }
 }
