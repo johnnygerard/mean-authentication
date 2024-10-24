@@ -13,12 +13,26 @@ export class RedisSessionStore extends SessionStore {
 
     for (let i = 0; i < 5; i++) {
       const sessionId = this.generateSessionId();
-      const isCreated = await redisClient.hSetNX(key, sessionId, jsonSession);
+      const isSuccess = await redisClient.eval(
+        `
+        local key = KEYS[1]
+        local sessionId = ARGV[1]
+        local jsonSession = ARGV[2]
+        local ttl = tonumber(ARGV[3])
+  
+        if redis.call("HSETNX", key, sessionId, jsonSession) == 0 then
+          return false
+        end
+        
+        redis.call("HPEXPIRE", key, ttl, "FIELDS", 1, sessionId)
+        return true`,
+        {
+          keys: [key],
+          arguments: [sessionId, jsonSession, ms(SESSION_MAX_TTL).toString()],
+        },
+      );
 
-      if (isCreated) {
-        await redisClient.hpExpire(key, sessionId, ms(SESSION_MAX_TTL));
-        return sessionId;
-      }
+      if (isSuccess) return sessionId;
     }
 
     throw new Error("Failed to create a new session");
