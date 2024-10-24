@@ -9,7 +9,9 @@ import {
 } from "../constants/http-status-code.js";
 import { users } from "../database/mongo-client.js";
 import { User } from "../models/user.js";
-import { ClientSession } from "../types/client-session.js";
+import { sessionStore } from "../session/redis-session-store.js";
+import { generateSessionCookie } from "../session/session-cookie.js";
+import { ServerSession } from "../types/server-session.js";
 import { isPasswordStrong } from "../validation/password.js";
 import {
   usernameHasValidType,
@@ -58,20 +60,18 @@ export const createAccount: RequestHandler = async (req, res, next) => {
     // Save user
     const { insertedId } = await users.insertOne(user);
 
-    // Create session
-    req.session.regenerate((e) => {
-      if (e) {
-        next(e);
-        return;
-      }
-
-      const clientSession: ClientSession = {
+    const userId = insertedId.toJSON();
+    const session: ServerSession = {
+      userId,
+      clientSession: {
         csrfToken: generateCSRFToken(),
         username,
-      };
-      req.session.user = { _id: insertedId.toJSON(), clientSession };
-      res.status(CREATED).json(clientSession);
-    });
+      },
+    };
+
+    const sessionId = await sessionStore.create(session, userId);
+    res.cookie(...(await generateSessionCookie(userId, sessionId)));
+    res.status(CREATED).json(session.clientSession);
   } catch (e) {
     next(e);
   }
