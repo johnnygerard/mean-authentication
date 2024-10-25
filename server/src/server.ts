@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import type { ErrorRequestHandler } from "express";
 import express from "express";
 import { isProduction, port } from "./constants/env.js";
@@ -18,6 +19,7 @@ const app = express();
 app.set("trust proxy", 1);
 
 const middleware = [
+  cookieParser(),
   express.json(), // Parse JSON requests
 ];
 
