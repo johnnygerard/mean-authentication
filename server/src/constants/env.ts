@@ -23,7 +23,6 @@ const getVar = (key: string, fallback: string): string => {
 };
 
 export const ARGON2_SECRET = getVar("ARGON2_SECRET", "argon2-secret");
-export const SESSION_SECRET_1 = getVar("SESSION_SECRET_1", "session-secret-1");
 
 /**
  * Comma-separated list of session secrets to secure session cookies.
