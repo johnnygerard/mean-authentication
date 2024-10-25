@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 import { sessionStore } from "../session/redis-session-store.js";
 import {
-  COOKIE_NAME as SESSION_COOKIE_NAME,
   parseSessionCookie,
+  SESSION_COOKIE_NAME,
 } from "../session/session-cookie.js";
 
 export const session: RequestHandler = async (req, res, next) => {

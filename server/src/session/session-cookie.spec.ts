@@ -1,15 +1,15 @@
 import { faker } from "@faker-js/faker";
 import { CookieOptions } from "express";
 import {
-  COOKIE_NAME,
   generateSessionCookie,
   parseSessionCookie,
+  SESSION_COOKIE_NAME,
 } from "./session-cookie.js";
 
 describe("The session cookie", () => {
   let userId: string;
   let sessionId: string;
-  let cookieName: typeof COOKIE_NAME;
+  let cookieName: typeof SESSION_COOKIE_NAME;
   let cookieValue: string;
   let cookieOptions: CookieOptions;
 
@@ -23,7 +23,7 @@ describe("The session cookie", () => {
   });
 
   it("should generate a session cookie", () => {
-    expect(cookieName).toBe(COOKIE_NAME);
+    expect(cookieName).toBe(SESSION_COOKIE_NAME);
     expect(typeof cookieValue).toBe("string");
     expect(cookieOptions.httpOnly).toBeTrue();
     expect(cookieOptions.sameSite).toBe("strict");

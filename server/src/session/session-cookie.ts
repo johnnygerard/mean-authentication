@@ -8,12 +8,12 @@ import type { JsonObjectId } from "../types/json-object-id.js";
 type UserId = JsonObjectId;
 type SessionId = string;
 
-type CookieName = typeof COOKIE_NAME;
+type CookieName = typeof SESSION_COOKIE_NAME;
 type CookieValue = string;
 type CookieArgs = [CookieName, CookieValue, CookieOptions];
 
 const COOKIE_ENCODING = "base64url";
-export const COOKIE_NAME = "id";
+export const SESSION_COOKIE_NAME = "id";
 const SEPARATOR = ":";
 
 const cookieOptions: CookieOptions = {
@@ -62,7 +62,11 @@ export const generateSessionCookie = async (
   const value = [userId, sessionId].join(SEPARATOR);
   const encrypted = await encrypt(Buffer.from(value), keys[0]);
 
-  return [COOKIE_NAME, encrypted.toString(COOKIE_ENCODING), cookieOptions];
+  return [
+    SESSION_COOKIE_NAME,
+    encrypted.toString(COOKIE_ENCODING),
+    cookieOptions,
+  ];
 };
 
 /**
