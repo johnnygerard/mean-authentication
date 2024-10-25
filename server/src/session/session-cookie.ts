@@ -16,7 +16,7 @@ const COOKIE_ENCODING = "base64url";
 export const SESSION_COOKIE_NAME = "id";
 const SEPARATOR = ":";
 
-const cookieOptions: CookieOptions = {
+export const sessionCookieOptions: CookieOptions = {
   httpOnly: true,
   maxAge: SESSION_MAX_TTL,
   path: "/api/user", // Only send the session cookie to private endpoints
@@ -65,7 +65,7 @@ export const generateSessionCookie = async (
   return [
     SESSION_COOKIE_NAME,
     encrypted.toString(COOKIE_ENCODING),
-    cookieOptions,
+    sessionCookieOptions,
   ];
 };
 
