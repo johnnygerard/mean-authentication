@@ -65,6 +65,27 @@ class RedisSessionStore extends SessionStore {
     await redisClient.del(key);
   }
 
+  async deleteAllOther(userId: string, sessionId: string): Promise<void> {
+    const key = this.#getKey(userId);
+    await redisClient.eval(
+      `
+      local key = KEYS[1]
+      local sessionId = ARGV[1]
+      local sessions = redis.call("HKEYS", key)
+      
+      for _, field in ipairs(sessions) do
+        if field ~= sessionId then
+          redis.call("HDEL", key, field)
+        end
+      end
+    `,
+      {
+        keys: [key],
+        arguments: [sessionId],
+      },
+    );
+  }
+
   #getKey(userId: string): string {
     return this.KEY_PREFIX + userId;
   }
