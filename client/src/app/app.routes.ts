@@ -22,6 +22,14 @@ export const routes: Routes = [
     title: "Account",
   },
   {
+    path: "sessions",
+    loadComponent: async () =>
+      (await import("./pages/sessions-page/sessions-page.component"))
+        .SessionsPageComponent,
+    canActivate: [isAuthenticatedGuard],
+    title: "Session Management",
+  },
+  {
     path: "sign-in",
     loadComponent: async () =>
       (await import("./pages/sign-in-page.component")).SignInPageComponent,
