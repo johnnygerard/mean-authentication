@@ -50,6 +50,13 @@ export abstract class SessionStore {
   abstract deleteAll(userId: string): Promise<void>;
 
   /**
+   * Delete all sessions of a user except the one specified.
+   * @param userId - The user ID
+   * @param sessionId - The session ID to keep
+   */
+  abstract deleteAllOther(userId: string, sessionId: string): Promise<void>;
+
+  /**
    * Generate a new session ID.
    * @returns A random and likely unique session ID
    */
