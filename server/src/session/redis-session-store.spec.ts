@@ -12,7 +12,6 @@ describe("The Redis session store", () => {
   beforeEach(() => {
     userId = faker.database.mongodbObjectId();
     session = {
-      userId,
       clientSession: {
         username: faker.internet.userName(),
         csrfToken: getRandomBuffer(32).toString("base64url"),
