@@ -5,18 +5,20 @@ import { getRandomBuffer } from "../test/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
 import { sessionStore } from "./redis-session-store.js";
 
+const getFakeSession = (): ServerSession => ({
+  clientSession: {
+    username: faker.internet.userName(),
+    csrfToken: getRandomBuffer(32).toString("base64url"),
+  },
+});
+
 describe("The Redis session store", () => {
   let userId: string;
   let session: ServerSession;
 
   beforeEach(() => {
     userId = faker.database.mongodbObjectId();
-    session = {
-      clientSession: {
-        username: faker.internet.userName(),
-        csrfToken: getRandomBuffer(32).toString("base64url"),
-      },
-    };
+    session = getFakeSession();
   });
 
   it("should create a new session", async () => {
@@ -28,6 +30,19 @@ describe("The Redis session store", () => {
     await expectAsync(sessionStore.read(userId, sessionId)).toBeResolvedTo(
       session,
     );
+  });
+
+  it("should read all sessions of a user", async () => {
+    const sessions: Record<string, ServerSession> = {};
+
+    for (let i = 0; i < 5; i++) {
+      const session = getFakeSession();
+      const sessionId = await sessionStore.create(session, userId);
+
+      sessions[sessionId] = session;
+    }
+
+    await expectAsync(sessionStore.readAll(userId)).toBeResolvedTo(sessions);
   });
 
   it("should delete the created session", async () => {
