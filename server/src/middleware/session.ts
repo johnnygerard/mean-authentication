@@ -10,7 +10,7 @@ export const session: RequestHandler = async (req, res, next) => {
 
   if (typeof sessionCookie === "string") {
     const cookie = parseSessionCookie(sessionCookie);
-    if (cookie) req.session = await sessionStore.read(...cookie);
+    if (cookie) req.session = (await sessionStore.read(...cookie)) ?? undefined;
   }
 
   next();
