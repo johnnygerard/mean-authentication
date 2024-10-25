@@ -8,7 +8,7 @@ import {
 
 export const deleteSession: RequestHandler = async (req, res, next) => {
   try {
-    if (req.user) await sessionStore.delete(req.user.id, req.user.sessionId);
+    await sessionStore.delete(req.user!.id, req.user!.sessionId);
 
     res.clearCookie(SESSION_COOKIE_NAME, {
       ...sessionCookieOptions,
