@@ -29,7 +29,7 @@ export abstract class SessionStore {
 
   /**
    * Read all sessions of a user.
-   * @param userId
+   * @param userId - The user ID
    * @returns All user sessions keyed by session ID
    */
   abstract readAll(userId: string): Promise<Record<string, ServerSession>>;
