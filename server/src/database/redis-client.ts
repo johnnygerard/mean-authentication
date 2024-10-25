@@ -1,3 +1,4 @@
+import ms from "ms";
 import { createClient } from "redis";
 import { REDIS_CONNECTION_URL } from "../constants/env.js";
 
@@ -14,10 +15,11 @@ redisClient.on("error", (e) => {
 });
 
 await redisClient.connect();
-console.log("Connected to Redis!");
 
-// Log session store latency
-const TIMER_LABEL = "Session store latency";
-console.time(TIMER_LABEL);
+// Log database latency
+const now = Date.now();
 await redisClient.ping();
-console.timeEnd(TIMER_LABEL);
+console.log(
+  "Connected to Redis!",
+  `- Latency: ${ms(Date.now() - now, { long: true })}`,
+);

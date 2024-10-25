@@ -8,8 +8,10 @@ import {
 } from "../constants/http-status-code.js";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 import { users } from "../database/mongo-client.js";
+import { sessionStore } from "../session/redis-session-store.js";
+import { generateSessionCookie } from "../session/session-cookie.js";
 import { ApiError } from "../types/api-error.enum.js";
-import { ClientSession } from "../types/client-session.js";
+import { ServerSession } from "../types/server-session.js";
 import {
   usernameHasValidType,
   usernameHasValidValue,
@@ -49,20 +51,17 @@ export const createSession: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    // Create session
-    req.session.regenerate((e) => {
-      if (e) {
-        next(e);
-        return;
-      }
-
-      const clientSession: ClientSession = {
+    const userId = user._id.toJSON();
+    const session: ServerSession = {
+      clientSession: {
         csrfToken: generateCSRFToken(),
         username,
-      };
-      req.session.user = { _id: user._id.toJSON(), clientSession };
-      res.status(CREATED).json(clientSession);
-    });
+      },
+    };
+
+    const sessionId = await sessionStore.create(session, userId);
+    res.cookie(...(await generateSessionCookie(userId, sessionId)));
+    res.status(CREATED).json(session.clientSession);
   } catch (e) {
     next(e);
   }

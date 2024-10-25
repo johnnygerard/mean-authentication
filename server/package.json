@@ -2,11 +2,10 @@
   "dependencies": {
     "argon2": "^0.41.1",
     "axios": "^1.7.7",
-    "connect-redis": "^7.1.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "express-rate-limit": "^7.4.1",
-    "express-session": "^1.18.1",
     "mongodb": "^6.9.0",
     "piscina": "^4.7.0",
     "rate-limit-redis": "^4.2.0",
@@ -16,9 +15,9 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
+    "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
-    "@types/express-session": "^1.18.0",
     "@types/jasmine": "^5.1.4",
     "jasmine": "^5.4.0"
   },
@@ -28,7 +27,7 @@
     "serve:api": "npm run wait:dbs && node --watch dist/server.js",
     "serve:api-rate-limited": "ENABLE_RATE_LIMITER= npm run serve:api",
     "serve:e2e": "npm run wait:dbs && node --watch dist/test/e2e-server.js",
-    "test": "jasmine --config=jasmine.json",
+    "test": "wait-on tcp:6379 && jasmine --config=jasmine.json",
     "wait:dbs": "wait-on tcp:6379 tcp:27017"
   },
   "type": "module"

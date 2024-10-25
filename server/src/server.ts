@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import type { ErrorRequestHandler } from "express";
 import express from "express";
 import { isProduction, port } from "./constants/env.js";
@@ -8,7 +9,7 @@ import {
 import cors from "./middleware/cors.js";
 import { csrf } from "./middleware/csrf.js";
 import { isAuthenticated } from "./middleware/is-authenticated.js";
-import session from "./middleware/session.js";
+import { session } from "./middleware/session.js";
 import privateRouter from "./routes/private.js";
 import publicRouter from "./routes/public.js";
 
@@ -18,14 +19,14 @@ const app = express();
 app.set("trust proxy", 1);
 
 const middleware = [
+  cookieParser(),
   express.json(), // Parse JSON requests
-  session, // Load session
 ];
 
 if (isProduction) middleware.unshift(cors); // Enable CORS
 
 app.use("/api", middleware, publicRouter);
-app.use("/api/user", isAuthenticated, csrf, privateRouter);
+app.use("/api/user", session, isAuthenticated, csrf, privateRouter);
 
 // Final catch-all controller
 app.use((req, res) => {
