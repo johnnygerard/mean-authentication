@@ -6,7 +6,7 @@ import { users } from "../database/mongo-client.js";
 export const readAccount: RequestHandler = async (req, res, next) => {
   try {
     const user = await users.findOne(
-      { _id: new ObjectId(req.session!.userId) },
+      { _id: new ObjectId(req.user!.id) },
       { projection: { _id: 0, password: 0 } },
     );
 

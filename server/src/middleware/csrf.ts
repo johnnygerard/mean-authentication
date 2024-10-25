@@ -11,7 +11,7 @@ export const csrf: RequestHandler = (req, res, next) => {
   }
 
   const clientToken = req.get(CSRF_HEADER);
-  const serverToken = req.session!.clientSession.csrfToken;
+  const serverToken = req.user!.session.clientSession.csrfToken;
 
   if (clientToken === serverToken) {
     next();
