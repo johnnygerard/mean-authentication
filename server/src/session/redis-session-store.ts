@@ -43,6 +43,18 @@ class RedisSessionStore extends SessionStore {
     return session === undefined ? null : JSON.parse(session);
   }
 
+  async readAll(userId: string): Promise<Record<string, ServerSession>> {
+    const key = this.#getKey(userId);
+    const sessions = await redisClient.hGetAll(key);
+
+    return Object.fromEntries(
+      Object.entries(sessions).map(([sessionId, session]) => [
+        sessionId,
+        JSON.parse(session),
+      ]),
+    );
+  }
+
   async delete(userId: string, sessionId: string): Promise<void> {
     const key = this.#getKey(userId);
     await redisClient.hDel(key, sessionId);
