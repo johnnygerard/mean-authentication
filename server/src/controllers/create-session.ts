@@ -53,7 +53,6 @@ export const createSession: RequestHandler = async (req, res, next) => {
 
     const userId = user._id.toJSON();
     const session: ServerSession = {
-      userId,
       clientSession: {
         csrfToken: generateCSRFToken(),
         username,
