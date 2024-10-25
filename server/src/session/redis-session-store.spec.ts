@@ -57,6 +57,16 @@ describe("The Redis session store", () => {
     );
   });
 
+  it("should delete all sessions of a user", async () => {
+    const SESSION_COUNT = 5;
+
+    for (let i = 0; i < SESSION_COUNT; i++)
+      await sessionStore.create(getFakeSession(), userId);
+
+    await sessionStore.deleteAll(userId);
+    await expectAsync(sessionStore.readAll(userId)).toBeResolvedTo({});
+  });
+
   it("should set a TTL on the created session", async () => {
     const sessionId = await sessionStore.create(session, userId);
 
