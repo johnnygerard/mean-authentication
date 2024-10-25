@@ -60,6 +60,11 @@ class RedisSessionStore extends SessionStore {
     await redisClient.hDel(key, sessionId);
   }
 
+  async deleteAll(userId: string): Promise<void> {
+    const key = this.#getKey(userId);
+    await redisClient.del(key);
+  }
+
   #getKey(userId: string): string {
     return this.KEY_PREFIX + userId;
   }
