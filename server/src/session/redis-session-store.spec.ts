@@ -58,9 +58,9 @@ describe("The Redis session store", () => {
   });
 
   it("should delete all sessions of a user", async () => {
-    const SESSION_COUNT = 5;
+    const sessionCount = faker.number.int({ min: 2, max: 5 });
 
-    for (let i = 0; i < SESSION_COUNT; i++)
+    for (let i = 0; i < sessionCount; i++)
       await sessionStore.create(getFakeSession(), userId);
 
     await sessionStore.deleteAll(userId);
@@ -68,9 +68,9 @@ describe("The Redis session store", () => {
   });
 
   it("should delete all sessions of a user except one", async () => {
-    const SESSION_COUNT = 5;
+    const sessionCount = faker.number.int({ min: 2, max: 5 });
 
-    for (let i = 0; i < SESSION_COUNT; i++)
+    for (let i = 0; i < sessionCount; i++)
       await sessionStore.create(getFakeSession(), userId);
 
     const sessionId = await sessionStore.create(session, userId);
