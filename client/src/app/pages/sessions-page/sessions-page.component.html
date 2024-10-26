@@ -8,8 +8,9 @@
 <div class="session-buttons">
   <button
     (click)="deleteAllSessions()"
+    class="danger-button"
     data-testid="delete-all-sessions-button"
-    mat-flat-button
+    mat-stroked-button
     type="button"
   >
     Revoke all sessions
@@ -17,8 +18,9 @@
   <button
     (click)="deleteAllOtherSessions()"
     [disabled]="sessionCount() < 2"
+    class="danger-button"
     data-testid="delete-all-other-sessions-button"
-    mat-flat-button
+    mat-stroked-button
     type="button"
   >
     Revoke all other sessions

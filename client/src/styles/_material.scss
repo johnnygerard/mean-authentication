@@ -15,6 +15,10 @@ $theme: mat.define-theme(
   )
 );
 
+.danger-button {
+  @include mat.button-color($theme, $color-variant: error);
+}
+
 :root {
   @include mat.core-theme($theme);
 
