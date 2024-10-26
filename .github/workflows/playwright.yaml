@@ -20,17 +20,17 @@ jobs:
       - name: Install dependencies
         run: npm run install:all
       - name: Install Playwright Browsers
-        run: cd client && npx playwright install --with-deps
+        run: npx --prefix=client playwright install --with-deps
       - name: Build server
-        run: cd server && npm run build
+        run: npm --prefix=server run build
       - name: Pull Docker images
         run: docker compose pull
       - name: Start servers
         run: |
-          cd client && npm run start &
-          cd server && npm run start &
+          npm --prefix=client run start &
+          npm --prefix=server run start &
       - name: Run Playwright tests
-        run: cd client && npm run pw
+        run: npm --prefix=client run pw
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
