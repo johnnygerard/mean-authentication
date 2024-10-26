@@ -43,7 +43,7 @@
     "pw:headed": "playwright test --headed",
     "pw:report": "playwright show-report",
     "pw:ui": "playwright test --ui",
-    "serve": "ng serve",
+    "start": "ng serve",
     "test": "ng test",
     "wait:servers": "wait-on tcp:3000 tcp:4200 tcp:6379 tcp:27017"
   },
