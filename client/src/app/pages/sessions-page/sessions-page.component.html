@@ -16,7 +16,7 @@
     Revoke all sessions
   </button>
   <button
-    (click)="deleteAllOtherSessions()"
+    (click)="confirmDeleteAllOtherSessions()"
     [disabled]="sessionCount() < 2"
     class="danger-button"
     data-testid="delete-all-other-sessions-button"

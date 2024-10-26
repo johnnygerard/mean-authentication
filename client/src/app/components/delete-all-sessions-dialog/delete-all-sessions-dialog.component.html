@@ -1,9 +1,16 @@
 <h2 mat-dialog-title>Warning</h2>
 <mat-dialog-content>
-  <p>
-    This action will immediately end all active sessions, including your current
-    session. You will be required to sign in again to access your account.
-  </p>
+  @if (shouldLogOut) {
+    <p>
+      This action will end all active sessions and immediately sign you out.
+      <br />Do you want to continue?
+    </p>
+  } @else {
+    <p>
+      This action will end all active sessions except the current one.
+      <br />Do you want to continue?
+    </p>
+  }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button [mat-dialog-close]="false" mat-button type="button">Cancel</button>
@@ -13,6 +20,10 @@
     mat-flat-button
     type="button"
   >
-    Revoke all sessions
+    @if (shouldLogOut) {
+      Revoke all sessions
+    } @else {
+      Revoke all other sessions
+    }
   </button>
 </mat-dialog-actions>

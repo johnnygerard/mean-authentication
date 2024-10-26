@@ -50,10 +50,24 @@ export class SessionsPageComponent {
   }
 
   confirmDeleteAllSessions(): void {
-    const dialogRef = this.#dialog.open(DeleteAllSessionsDialogComponent);
+    const SHOULD_LOG_OUT = true;
+    const dialogRef = this.#dialog.open(DeleteAllSessionsDialogComponent, {
+      data: SHOULD_LOG_OUT,
+    });
 
     dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
       if (isConfirmed) this.deleteAllSessions();
+    });
+  }
+
+  confirmDeleteAllOtherSessions(): void {
+    const SHOULD_LOG_OUT = false;
+    const dialogRef = this.#dialog.open(DeleteAllSessionsDialogComponent, {
+      data: SHOULD_LOG_OUT,
+    });
+
+    dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+      if (isConfirmed) this.deleteAllOtherSessions();
     });
   }
 
