@@ -14,6 +14,7 @@ test("Global setup", async ({ page }) => {
   await exec("docker compose down --volumes");
   await exec("docker compose up --detach");
 
+  console.log("Waiting for servers to be ready...");
   await exec("npm run wait:servers");
   await registerUser(page, globalCredentials);
 });
