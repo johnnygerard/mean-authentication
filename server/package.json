@@ -26,7 +26,7 @@
     "init-db": "node dist/database/init.js",
     "serve:api": "npm run wait:dbs && node --watch dist/server.js",
     "serve:api-rate-limited": "ENABLE_RATE_LIMITER= npm run serve:api",
-    "test": "wait-on tcp:6379 && jasmine --config=jasmine.json",
+    "test": "npm run wait:dbs && jasmine --config=jasmine.json",
     "wait:dbs": "wait-on tcp:6379 tcp:27017"
   },
   "type": "module"
