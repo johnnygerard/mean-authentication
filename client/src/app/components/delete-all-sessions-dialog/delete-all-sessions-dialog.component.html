@@ -13,10 +13,18 @@
   }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button [mat-dialog-close]="false" mat-button type="button">Cancel</button>
+  <button
+    [mat-dialog-close]="false"
+    data-testid="cancel-button"
+    mat-button
+    type="button"
+  >
+    Cancel
+  </button>
   <button
     [mat-dialog-close]="true"
     class="danger-button"
+    data-testid="confirm-button"
     mat-flat-button
     type="button"
   >
