@@ -8,8 +8,10 @@ import {
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { MatButton } from "@angular/material/button";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { ServerSession } from "_server/types/server-session";
+import { DeleteAllSessionsDialogComponent } from "../../components/delete-all-sessions-dialog/delete-all-sessions-dialog.component";
 import { NotificationService } from "../../services/notification.service";
 import { SessionService } from "../../services/session.service";
 
@@ -24,6 +26,7 @@ import { SessionService } from "../../services/session.service";
 export class SessionsPageComponent {
   sessionCount = signal(0);
   #destroyRef = inject(DestroyRef);
+  #dialog = inject(MatDialog);
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
   #router = inject(Router);
@@ -44,6 +47,14 @@ export class SessionsPageComponent {
           );
         },
       });
+  }
+
+  confirmDeleteAllSessions(): void {
+    const dialogRef = this.#dialog.open(DeleteAllSessionsDialogComponent);
+
+    dialogRef.afterClosed().subscribe((isConfirmed: boolean) => {
+      if (isConfirmed) this.deleteAllSessions();
+    });
   }
 
   deleteAllSessions(): void {
