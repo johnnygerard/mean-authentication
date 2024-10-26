@@ -6,4 +6,5 @@ const exec = promisify(child_process.exec);
 
 test("Global teardown", async () => {
   await exec("docker compose down --volumes");
+  console.log("Global teardown complete ✔");
 });

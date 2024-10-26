@@ -9,10 +9,12 @@ const exec = promisify(child_process.exec);
 
 test("Global setup", async ({ page }) => {
   test.setTimeout(ms("30 seconds"));
-
   await exec("docker compose up --detach");
+
   console.log("Waiting for servers to be ready...");
   await exec("npm run wait:servers");
+  console.log("Servers are ready ✔");
 
   await registerUser(page, globalCredentials);
+  console.log("Global setup complete ✔");
 });
