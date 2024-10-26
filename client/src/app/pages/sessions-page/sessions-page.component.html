@@ -5,3 +5,22 @@
     <span>{{ sessionCount() }}</span>
   }
 </p>
+<div class="session-buttons">
+  <button
+    (click)="deleteAllSessions()"
+    data-testid="delete-all-sessions-button"
+    mat-flat-button
+    type="button"
+  >
+    Revoke all sessions
+  </button>
+  <button
+    (click)="deleteAllOtherSessions()"
+    [disabled]="sessionCount() < 2"
+    data-testid="delete-all-other-sessions-button"
+    mat-flat-button
+    type="button"
+  >
+    Revoke all other sessions
+  </button>
+</div>
