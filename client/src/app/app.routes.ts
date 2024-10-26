@@ -14,7 +14,7 @@ export const routes: Routes = [
     title: APP_NAME,
   },
   {
-    path: "account",
+    path: "user/account",
     loadComponent: async () =>
       (await import("./pages/account-page/account-page.component"))
         .AccountPageComponent,
@@ -22,7 +22,7 @@ export const routes: Routes = [
     title: "Account",
   },
   {
-    path: "sessions",
+    path: "user/sessions",
     loadComponent: async () =>
       (await import("./pages/sessions-page/sessions-page.component"))
         .SessionsPageComponent,
