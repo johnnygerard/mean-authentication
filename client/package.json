@@ -38,7 +38,7 @@
   "scripts": {
     "build": "ng build",
     "build:vercel": "ng version && ng build --configuration \"$VERCEL_ENV\"",
-    "pw": "npm run wait:servers && playwright test",
+    "pw": "playwright test",
     "pw:failed": "playwright test --last-failed",
     "pw:headed": "playwright test --headed",
     "pw:report": "playwright show-report",

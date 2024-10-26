@@ -21,8 +21,8 @@ jobs:
         run: cd client && npx playwright install --with-deps
       - name: Build server
         run: cd server && npm run build
-      - name: Start Docker Compose services
-        run: docker compose up -d && npx wait-on tcp:6379 tcp:27017
+      - name: Pull Docker images
+        run: docker compose pull
       - name: Start servers
         run: |
           cd client && npm run serve &
