@@ -28,6 +28,13 @@ export abstract class SessionStore {
   ): Promise<ServerSession | null>;
 
   /**
+   * Read all sessions of a user.
+   * @param userId - The user ID
+   * @returns All user sessions keyed by session ID
+   */
+  abstract readAll(userId: string): Promise<Record<string, ServerSession>>;
+
+  /**
    * Delete a user session.
    *
    * This method always returns successfully, even if the session does not exist.
@@ -35,6 +42,19 @@ export abstract class SessionStore {
    * @param sessionId - The session ID
    */
   abstract delete(userId: string, sessionId: string): Promise<void>;
+
+  /**
+   * Delete all sessions of a user.
+   * @param userId - The user ID
+   */
+  abstract deleteAll(userId: string): Promise<void>;
+
+  /**
+   * Delete all sessions of a user except the one specified.
+   * @param userId - The user ID
+   * @param sessionId - The session ID to keep
+   */
+  abstract deleteAllOther(userId: string, sessionId: string): Promise<void>;
 
   /**
    * Generate a new session ID.

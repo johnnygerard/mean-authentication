@@ -10,13 +10,15 @@ import {
   signal,
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { MatAnchor } from "@angular/material/button";
+import { RouterLink } from "@angular/router";
 import { AccountData } from "_server/types/account-data";
 import { NotificationService } from "../../services/notification.service";
 
 @Component({
   selector: "app-account-page",
   standalone: true,
-  imports: [DatePipe],
+  imports: [DatePipe, MatAnchor, RouterLink],
   templateUrl: "./account-page.component.html",
   styleUrl: "./account-page.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,

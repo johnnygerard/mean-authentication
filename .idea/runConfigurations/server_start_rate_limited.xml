@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test:api" type="js.build_tools.npm">
+  <configuration default="false" name="server:start:rate-limited" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/server/package.json" />
     <command value="run" />
     <scripts>
-      <script value="test" />
+      <script value="start:rate-limited" />
     </scripts>
     <node-interpreter value="project" />
     <envs />

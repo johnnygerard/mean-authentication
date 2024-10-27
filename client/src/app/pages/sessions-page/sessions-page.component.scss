@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.session-buttons {
+  display: flex;
+  flex-direction: column;
+  max-width: max-content;
+  gap: 1rem;
+  margin-top: 2rem;
+}

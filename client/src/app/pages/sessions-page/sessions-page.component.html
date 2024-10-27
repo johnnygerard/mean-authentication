@@ -1,0 +1,28 @@
+<h1 class="mat-headline-large">Session management</h1>
+<p>
+  Number of active sessions:
+  @if (sessionCount()) {
+    <span data-testid="session-count">{{ sessionCount() }}</span>
+  }
+</p>
+<div class="session-buttons">
+  <button
+    (click)="confirmDeleteAllSessions()"
+    class="danger-button"
+    data-testid="delete-all-sessions-button"
+    mat-stroked-button
+    type="button"
+  >
+    Revoke all sessions
+  </button>
+  <button
+    (click)="confirmDeleteAllOtherSessions()"
+    [disabled]="sessionCount() < 2"
+    class="danger-button"
+    data-testid="delete-all-other-sessions-button"
+    mat-stroked-button
+    type="button"
+  >
+    Revoke all other sessions
+  </button>
+</div>

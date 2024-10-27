@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="start" type="CompoundRunConfigurationType">
+  <configuration default="false" name="serve:all" type="CompoundRunConfigurationType">
     <toRun name="Database services" type="docker-deploy" />
-    <toRun name="Start client in Chrome" type="js.build_tools.npm" />
+    <toRun name="client:start" type="js.build_tools.npm" />
     <toRun name="server:start" type="js.build_tools.npm" />
     <method v="2" />
   </configuration>

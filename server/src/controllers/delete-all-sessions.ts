@@ -6,9 +6,9 @@ import {
   sessionCookieOptions,
 } from "../session/session-cookie.js";
 
-export const deleteSession: RequestHandler = async (req, res, next) => {
+export const deleteAllSessions: RequestHandler = async (req, res, next) => {
   try {
-    await sessionStore.delete(req.user!.id, req.user!.sessionId);
+    await sessionStore.deleteAll(req.user!.id);
 
     res.clearCookie(SESSION_COOKIE_NAME, {
       ...sessionCookieOptions,

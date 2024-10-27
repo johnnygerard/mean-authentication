@@ -15,11 +15,16 @@ $theme: mat.define-theme(
   )
 );
 
+.danger-button {
+  @include mat.button-color($theme, $color-variant: error);
+}
+
 :root {
   @include mat.core-theme($theme);
 
   @include mat.button-theme($theme);
   @include mat.card-theme($theme);
+  @include mat.dialog-theme($theme);
   @include mat.form-field-theme($theme);
   @include mat.icon-theme($theme);
   @include mat.icon-button-theme($theme);

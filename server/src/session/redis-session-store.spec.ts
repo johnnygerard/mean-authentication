@@ -5,18 +5,20 @@ import { getRandomBuffer } from "../test/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
 import { sessionStore } from "./redis-session-store.js";
 
+const getFakeSession = (): ServerSession => ({
+  clientSession: {
+    username: faker.internet.userName(),
+    csrfToken: getRandomBuffer(32).toString("base64url"),
+  },
+});
+
 describe("The Redis session store", () => {
   let userId: string;
   let session: ServerSession;
 
   beforeEach(() => {
     userId = faker.database.mongodbObjectId();
-    session = {
-      clientSession: {
-        username: faker.internet.userName(),
-        csrfToken: getRandomBuffer(32).toString("base64url"),
-      },
-    };
+    session = getFakeSession();
   });
 
   it("should create a new session", async () => {
@@ -30,6 +32,19 @@ describe("The Redis session store", () => {
     );
   });
 
+  it("should read all sessions of a user", async () => {
+    const sessions: Record<string, ServerSession> = {};
+
+    for (let i = 0; i < 5; i++) {
+      const session = getFakeSession();
+      const sessionId = await sessionStore.create(session, userId);
+
+      sessions[sessionId] = session;
+    }
+
+    await expectAsync(sessionStore.readAll(userId)).toBeResolvedTo(sessions);
+  });
+
   it("should delete the created session", async () => {
     const sessionId = await sessionStore.create(session, userId);
 
@@ -40,6 +55,30 @@ describe("The Redis session store", () => {
     await expectAsync(sessionStore.read(userId, sessionId)).toBeResolvedTo(
       null,
     );
+  });
+
+  it("should delete all sessions of a user", async () => {
+    const sessionCount = faker.number.int({ min: 2, max: 5 });
+
+    for (let i = 0; i < sessionCount; i++)
+      await sessionStore.create(getFakeSession(), userId);
+
+    await sessionStore.deleteAll(userId);
+    await expectAsync(sessionStore.readAll(userId)).toBeResolvedTo({});
+  });
+
+  it("should delete all sessions of a user except one", async () => {
+    const sessionCount = faker.number.int({ min: 2, max: 5 });
+
+    for (let i = 0; i < sessionCount; i++)
+      await sessionStore.create(getFakeSession(), userId);
+
+    const sessionId = await sessionStore.create(session, userId);
+
+    await sessionStore.deleteAllOther(userId, sessionId);
+    await expectAsync(sessionStore.readAll(userId)).toBeResolvedTo({
+      [sessionId]: session,
+    });
   });
 
   it("should set a TTL on the created session", async () => {

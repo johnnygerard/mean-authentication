@@ -1,9 +1,10 @@
 import { test } from "@playwright/test";
+import child_process from "node:child_process";
+import { promisify } from "node:util";
 
-test("Delete all user accounts", async ({ playwright }) => {
-  const request = await playwright.request.newContext({
-    baseURL: "http://localhost:3001",
-  });
+const exec = promisify(child_process.exec);
 
-  await request.post("/teardown");
+test("Global teardown", async () => {
+  await exec("docker compose down --volumes");
+  console.log("Global teardown complete ✔");
 });

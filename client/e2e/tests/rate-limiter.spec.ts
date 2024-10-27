@@ -4,7 +4,7 @@ import { TOO_MANY_REQUESTS } from "_server/constants/http-status-code";
 
 // This test should be run separately. To run it:
 // - Replace `describe.skip` with `describe.only`
-// - Run `npm run serve:api-rate-limited` to start the server with rate limiting
+// - Run `npm run serve:rate-limited` to start the server with rate limiting
 test.describe.skip("Rate limiter", () => {
   test("Requests above the rate limit are blocked", async ({ page }) => {
     // Simulate a password brute force attack
