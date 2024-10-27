@@ -2,7 +2,7 @@
 <p>
   Number of active sessions:
   @if (sessionCount()) {
-    <span>{{ sessionCount() }}</span>
+    <span data-testid="session-count">{{ sessionCount() }}</span>
   }
 </p>
 <div class="session-buttons">
