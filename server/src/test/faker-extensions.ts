@@ -2,6 +2,17 @@ import { faker } from "@faker-js/faker";
 import { Buffer } from "node:buffer";
 
 /**
+ * Generate fake credentials (username and password)
+ */
+export const getFakeCredentials = (): {
+  username: string;
+  password: string;
+} => ({
+  username: faker.internet.userName(),
+  password: faker.internet.password(),
+});
+
+/**
  * Generate a random buffer
  *
  * When invoked without arguments, the buffer has a random byte length between
