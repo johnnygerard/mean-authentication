@@ -2,5 +2,5 @@
 /.github/
 /client/
 /docs/
-/server/src/**/*.spec.ts
+/server/src/**/*.test.ts
 /server/src/test-helpers/
