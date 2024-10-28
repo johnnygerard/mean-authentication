@@ -1,5 +1,5 @@
 import { Buffer } from "node:buffer";
-import { getRandomBuffer } from "../test/faker-extensions.js";
+import { getRandomBuffer } from "../test-helpers/faker-extensions.js";
 import { decrypt, encrypt, KEY_LENGTH } from "./aes.js";
 
 describe("AES encryption and decryption", () => {

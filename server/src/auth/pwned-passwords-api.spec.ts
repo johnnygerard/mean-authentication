@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { getLeakedPassword } from "../test/leaked-passwords.js";
+import { getLeakedPassword } from "../test-helpers/leaked-passwords.js";
 import { isPasswordExposed } from "./pwned-passwords-api.js";
 
 describe("The isPasswordExposed function", () => {

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { beforeEach, suite, test } from "node:test";
-import { getFakePassword } from "../test/faker-extensions.js";
+import { getFakePassword } from "../test-helpers/faker-extensions.js";
 import { hashPassword, verifyPassword } from "./password-hashing.js";
 
 suite("The hashPassword function", () => {

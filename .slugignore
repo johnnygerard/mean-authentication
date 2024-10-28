@@ -3,4 +3,4 @@
 /client/
 /docs/
 /server/src/**/*.spec.ts
-/server/src/test/
+/server/src/test-helpers/

@@ -3,4 +3,4 @@
 paths-ignore:
   - "**/*.spec.ts"
   - client/e2e
-  - server/src/test
+  - server/src/test-helpers

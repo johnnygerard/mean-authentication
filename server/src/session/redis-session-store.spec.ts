@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { SESSION_MAX_TTL } from "../constants/security.js";
 import { redisClient } from "../database/redis-client.js";
-import { getRandomBuffer } from "../test/faker-extensions.js";
+import { getRandomBuffer } from "../test-helpers/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
 import { sessionStore } from "./redis-session-store.js";
 
