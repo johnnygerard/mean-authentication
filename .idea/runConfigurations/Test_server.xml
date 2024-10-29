@@ -6,6 +6,16 @@
     <typescript-loader value="MANUAL_SETUP_IN_NODE_OPTION" />
     <envs />
     <scope-kind value="ALL" />
-    <method v="2" />
+    <method v="2">
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/server/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="wait:dbs" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
+      </option>
+    </method>
   </configuration>
 </component>
