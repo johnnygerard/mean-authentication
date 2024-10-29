@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Server and E2E tests
 on:
   pull_request:
     branches: [main]
@@ -21,12 +21,14 @@ jobs:
         run: npx --prefix=client playwright install --with-deps
       - name: Build server
         run: npm --prefix=server run build
-      - name: Pull Docker images
-        run: docker compose pull
+      - name: Start Docker services
+        run: docker compose up --detach
       - name: Start servers
         run: |
           npm --prefix=client run start &
           npm --prefix=server run start &
+      - name: Run server tests
+        run: npm --prefix=server run test
       - name: Run Playwright tests
         run: npm --prefix=client run pw
       - uses: actions/upload-artifact@v4
