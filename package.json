@@ -17,7 +17,7 @@
     "wait-on": "^8.0.1"
   },
   "engines": {
-    "node": "^20",
+    "node": "^22 || ^20",
     "npm": "^10"
   },
   "scripts": {
