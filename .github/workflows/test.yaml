@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Server and E2E tests
 on:
   pull_request:
     branches: [main]
