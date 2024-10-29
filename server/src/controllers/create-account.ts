@@ -19,8 +19,8 @@ import {
 } from "../validation/username.js";
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
-  const reply = await users.findOne({ username }, { projection: { _id: 1 } });
-  return reply !== null;
+  const user = await users.findOne({ username }, { projection: { _id: 1 } });
+  return user !== null;
 };
 
 export const createAccount: RequestHandler = async (req, res, next) => {
