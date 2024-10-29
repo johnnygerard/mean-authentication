@@ -17,16 +17,14 @@
     "@tsconfig/node20": "^20.1.4",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/jasmine": "^5.1.4",
-    "jasmine": "^5.4.0"
+    "@types/express": "^4.17.21"
   },
   "scripts": {
     "build": "tsc",
     "init-db": "node dist/database/init.js",
     "start": "npm run wait:dbs && node --watch dist/server.js",
     "start:rate-limited": "ENABLE_RATE_LIMITER= npm run serve",
-    "test": "npm run wait:dbs && jasmine --config=jasmine.json",
+    "test": "npm run wait:dbs && node --test dist",
     "wait:dbs": "wait-on tcp:6379 tcp:27017"
   },
   "type": "module"

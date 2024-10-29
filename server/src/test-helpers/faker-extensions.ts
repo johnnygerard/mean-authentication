@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Buffer } from "node:buffer";
+import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 /**
  * Generate fake credentials (username and password)
@@ -11,6 +12,14 @@ export const getFakeCredentials = (): {
   username: faker.internet.userName(),
   password: faker.internet.password(),
 });
+
+/**
+ * Generate a fake password with random length and characters.
+ */
+export const getFakePassword = (): string => {
+  const length = faker.number.int({ min: 0, max: PASSWORD_MAX_LENGTH });
+  return faker.internet.password({ length });
+};
 
 /**
  * Generate a random buffer

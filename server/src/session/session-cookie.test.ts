@@ -1,12 +1,14 @@
 import { faker } from "@faker-js/faker";
 import { CookieOptions } from "express";
+import assert from "node:assert/strict";
+import { beforeEach, suite, test } from "node:test";
 import {
   generateSessionCookie,
   parseSessionCookie,
   SESSION_COOKIE_NAME,
 } from "./session-cookie.js";
 
-describe("The session cookie", () => {
+suite("The session cookie module", () => {
   let userId: string;
   let sessionId: string;
   let cookieName: typeof SESSION_COOKIE_NAME;
@@ -22,19 +24,19 @@ describe("The session cookie", () => {
     );
   });
 
-  it("should generate a session cookie", () => {
-    expect(cookieName).toBe(SESSION_COOKIE_NAME);
-    expect(typeof cookieValue).toBe("string");
-    expect(cookieOptions.httpOnly).toBeTrue();
-    expect(cookieOptions.sameSite).toBe("strict");
+  test("generates a session cookie", () => {
+    assert.equal(cookieName, SESSION_COOKIE_NAME);
+    assert.equal(typeof cookieValue, "string");
+    assert(cookieOptions.httpOnly);
+    assert.equal(cookieOptions.sameSite, "strict");
   });
 
-  it("should parse a session cookie", () => {
+  test("parses a session cookie", () => {
     const result = parseSessionCookie(cookieValue);
 
     if (result === null) throw new Error("Failed to parse session cookie");
 
-    expect(result[0]).toBe(userId);
-    expect(result[1]).toBe(sessionId);
+    assert.equal(result[0], userId);
+    assert.equal(result[1], sessionId);
   });
 });

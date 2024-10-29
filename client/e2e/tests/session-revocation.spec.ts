@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { getFakeCredentials } from "_server/test/faker-extensions";
+import { getFakeCredentials } from "_server/test-helpers/faker-extensions";
 import { logInUser } from "../log-in-user.function";
 import { registerUser } from "../register-user.function";
 

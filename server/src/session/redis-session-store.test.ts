@@ -1,7 +1,9 @@
 import { faker } from "@faker-js/faker";
+import assert from "node:assert/strict";
+import { after, beforeEach, suite, test } from "node:test";
 import { SESSION_MAX_TTL } from "../constants/security.js";
 import { redisClient } from "../database/redis-client.js";
-import { getRandomBuffer } from "../test/faker-extensions.js";
+import { getRandomBuffer } from "../test-helpers/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
 import { sessionStore } from "./redis-session-store.js";
 
@@ -12,7 +14,7 @@ const getFakeSession = (): ServerSession => ({
   },
 });
 
-describe("The Redis session store", () => {
+suite("The Redis session store", () => {
   let userId: string;
   let session: ServerSession;
 
@@ -21,18 +23,20 @@ describe("The Redis session store", () => {
     session = getFakeSession();
   });
 
-  it("should create a new session", async () => {
-    await expectAsync(sessionStore.create(session, userId)).toBeResolved();
+  after(async () => {
+    await redisClient.disconnect();
   });
 
-  it("should read the created session", async () => {
+  test("creates a new session", async () => {
+    assert(await sessionStore.create(session, userId));
+  });
+
+  test("reads the created session", async () => {
     const sessionId = await sessionStore.create(session, userId);
-    await expectAsync(sessionStore.read(userId, sessionId)).toBeResolvedTo(
-      session,
-    );
+    assert.deepEqual(await sessionStore.read(userId, sessionId), session);
   });
 
-  it("should read all sessions of a user", async () => {
+  test("reads all sessions of a user", async () => {
     const sessions: Record<string, ServerSession> = {};
 
     for (let i = 0; i < 5; i++) {
@@ -42,32 +46,28 @@ describe("The Redis session store", () => {
       sessions[sessionId] = session;
     }
 
-    await expectAsync(sessionStore.readAll(userId)).toBeResolvedTo(sessions);
+    assert.deepEqual(await sessionStore.readAll(userId), sessions);
   });
 
-  it("should delete the created session", async () => {
+  test("deletes the created session", async () => {
     const sessionId = await sessionStore.create(session, userId);
 
-    await expectAsync(sessionStore.read(userId, sessionId)).toBeResolvedTo(
-      session,
-    );
+    assert(await sessionStore.read(userId, sessionId));
     await sessionStore.delete(userId, sessionId);
-    await expectAsync(sessionStore.read(userId, sessionId)).toBeResolvedTo(
-      null,
-    );
+    assert.equal(await sessionStore.read(userId, sessionId), null);
   });
 
-  it("should delete all sessions of a user", async () => {
+  test("deletes all sessions of a user", async () => {
     const sessionCount = faker.number.int({ min: 2, max: 5 });
 
     for (let i = 0; i < sessionCount; i++)
       await sessionStore.create(getFakeSession(), userId);
 
     await sessionStore.deleteAll(userId);
-    await expectAsync(sessionStore.readAll(userId)).toBeResolvedTo({});
+    assert.deepEqual(await sessionStore.readAll(userId), {});
   });
 
-  it("should delete all sessions of a user except one", async () => {
+  test("deletes all sessions of a user except one", async () => {
     const sessionCount = faker.number.int({ min: 2, max: 5 });
 
     for (let i = 0; i < sessionCount; i++)
@@ -76,20 +76,21 @@ describe("The Redis session store", () => {
     const sessionId = await sessionStore.create(session, userId);
 
     await sessionStore.deleteAllOther(userId, sessionId);
-    await expectAsync(sessionStore.readAll(userId)).toBeResolvedTo({
+    assert.deepEqual(await sessionStore.readAll(userId), {
       [sessionId]: session,
     });
   });
 
-  it("should set a TTL on the created session", async () => {
+  test("sets a TTL on the created session", async () => {
     const sessionId = await sessionStore.create(session, userId);
 
-    const result = await redisClient.hpTTL(
+    const ttls = await redisClient.hpTTL(
       sessionStore.KEY_PREFIX + userId,
       sessionId,
     );
 
-    if (result === null) throw new Error("Session TTL not set");
-    expect(result[0]).toBeCloseTo(SESSION_MAX_TTL, -2); // within 100ms
+    assert(ttls && ttls.length === 1);
+    const ttl = ttls[0];
+    assert(ttl >= SESSION_MAX_TTL - 100 && ttl <= SESSION_MAX_TTL);
   });
 });
