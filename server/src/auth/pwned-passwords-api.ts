@@ -1,4 +1,3 @@
-import axios, { AxiosError } from "axios";
 import ms from "ms";
 import { hash } from "node:crypto";
 import { OK } from "../constants/http-status-code.js";
@@ -10,7 +9,7 @@ import { OK } from "../constants/http-status-code.js";
  * (only a partial digest of the hashed password is sent).
  * @param password - Plaintext password
  * @returns `false` if the password is not exposed or the API server did not
- * reply with the 200 status code, `true` if the password is exposed.
+ * reply in time with the 200 status code, `true` if the password is exposed.
  * @see https://haveibeenpwned.com/API/v3#PwnedPasswords
  */
 export const isPasswordExposed = async (password: string): Promise<boolean> => {
@@ -21,29 +20,30 @@ export const isPasswordExposed = async (password: string): Promise<boolean> => {
     const validator = new RegExp(`^${digestSuffix}`, "i");
     const url = `https://api.pwnedpasswords.com/range/${partialDigest}`;
 
-    const response = await axios({
+    const response = await fetch(url, {
+      headers: {
+        Accept: "text/plain",
+      },
       method: "GET",
-      url,
-      responseType: "text",
-      responseEncoding: "utf8",
-      maxContentLength: 2 ** 20, // 1 MB
-      maxRedirects: 0,
-      signal: AbortSignal.timeout(ms("1 second")), // Handle connection timeout
-      timeout: ms("1 second"), // Handle response timeout
-      validateStatus: (status: number): boolean => status === OK,
+      redirect: "error",
+      signal: AbortSignal.timeout(ms("1 second")), // Abort request on timeout
     });
 
-    const text = response.data as string;
+    if (response.status !== OK) {
+      console.error(
+        "Unexpected status code from Pwned Passwords API:",
+        response.status,
+      );
+      return false;
+    }
+
+    const text = await response.text();
 
     return text
       .split("\r\n")
       .some((line: string): boolean => validator.test(line));
   } catch (e) {
-    if (e instanceof AxiosError) {
-      console.error(e);
-      return false;
-    }
-
-    throw e;
+    console.error("Pwned Passwords API request failed", e);
+    return false;
   }
 };
