@@ -5,3 +5,10 @@
 .sessions-link {
   margin-top: 20px;
 }
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: max-content;
+}

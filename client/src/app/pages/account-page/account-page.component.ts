@@ -8,15 +8,17 @@ import {
   signal,
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { MatAnchor } from "@angular/material/button";
+import { MatAnchor, MatButton } from "@angular/material/button";
+import { MatDialog } from "@angular/material/dialog";
 import { RouterLink } from "@angular/router";
 import { AccountData } from "_server/types/account-data";
 import { NotificationService } from "../../services/notification.service";
+import { AccountDeletionDialogComponent } from "./account-deletion-dialog/account-deletion-dialog.component";
 
 @Component({
   selector: "app-account-page",
   standalone: true,
-  imports: [DatePipe, MatAnchor, RouterLink],
+  imports: [DatePipe, MatAnchor, MatButton, RouterLink],
   templateUrl: "./account-page.component.html",
   styleUrl: "./account-page.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +27,7 @@ export class AccountPageComponent {
   account = signal<AccountData | null>(null);
   createdAt = computed(() => this.account()?.createdAt);
   username = computed(() => this.account()?.username);
+  #dialog = inject(MatDialog);
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
 
@@ -41,5 +44,9 @@ export class AccountPageComponent {
           );
         },
       });
+  }
+
+  openAccountDeletionDialog(): void {
+    this.#dialog.open(AccountDeletionDialogComponent);
   }
 }
