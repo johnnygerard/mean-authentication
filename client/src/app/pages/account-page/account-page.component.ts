@@ -4,9 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
   inject,
-  OnInit,
   signal,
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -23,18 +21,17 @@ import { NotificationService } from "../../services/notification.service";
   styleUrl: "./account-page.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountPageComponent implements OnInit {
+export class AccountPageComponent {
   account = signal<AccountData | null>(null);
   createdAt = computed(() => this.account()?.createdAt);
   username = computed(() => this.account()?.username);
-  #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
 
-  ngOnInit(): void {
+  constructor() {
     this.#http
       .get<AccountData>("/api/user/account")
-      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe({
         next: (value) => this.account.set(value),
         error: (e) => {

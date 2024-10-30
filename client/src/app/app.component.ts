@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-} from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
 import { RouterOutlet } from "@angular/router";
@@ -18,11 +13,11 @@ import { progressActivity } from "./svg/progress-activity";
   styleUrl: "./app.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   #iconRegistry = inject(MatIconRegistry);
   #sanitizer = inject(DomSanitizer);
 
-  ngOnInit(): void {
+  constructor() {
     for (const name of ["visibility", "visibility_off", "info"]) {
       this.#registerIcon(name);
     }
