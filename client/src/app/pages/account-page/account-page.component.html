@@ -3,10 +3,22 @@
   <p>Registered on {{ createdAt() | date }}</p>
   <p>Username: {{ username() }}</p>
 }
-<a
-  class="sessions-link"
-  data-testid="sessions-link"
-  mat-stroked-button
-  routerLink="/user/sessions"
-  >Session management</a
->
+<div class="buttons">
+  <a
+    class="sessions-link"
+    data-testid="sessions-link"
+    mat-stroked-button
+    routerLink="/user/sessions"
+    >Session management</a
+  >
+
+  <button
+    (click)="openAccountDeletionDialog()"
+    class="danger-button"
+    data-testid="delete-account-button"
+    mat-stroked-button
+    type="button"
+  >
+    Delete my account
+  </button>
+</div>

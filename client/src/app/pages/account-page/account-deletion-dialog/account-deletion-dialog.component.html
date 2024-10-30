@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>Confirm account deletion</h2>
+<mat-dialog-content>
+  <form
+    #form="ngForm"
+    (ngSubmit)="deleteAccount(form)"
+    id="account-deletion-form"
+  >
+    <p>
+      This action is immediate and irreversible. All data associated with your
+      account will be removed from our servers.
+    </p>
+    <p>If you wish to proceed, please enter your password below:</p>
+    <mat-form-field>
+      <!-- Hidden username field for a11y and autofill -->
+      <input autocomplete="username" hidden name="username" type="text" />
+      <mat-label>Password</mat-label>
+      <input
+        [(ngModel)]="password"
+        [attr.maxlength]="PASSWORD_MAX_LENGTH"
+        [type]="isPasswordVisible() ? 'text' : 'password'"
+        autocomplete="current-password"
+        data-testid="password"
+        matInput
+        name="password"
+        required
+      />
+      <button
+        (click)="togglePasswordVisibility($event)"
+        [attr.aria-label]="visibilityTooltip()"
+        [matTooltip]="visibilityTooltip()"
+        data-testid="visibility-toggle"
+        mat-icon-button
+        matSuffix
+        type="button"
+      >
+        <mat-icon
+          [svgIcon]="isPasswordVisible() ? 'visibility_off' : 'visibility'"
+        />
+      </button>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    cdkFocusInitial
+    data-testid="cancel-button"
+    mat-button
+    mat-dialog-close
+    type="button"
+  >
+    Cancel
+  </button>
+  <button
+    class="danger-button"
+    form="account-deletion-form"
+    mat-flat-button
+    type="submit"
+  >
+    @if (isLoading()) {
+      <mat-icon svgIcon="progress_activity" />
+    }
+    Delete my account
+  </button>
+</mat-dialog-actions>
