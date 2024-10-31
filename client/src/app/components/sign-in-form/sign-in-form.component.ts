@@ -5,11 +5,10 @@ import {
   computed,
   DestroyRef,
   inject,
-  model,
   signal,
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { FormsModule, NgForm } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -38,7 +37,7 @@ import { UserMessage } from "../../types/user-message.enum";
   selector: "app-sign-in-form",
   standalone: true,
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatButtonModule,
     MatCardModule,
@@ -55,11 +54,22 @@ import { UserMessage } from "../../types/user-message.enum";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInFormComponent {
-  readonly USERNAME_MIN_LENGTH = USERNAME_MIN_LENGTH;
   readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
   readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
-  password = model("");
-  username = model("");
+  form = inject(FormBuilder).group({
+    username: [
+      "",
+      [
+        Validators.required,
+        Validators.minLength(USERNAME_MIN_LENGTH),
+        Validators.maxLength(USERNAME_MAX_LENGTH),
+      ],
+    ],
+    password: [
+      "",
+      [Validators.required, Validators.maxLength(PASSWORD_MAX_LENGTH)],
+    ],
+  });
   isLoading = signal(false);
   isPasswordVisible = signal(false);
   visibilityTooltip = computed(
@@ -71,15 +81,12 @@ export class SignInFormComponent {
   #router = inject(Router);
   #session = inject(SessionService);
 
-  onSubmit(form: NgForm): void {
-    if (form.invalid || this.isLoading()) return;
+  onSubmit(): void {
+    if (this.form.invalid || this.isLoading()) return;
     this.isLoading.set(true);
 
     this.#http
-      .post<ClientSession>("/api/session", {
-        username: this.username(),
-        password: this.password(),
-      })
+      .post<ClientSession>("/api/session", this.form.value)
       .pipe(
         finalize(() => {
           this.isLoading.set(false);
