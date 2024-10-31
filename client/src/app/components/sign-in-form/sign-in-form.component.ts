@@ -2,7 +2,6 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   DestroyRef,
   inject,
   signal,
@@ -12,12 +11,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatIcon } from "@angular/material/icon";
-import { MatInput } from "@angular/material/input";
-import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
 import { Router, RouterLink } from "@angular/router";
 import { UNAUTHORIZED } from "_server/constants/http-status-code";
-
 import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
 import { ApiError } from "_server/types/api-error.enum";
 import { ClientSession } from "_server/types/client-session";
@@ -27,25 +24,24 @@ import {
 } from "_server/validation/username";
 import { finalize } from "rxjs";
 import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
-import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { NotificationService } from "../../services/notification.service";
 import { SessionService } from "../../services/session.service";
 import { UserMessage } from "../../types/user-message.enum";
+import { PasswordFieldComponent } from "../password-field/password-field.component";
 
 @Component({
   selector: "app-sign-in-form",
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
     MatButtonModule,
     MatCardModule,
-    MatTooltipModule,
-    MatInput,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    PasswordFieldComponent,
+    ReactiveFormsModule,
     RouterLink,
-    MatIcon,
-    PasswordErrorPipe,
     UsernameErrorPipe,
     UsernameValidatorDirective,
   ],
@@ -71,10 +67,7 @@ export class SignInFormComponent {
     ],
   });
   isLoading = signal(false);
-  isPasswordVisible = signal(false);
-  visibilityTooltip = computed(
-    () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
-  );
+
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
@@ -111,12 +104,5 @@ export class SignInFormComponent {
           this.#notifier.send(UserMessage.LOGIN_FAILED);
         },
       });
-  }
-
-  togglePasswordVisibility(event: MouseEvent): void {
-    this.isPasswordVisible.update((value) => !value);
-
-    // Avoid losing focus due to event bubbling to the password input
-    event.stopPropagation();
   }
 }
