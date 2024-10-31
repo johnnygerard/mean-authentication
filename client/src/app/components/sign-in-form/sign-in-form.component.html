@@ -16,11 +16,9 @@
           spellcheck="false"
           type="text"
         />
-        @if (form.controls.username.errors) {
-          <mat-error
-            >{{ form.controls.username.errors | usernameError }}
-          </mat-error>
-        }
+        <mat-error
+          >{{ form.controls.username.errors | usernameError }}
+        </mat-error>
       </mat-form-field>
       <app-password-field [form]="form" autocomplete="current-password" />
       <button mat-flat-button type="submit">
