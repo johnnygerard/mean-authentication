@@ -32,6 +32,7 @@ import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { NotificationService } from "../../services/notification.service";
 import { SessionService } from "../../services/session.service";
+import { UserMessage } from "../../types/user-message.enum";
 
 @Component({
   selector: "app-sign-in-form",
@@ -100,7 +101,7 @@ export class SignInFormComponent {
           }
 
           console.error(response);
-          this.#notifier.send("Sign-in failed. Please try again later.");
+          this.#notifier.send(UserMessage.LOGIN_FAILED);
         },
       });
   }

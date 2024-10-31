@@ -22,6 +22,7 @@ import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
 import { ApiError } from "_server/types/api-error.enum";
 import { NotificationService } from "../../../services/notification.service";
 import { SessionService } from "../../../services/session.service";
+import { UserMessage } from "../../../types/user-message.enum";
 
 @Component({
   selector: "app-account-deletion-dialog",
@@ -75,7 +76,7 @@ export class AccountDeletionDialogComponent {
           this.#dialogRef.close();
           this.#session.clear();
           await this.#router.navigateByUrl("/");
-          this.#notifier.send("Your account has been successfully deleted.");
+          this.#notifier.send(UserMessage.ACCOUNT_DELETION_SUCCESS);
         },
         error: (response: HttpErrorResponse) => {
           if (
@@ -88,9 +89,7 @@ export class AccountDeletionDialogComponent {
           }
 
           console.error(response);
-          this.#notifier.send(
-            "Account deletion failed. Please try again later.",
-          );
+          this.#notifier.send(UserMessage.ACCOUNT_DELETION_FAILED);
         },
       });
   }

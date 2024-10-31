@@ -13,6 +13,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { RouterLink } from "@angular/router";
 import { AccountData } from "_server/types/account-data";
 import { NotificationService } from "../../services/notification.service";
+import { UserMessage } from "../../types/user-message.enum";
 import { AccountDeletionDialogComponent } from "./account-deletion-dialog/account-deletion-dialog.component";
 
 @Component({
@@ -39,9 +40,7 @@ export class AccountPageComponent {
         next: (value) => this.account.set(value),
         error: (e) => {
           console.error(e);
-          this.#notifier.send(
-            "Failed to load account data. Please try reloading the page.",
-          );
+          this.#notifier.send(UserMessage.ACCOUNT_PAGE_LOAD_FAILED);
         },
       });
   }

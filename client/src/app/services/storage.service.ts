@@ -1,5 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { isPlatformServer } from "../constants";
+import { UserMessage } from "../types/user-message.enum";
 import { NotificationService } from "./notification.service";
 
 @Injectable({
@@ -16,9 +17,7 @@ export class StorageService {
       this.#isNotSupported = !window.localStorage;
 
       if (this.#isNotSupported)
-        this.#notifier.send(
-          "Your browser does not support local storage. Data will not be saved.",
-        );
+        this.#notifier.send(UserMessage.LOCAL_STORAGE_NOT_SUPPORTED);
     } catch (e) {
       if (e instanceof DOMException && e.name === "SecurityError") {
         this.#handleSecurityError(e);
@@ -63,9 +62,7 @@ export class StorageService {
       this.#localStorage?.setItem(key, value);
     } catch (e) {
       if (e instanceof DOMException && e.name === "QuotaExceededError") {
-        this.#notifier.send(
-          "Insufficient storage space. Please clear browser or site data.",
-        );
+        this.#notifier.send(UserMessage.LOCAL_STORAGE_QUOTA_EXCEEDED);
         return;
       }
 
@@ -83,9 +80,6 @@ export class StorageService {
 
   #handleSecurityError(e: DOMException): void {
     console.error(e);
-    this.#notifier.send(
-      "Your browser or site settings do not allow local storage." +
-        " Data will not be saved.",
-    );
+    this.#notifier.send(UserMessage.LOCAL_STORAGE_DISABLED);
   }
 }

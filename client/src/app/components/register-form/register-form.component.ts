@@ -39,6 +39,7 @@ import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { NotificationService } from "../../services/notification.service";
 import { PasswordStrengthService } from "../../services/password-strength.service";
 import { SessionService } from "../../services/session.service";
+import { UserMessage } from "../../types/user-message.enum";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 
 @Component({
@@ -164,12 +165,12 @@ export class RegisterFormComponent {
         },
         error: (response: HttpErrorResponse) => {
           if (response.status === CONFLICT) {
-            this.#notifier.send("Sorry, this username is not available.");
+            this.#notifier.send(UserMessage.USERNAME_TAKEN);
             return;
           }
 
           console.error(response);
-          this.#notifier.send("Registration failed. Please try again later.");
+          this.#notifier.send(UserMessage.REGISTRATION_FAILED);
         },
       });
   }
