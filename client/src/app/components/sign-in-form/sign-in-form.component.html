@@ -1,7 +1,12 @@
 <mat-card>
   <mat-card-content>
     <h1 class="mat-title-medium">Sign in to your account</h1>
-    <form (ngSubmit)="onSubmit()" [formGroup]="form" data-testid="login-form">
+    <form
+      #ngForm="ngForm"
+      (ngSubmit)="onSubmit()"
+      [formGroup]="form"
+      data-testid="login-form"
+    >
       <mat-form-field>
         <mat-label>Username</mat-label>
         <input
@@ -20,7 +25,7 @@
           >{{ form.controls.username.errors | usernameError }}
         </mat-error>
       </mat-form-field>
-      <app-password-field [form]="form" autocomplete="current-password" />
+      <app-password-field [ngForm]="ngForm" autocomplete="current-password" />
       <button mat-flat-button type="submit">
         @if (isLoading()) {
           <mat-icon svgIcon="progress_activity" />

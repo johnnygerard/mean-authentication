@@ -2,10 +2,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
+  inject,
   input,
+  OnInit,
   signal,
 } from "@angular/core";
-import { FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { FormGroupDirective, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
@@ -30,15 +34,25 @@ import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
   styleUrl: "./password-field.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PasswordFieldComponent {
+export class PasswordFieldComponent implements OnInit {
   readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
   autocomplete = input.required<"new-password" | "current-password">();
-  form = input.required<FormGroup>();
+  ngForm = input.required<FormGroupDirective>();
   isPasswordVisible = signal(false);
-
+  passwordControl = computed(() => this.ngForm().form.controls["password"]);
   visibilityTooltip = computed(
     () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
   );
+  #destroyRef = inject(DestroyRef);
+
+  ngOnInit(): void {
+    // Workaround to display password validation errors on form submission
+    this.ngForm()
+      .ngSubmit.pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe(() => {
+        this.passwordControl().markAsTouched();
+      });
+  }
 
   togglePasswordVisibility(event: MouseEvent): void {
     this.isPasswordVisible.update((value) => !value);
