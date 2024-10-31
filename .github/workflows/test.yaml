@@ -1,7 +1,5 @@
 name: Server and E2E tests
 on:
-  push:
-    branches: [ci]
   pull_request:
     branches: [main]
 jobs:
