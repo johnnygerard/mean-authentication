@@ -14,6 +14,7 @@ import { ServerSession } from "_server/types/server-session";
 import { DeleteAllSessionsDialogComponent } from "../../components/delete-all-sessions-dialog/delete-all-sessions-dialog.component";
 import { NotificationService } from "../../services/notification.service";
 import { SessionService } from "../../services/session.service";
+import { UserMessage } from "../../types/user-message.enum";
 
 @Component({
   selector: "app-sessions-page",
@@ -42,9 +43,7 @@ export class SessionsPageComponent {
         },
         error: (e) => {
           console.error(e);
-          this.#notifier.send(
-            "Failed to load session data. Please try reloading the page.",
-          );
+          this.#notifier.send(UserMessage.SESSIONS_PAGE_LOAD_FAILED);
         },
       });
   }
@@ -79,13 +78,11 @@ export class SessionsPageComponent {
         next: async () => {
           this.#session.clear();
           await this.#router.navigateByUrl("/");
-          this.#notifier.send("All sessions have been revoked.");
+          this.#notifier.send(UserMessage.DELETE_ALL_SESSIONS_SUCCESS);
         },
         error: (e) => {
           console.error(e);
-          this.#notifier.send(
-            "Failed to revoke all sessions. Please try again later.",
-          );
+          this.#notifier.send(UserMessage.DELETE_ALL_SESSIONS_FAILED);
         },
       });
   }
@@ -97,13 +94,11 @@ export class SessionsPageComponent {
       .subscribe({
         next: () => {
           this.sessionCount.set(1);
-          this.#notifier.send("All other sessions have been revoked.");
+          this.#notifier.send(UserMessage.DELETE_ALL_OTHER_SESSIONS_SUCCESS);
         },
         error: (e) => {
           console.error(e);
-          this.#notifier.send(
-            "Failed to revoke all other sessions. Please try again later.",
-          );
+          this.#notifier.send(UserMessage.DELETE_ALL_OTHER_SESSIONS_FAILED);
         },
       });
   }

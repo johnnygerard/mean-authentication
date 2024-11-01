@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { getFakeCredentials } from "_server/test-helpers/faker-extensions";
+import { UserMessage } from "../../src/app/types/user-message.enum";
 import { logInUser } from "../log-in-user.function";
 import { registerUser } from "../register-user.function";
 
@@ -50,7 +51,11 @@ test.describe("Session revocation", () => {
 
       await test.step("User sees the success message", async () => {
         await expect(
-          page.getByText(/sessions have been revoked/),
+          page.getByText(
+            shouldLogOut
+              ? UserMessage.DELETE_ALL_SESSIONS_SUCCESS
+              : UserMessage.DELETE_ALL_OTHER_SESSIONS_SUCCESS,
+          ),
         ).toBeVisible();
       });
 

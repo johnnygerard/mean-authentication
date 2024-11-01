@@ -7,6 +7,7 @@ import { APP_NAME } from "_server/constants/app";
 import { UNAUTHORIZED } from "_server/constants/http-status-code";
 import { NotificationService } from "../../services/notification.service";
 import { SessionService } from "../../services/session.service";
+import { UserMessage } from "../../types/user-message.enum";
 
 @Component({
   selector: "app-navigation",
@@ -33,7 +34,7 @@ export class NavigationComponent {
         }
 
         console.error(response);
-        this.#notifier.send("Sign-out failed. Please try again later.");
+        this.#notifier.send(UserMessage.LOGOUT_FAILED);
       },
     });
   }
@@ -41,6 +42,6 @@ export class NavigationComponent {
   #logout(): void {
     this.session.clear();
     this.#router.navigateByUrl("/");
-    this.#notifier.send("You’ve successfully signed out. Have a nice day!");
+    this.#notifier.send(UserMessage.LOGOUT_SUCCESS);
   }
 }

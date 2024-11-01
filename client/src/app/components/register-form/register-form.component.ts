@@ -2,7 +2,6 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   DestroyRef,
   effect,
   inject,
@@ -19,8 +18,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
-import { MatInput } from "@angular/material/input";
-import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatInputModule } from "@angular/material/input";
 import { Router, RouterLink } from "@angular/router";
 import { CONFLICT } from "_server/constants/http-status-code";
 import {
@@ -34,29 +32,29 @@ import {
 } from "_server/validation/username";
 import { finalize } from "rxjs";
 import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
-import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { NotificationService } from "../../services/notification.service";
 import { PasswordStrengthService } from "../../services/password-strength.service";
 import { SessionService } from "../../services/session.service";
+import { UserMessage } from "../../types/user-message.enum";
+import { PasswordFieldComponent } from "../password-field/password-field.component";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 
 @Component({
   selector: "app-register-form",
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
     MatButtonModule,
     MatCardModule,
+    MatFormFieldModule,
     MatIconModule,
-    MatTooltipModule,
-    MatInput,
-    RouterLink,
+    MatInputModule,
+    PasswordFieldComponent,
     PasswordStrengthMeterComponent,
-    UsernameValidatorDirective,
-    PasswordErrorPipe,
+    ReactiveFormsModule,
+    RouterLink,
     UsernameErrorPipe,
+    UsernameValidatorDirective,
   ],
   templateUrl: "./register-form.component.html",
   styleUrl: "./register-form.component.scss",
@@ -64,7 +62,6 @@ import { PasswordStrengthMeterComponent } from "../password-strength-meter/passw
 })
 export class RegisterFormComponent {
   readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
-  readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
   form = inject(FormBuilder).group({
     username: [
       "",
@@ -80,10 +77,7 @@ export class RegisterFormComponent {
     ],
   });
   isLoading = signal(false);
-  isPasswordVisible = signal(false);
-  visibilityTooltip = computed(
-    () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
-  );
+
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
@@ -164,21 +158,14 @@ export class RegisterFormComponent {
         },
         error: (response: HttpErrorResponse) => {
           if (response.status === CONFLICT) {
-            this.#notifier.send("Sorry, this username is not available.");
+            this.#notifier.send(UserMessage.USERNAME_TAKEN);
             return;
           }
 
           console.error(response);
-          this.#notifier.send("Registration failed. Please try again later.");
+          this.#notifier.send(UserMessage.REGISTRATION_FAILED);
         },
       });
-  }
-
-  togglePasswordVisibility(event: MouseEvent): void {
-    this.isPasswordVisible.update((value) => !value);
-
-    // Avoid losing focus due to event bubbling to the password input
-    event.stopPropagation();
   }
 
   #removeStrengthError(control: FormControl): void {

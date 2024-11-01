@@ -16,6 +16,7 @@ import ms from "ms";
 import { delay, EMPTY, of, retry, throwError } from "rxjs";
 import { NotificationService } from "../services/notification.service";
 import { SessionService } from "../services/session.service";
+import { UserMessage } from "../types/user-message.enum";
 
 const NON_HTTP_ERROR = 0; // Network or connection error
 const baseDelay = ms("50 milliseconds");
@@ -76,9 +77,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           case SERVICE_UNAVAILABLE:
-            notifier.send(
-              "Sorry, the server is currently unavailable. Please try again later.",
-            );
+            notifier.send(UserMessage.SERVICE_UNAVAILABLE);
             break;
 
           default:

@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { expect, Locator, test } from "@playwright/test";
 import { NO_CONTENT } from "_server/constants/http-status-code";
+import { UserMessage } from "../../src/app/types/user-message.enum";
 import { getResponsePredicate } from "../extensions";
 import { registerUser } from "../register-user.function";
 
@@ -39,7 +40,7 @@ test.describe("Account deletion", () => {
 
     await test.step("Success message is displayed", async () => {
       await expect(
-        page.getByText(/account has been successfully deleted/),
+        page.getByText(UserMessage.ACCOUNT_DELETION_SUCCESS),
       ).toBeVisible();
     });
   });
