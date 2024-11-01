@@ -51,7 +51,6 @@ import { PasswordFieldComponent } from "../password-field/password-field.compone
 })
 export class SignInFormComponent {
   readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
-  readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
   form = inject(FormBuilder).group({
     username: [
       "",
