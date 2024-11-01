@@ -2,14 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
-  inject,
   input,
-  OnInit,
   signal,
 } from "@angular/core";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { FormGroupDirective, ReactiveFormsModule } from "@angular/forms";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
@@ -32,27 +28,19 @@ import { PasswordErrorPipe } from "../../pipes/password-error.pipe";
   ],
   templateUrl: "./password-field.component.html",
   styleUrl: "./password-field.component.scss",
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // Using the default change detection strategy as a workaround for displaying
+  // password validation errors on form submission (see related issue below).
+  // https://stackoverflow.com/questions/56584244/can-the-angular-material-errorstatematcher-detect-when-a-parent-form-is-submitte
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class PasswordFieldComponent implements OnInit {
+export class PasswordFieldComponent {
   readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
   autocomplete = input.required<"new-password" | "current-password">();
-  ngForm = input.required<FormGroupDirective>();
   isPasswordVisible = signal(false);
-  passwordControl = computed(() => this.ngForm().form.controls["password"]);
+  passwordControl = input.required<FormControl>();
   visibilityTooltip = computed(
     () => `${this.isPasswordVisible() ? "Hide" : "Show"} password`,
   );
-  #destroyRef = inject(DestroyRef);
-
-  ngOnInit(): void {
-    // Workaround to display password validation errors on form submission
-    this.ngForm()
-      .ngSubmit.pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe(() => {
-        this.passwordControl().markAsTouched();
-      });
-  }
 
   togglePasswordVisibility(event: MouseEvent): void {
     this.isPasswordVisible.update((value) => !value);
