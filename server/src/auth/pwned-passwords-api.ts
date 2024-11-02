@@ -8,11 +8,11 @@ import { OK } from "../constants/http-status-code.js";
  * This function queries the Pwned Passwords API using the k-Anonymity model
  * (only a partial digest of the hashed password is sent).
  * @param password - Plaintext password
- * @returns `false` if the password is not exposed or the API server did not
- * reply in time with the 200 status code, `true` if the password is exposed.
+ * @returns `false` if the password is not leaked or the API server did not
+ * reply in time with the 200 status code, `true` if the password is leaked.
  * @see https://haveibeenpwned.com/API/v3#PwnedPasswords
  */
-export const isPasswordExposed = async (password: string): Promise<boolean> => {
+export const isLeakedPassword = async (password: string): Promise<boolean> => {
   try {
     const digest = hash("sha1", password);
     const partialDigest = digest.slice(0, 5);

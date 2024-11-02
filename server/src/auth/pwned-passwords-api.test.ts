@@ -2,18 +2,18 @@ import { faker } from "@faker-js/faker";
 import assert from "node:assert/strict";
 import { suite, test } from "node:test";
 import { getLeakedPassword } from "../test-helpers/leaked-passwords.js";
-import { isPasswordExposed } from "./pwned-passwords-api.js";
+import { isLeakedPassword } from "./pwned-passwords-api.js";
 
-suite("The isPasswordExposed function", () => {
+suite("The isLeakedPassword function", () => {
   test("returns true for a leaked password", async () => {
     const password = getLeakedPassword();
-    const isExposed = await isPasswordExposed(password);
-    assert(isExposed, `Password "${password}" is not exposed`);
+    const isLeaked = await isLeakedPassword(password);
+    assert(isLeaked, `Password "${password}" is not leaked`);
   });
 
-  test("returns false for a secure password", async () => {
+  test("returns false for a non-leaked password", async () => {
     const password = faker.internet.password();
-    const isExposed = await isPasswordExposed(password);
-    assert(!isExposed, `Password "${password}" is exposed`);
+    const isLeaked = await isLeakedPassword(password);
+    assert(!isLeaked, `Password "${password}" is leaked`);
   });
 });

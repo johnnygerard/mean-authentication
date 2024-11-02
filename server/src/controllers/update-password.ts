@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { ObjectId } from "mongodb";
 import { hashPassword } from "../auth/password-hashing.js";
-import { isPasswordExposed } from "../auth/pwned-passwords-api.js";
+import { isLeakedPassword } from "../auth/pwned-passwords-api.js";
 import {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
@@ -34,7 +34,7 @@ export const updatePassword: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const isPasswordExposedPromise = isPasswordExposed(newPassword);
+    const isLeakedPasswordPromise = isLeakedPassword(newPassword);
     const digestPromise = hashPassword(newPassword);
     const isPasswordStrongPromise = isValidPassword(
       newPassword,
@@ -47,7 +47,7 @@ export const updatePassword: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    if (await isPasswordExposedPromise) {
+    if (await isLeakedPasswordPromise) {
       res.status(BAD_REQUEST).json("Your password was leaked in a data breach");
       return;
     }

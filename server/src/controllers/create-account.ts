@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { generateCSRFToken } from "../auth/csrf.js";
 import { hashPassword } from "../auth/password-hashing.js";
-import { isPasswordExposed } from "../auth/pwned-passwords-api.js";
+import { isLeakedPassword } from "../auth/pwned-passwords-api.js";
 import {
   BAD_REQUEST,
   CONFLICT,
@@ -49,7 +49,7 @@ export const createAccount: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    if (await isPasswordExposed(password)) {
+    if (await isLeakedPassword(password)) {
       res.status(BAD_REQUEST).json(ApiError.LEAKED_PASSWORD);
       return;
     }
