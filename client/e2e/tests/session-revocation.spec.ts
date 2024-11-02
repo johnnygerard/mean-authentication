@@ -1,11 +1,12 @@
 import { expect, test } from "@playwright/test";
 import { getFakeCredentials } from "_server/test-helpers/faker-extensions";
+import { Credentials } from "_server/validation/ajv/credentials";
 import { UserMessage } from "../../src/app/types/user-message.enum";
 import { logInUser } from "../log-in-user.function";
 import { registerUser } from "../register-user.function";
 
 test.describe("Session revocation", () => {
-  let credentials: { username: string; password: string };
+  let credentials: Credentials;
 
   test.beforeEach(async ({ browser, page }) => {
     const context = await browser.newContext();

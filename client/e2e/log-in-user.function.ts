@@ -1,5 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { CREATED } from "_server/constants/http-status-code";
+import { Credentials } from "_server/validation/ajv/credentials";
 
 /**
  * Fill out and submit the login form while verifying the response status.
@@ -9,10 +10,7 @@ import { CREATED } from "_server/constants/http-status-code";
  */
 export const logInUser = async (
   page: Page,
-  credentials: {
-    username: string;
-    password: string;
-  },
+  credentials: Credentials,
   expectedStatus = CREATED,
 ): Promise<void> => {
   await page.goto("/sign-in");
