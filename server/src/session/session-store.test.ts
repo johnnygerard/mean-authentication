@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import assert from "node:assert/strict";
 import { beforeEach, suite, test } from "node:test";
+import { redisClient } from "../database/redis-client.js";
 import { getFakeSession } from "../test-helpers/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
 import { sessionStore } from "./redis-session-store.js";
@@ -67,4 +68,8 @@ suite("The session store", () => {
       [sessionId]: session,
     });
   });
+});
+
+test.only("Teardown the session store", async () => {
+  await redisClient.disconnect();
 });
