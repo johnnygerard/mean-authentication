@@ -18,10 +18,10 @@ const schema: JTDSchemaType<Person> = {
 };
 
 suite.only("ajv", () => {
-  let parser: JTDParser<Person>;
+  let parse: JTDParser<Person>;
 
   before(() => {
-    parser = ajv.compileParser(schema);
+    parse = ajv.compileParser(schema);
   });
 
   test("parses valid data", () => {
@@ -30,10 +30,10 @@ suite.only("ajv", () => {
       isFamous: faker.datatype.boolean(),
     };
 
-    const result = parser(JSON.stringify(person));
+    const result = parse(JSON.stringify(person));
 
     assert.deepEqual(result, person);
-    assert(!parser.message);
+    assert(!parse.message);
   });
 
   test("parses invalid data", () => {
@@ -42,9 +42,9 @@ suite.only("ajv", () => {
       isFamous: faker.datatype.boolean() ? "yes" : "no",
     };
 
-    const result = parser(JSON.stringify(invalidPerson));
+    const result = parse(JSON.stringify(invalidPerson));
 
     assert(!result);
-    assert(parser.message);
+    assert(parse.message);
   });
 });
