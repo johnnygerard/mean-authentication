@@ -5,7 +5,7 @@ import { getFakeSession } from "../test-helpers/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
 import { sessionStore } from "./redis-session-store.js";
 
-suite("The Redis session store", () => {
+suite("The session store", () => {
   let userId: string;
   let session: ServerSession;
 
