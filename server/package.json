@@ -24,6 +24,7 @@
     "start": "npm run wait:dbs && node --watch dist/server.js",
     "start:rate-limited": "ENABLE_RATE_LIMITER= npm run serve",
     "test": "npm run wait:dbs && node --test",
+    "test:only": "npm run wait:dbs && node --test --test-only",
     "wait:dbs": "wait-on tcp:6379 tcp:27017"
   },
   "type": "module"
