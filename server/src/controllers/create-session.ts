@@ -21,7 +21,7 @@ export const createSession: RequestHandler = async (req, res, next) => {
     const credentials = parseCredentials(req.body);
 
     if (!credentials) {
-      res.status(BAD_REQUEST).json(ApiError.PARSE_ERROR);
+      res.status(BAD_REQUEST).json(ApiError.VALIDATION_MISMATCH);
       return;
     }
 
