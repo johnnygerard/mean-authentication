@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Test server" type="NodeJsTestRunner">
+  <configuration default="false" name="Only Tests" type="NodeJsTestRunner">
     <node-interpreter value="project" />
+    <node-options value="--test-only" />
     <working-dir value="$PROJECT_DIR$/server" />
     <language value="JAVA_SCRIPT" />
     <typescript-loader value="MANUAL_SETUP_IN_NODE_OPTION" />

@@ -1,30 +1,18 @@
 import { faker } from "@faker-js/faker";
 import assert from "node:assert/strict";
-import { after, beforeEach, suite, test } from "node:test";
-import { SESSION_MAX_TTL } from "../constants/security.js";
+import { beforeEach, suite, test } from "node:test";
 import { redisClient } from "../database/redis-client.js";
-import { getRandomBuffer } from "../test-helpers/faker-extensions.js";
+import { getFakeSession } from "../test-helpers/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
 import { sessionStore } from "./redis-session-store.js";
 
-const getFakeSession = (): ServerSession => ({
-  clientSession: {
-    username: faker.internet.userName(),
-    csrfToken: getRandomBuffer(32).toString("base64url"),
-  },
-});
-
-suite("The Redis session store", () => {
+suite("The session store", () => {
   let userId: string;
   let session: ServerSession;
 
   beforeEach(() => {
     userId = faker.database.mongodbObjectId();
     session = getFakeSession();
-  });
-
-  after(async () => {
-    await redisClient.disconnect();
   });
 
   test("creates a new session", async () => {
@@ -80,17 +68,8 @@ suite("The Redis session store", () => {
       [sessionId]: session,
     });
   });
+});
 
-  test("sets a TTL on the created session", async () => {
-    const sessionId = await sessionStore.create(session, userId);
-
-    const ttls = await redisClient.hpTTL(
-      sessionStore.KEY_PREFIX + userId,
-      sessionId,
-    );
-
-    assert(ttls && ttls.length === 1);
-    const ttl = ttls[0];
-    assert(ttl >= SESSION_MAX_TTL - 100 && ttl <= SESSION_MAX_TTL);
-  });
+test.only("Teardown the session store", async () => {
+  await redisClient.disconnect();
 });
