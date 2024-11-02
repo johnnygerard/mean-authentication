@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import assert from "node:assert/strict";
 import { suite, test } from "node:test";
 import { getLeakedPassword } from "../test-helpers/leaked-passwords.js";
-import { isLeakedPassword } from "./pwned-passwords-api.js";
+import { isLeakedPassword } from "./is-leaked-password.js";
 
 suite("The isLeakedPassword function", () => {
   test("returns true for a leaked password", async () => {

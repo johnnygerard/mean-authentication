@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { generateCSRFToken } from "../auth/csrf.js";
+import { isLeakedPassword } from "../auth/is-leaked-password.js";
 import { hashPassword } from "../auth/password-hashing.js";
-import { isLeakedPassword } from "../auth/pwned-passwords-api.js";
 import {
   BAD_REQUEST,
   CONFLICT,
