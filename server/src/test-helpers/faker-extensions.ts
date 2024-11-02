@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { Buffer } from "node:buffer";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
+import { Credentials } from "../types/credentials.js";
 import { ServerSession } from "../types/server-session.js";
-import { Credentials } from "../validation/ajv/credentials.js";
 
 /**
  * Generate fake credentials (username and password)

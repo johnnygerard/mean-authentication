@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { CREATED } from "_server/constants/http-status-code";
-import { Credentials } from "_server/validation/ajv/credentials";
+import { Credentials } from "_server/types/credentials";
 
 /**
  * Fill out and submit the login form while verifying the response status.
