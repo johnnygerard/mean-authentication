@@ -136,7 +136,7 @@ export class RegisterFormComponent {
   }
 
   onSubmit(): void {
-    if (!this.form.valid || this.isLoading()) return;
+    if (this.form.invalid || this.isLoading()) return;
     if (this.#passwordStrength.isWorkerBusy()) {
       this.#shouldResubmit = true;
       return;
