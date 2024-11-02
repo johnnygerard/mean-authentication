@@ -17,7 +17,7 @@ const schema: JTDSchemaType<Person> = {
   },
 };
 
-suite.only("ajv", () => {
+suite("ajv", () => {
   let parse: JTDParser<Person>;
 
   before(() => {
