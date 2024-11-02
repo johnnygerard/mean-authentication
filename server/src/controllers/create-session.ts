@@ -3,18 +3,15 @@ import { generateCSRFToken } from "../auth/csrf.js";
 import { verifyPassword } from "../auth/password-hashing.js";
 import {
   BAD_REQUEST,
-  CONTENT_TOO_LARGE,
   CREATED,
   UNAUTHORIZED,
 } from "../constants/http-status-code.js";
-import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 import { users } from "../database/mongo-client.js";
 import { sessionStore } from "../session/redis-session-store.js";
 import { generateSessionCookie } from "../session/session-cookie.js";
 import { ApiError } from "../types/api-error.enum.js";
 import { ServerSession } from "../types/server-session.js";
 import { parseCredentials } from "../validation/ajv/credentials.js";
-import { USERNAME_MAX_LENGTH } from "../validation/username.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
@@ -26,14 +23,6 @@ export const createSession: RequestHandler = async (req, res, next) => {
     }
 
     const { username, password } = credentials;
-
-    if (
-      username.length > USERNAME_MAX_LENGTH ||
-      password.length > PASSWORD_MAX_LENGTH
-    ) {
-      res.status(CONTENT_TOO_LARGE).end();
-      return;
-    }
 
     // Retrieve user from database
     const user = await users.findOne(
