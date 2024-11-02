@@ -9,7 +9,7 @@ import {
 } from "../constants/http-status-code.js";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 import { users } from "../database/mongo-client.js";
-import { isPasswordStrong } from "../validation/password.js";
+import { isValidPassword } from "../validation/password.js";
 import { USERNAME_MAX_LENGTH } from "../validation/username.js";
 
 export const updatePassword: RequestHandler = async (req, res, next) => {
@@ -36,7 +36,7 @@ export const updatePassword: RequestHandler = async (req, res, next) => {
 
     const isPasswordExposedPromise = isPasswordExposed(newPassword);
     const digestPromise = hashPassword(newPassword);
-    const isPasswordStrongPromise = isPasswordStrong(
+    const isPasswordStrongPromise = isValidPassword(
       newPassword,
       oldPassword,
       username,
