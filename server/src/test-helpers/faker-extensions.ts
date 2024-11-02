@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Buffer } from "node:buffer";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
+import { ServerSession } from "../types/server-session.js";
 
 /**
  * Generate fake credentials (username and password)
@@ -20,6 +21,17 @@ export const getFakePassword = (): string => {
   const length = faker.number.int({ min: 0, max: PASSWORD_MAX_LENGTH });
   return faker.internet.password({ length });
 };
+
+/**
+ * Generate a fake server-side session object.
+ * @returns Fake session
+ */
+export const getFakeSession = (): ServerSession => ({
+  clientSession: {
+    username: faker.internet.userName(),
+    csrfToken: getRandomBuffer(32).toString("base64url"),
+  },
+});
 
 /**
  * Generate a random buffer

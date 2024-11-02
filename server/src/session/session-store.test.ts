@@ -3,16 +3,9 @@ import assert from "node:assert/strict";
 import { after, beforeEach, suite, test } from "node:test";
 import { SESSION_MAX_TTL } from "../constants/security.js";
 import { redisClient } from "../database/redis-client.js";
-import { getRandomBuffer } from "../test-helpers/faker-extensions.js";
+import { getFakeSession } from "../test-helpers/faker-extensions.js";
 import { ServerSession } from "../types/server-session.js";
 import { sessionStore } from "./redis-session-store.js";
-
-const getFakeSession = (): ServerSession => ({
-  clientSession: {
-    username: faker.internet.userName(),
-    csrfToken: getRandomBuffer(32).toString("base64url"),
-  },
-});
 
 suite("The Redis session store", () => {
   let userId: string;
