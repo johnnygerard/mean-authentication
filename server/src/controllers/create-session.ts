@@ -3,6 +3,7 @@ import { generateCSRFToken } from "../auth/csrf.js";
 import { verifyPassword } from "../auth/password-hashing.js";
 import {
   BAD_REQUEST,
+  CONTENT_TOO_LARGE,
   CREATED,
   UNAUTHORIZED,
 } from "../constants/http-status-code.js";
@@ -12,22 +13,25 @@ import { sessionStore } from "../session/redis-session-store.js";
 import { generateSessionCookie } from "../session/session-cookie.js";
 import { ApiError } from "../types/api-error.enum.js";
 import { ServerSession } from "../types/server-session.js";
-import {
-  usernameHasValidType,
-  usernameHasValidValue,
-} from "../validation/username.js";
+import { parseCredentials } from "../validation/ajv/credentials.js";
+import { USERNAME_MAX_LENGTH } from "../validation/username.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const credentials = parseCredentials(req.body);
 
-    if (!usernameHasValidType(username) || !usernameHasValidValue(username)) {
-      res.status(BAD_REQUEST).json("Invalid username");
+    if (!credentials) {
+      res.status(BAD_REQUEST).json(ApiError.PARSE_ERROR);
       return;
     }
 
-    if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
-      res.status(BAD_REQUEST).json("Invalid password");
+    const { username, password } = credentials;
+
+    if (
+      username.length > USERNAME_MAX_LENGTH ||
+      password.length > PASSWORD_MAX_LENGTH
+    ) {
+      res.status(CONTENT_TOO_LARGE).end();
       return;
     }
 
