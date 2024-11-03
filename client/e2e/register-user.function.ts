@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { expect, Page } from "@playwright/test";
+import { APIRequestContext, expect, Page } from "@playwright/test";
 import { CREATED } from "_server/constants/http-status-code";
 import { Credentials } from "_server/types/credentials";
 
@@ -32,4 +32,24 @@ export const registerUser = async (
     expect(response.status()).toBe(expectedStatus);
     return response.finished();
   });
+};
+
+/**
+ * Register a user via the API while verifying the response status.
+ * @param request - The API request context
+ * @param credentials - The user's credentials to register with
+ * @param expectedStatus  - The expected response status code
+ */
+export const registerUserViaApi = async (
+  request: APIRequestContext,
+  credentials?: Partial<Credentials>,
+  expectedStatus = CREATED,
+): Promise<void> => {
+  const data: Credentials = {
+    username: credentials?.username ?? faker.internet.userName(),
+    password: credentials?.password ?? faker.internet.password(),
+  };
+
+  const response = await request.post("/api/account", { data });
+  expect(response.status()).toBe(expectedStatus);
 };
