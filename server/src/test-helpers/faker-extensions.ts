@@ -1,15 +1,13 @@
 import { faker } from "@faker-js/faker";
 import { Buffer } from "node:buffer";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
+import { Credentials } from "../types/credentials.js";
 import { ServerSession } from "../types/server-session.js";
 
 /**
  * Generate fake credentials (username and password)
  */
-export const getFakeCredentials = (): {
-  username: string;
-  password: string;
-} => ({
+export const getFakeCredentials = (): Credentials => ({
   username: faker.internet.userName(),
   password: faker.internet.password(),
 });

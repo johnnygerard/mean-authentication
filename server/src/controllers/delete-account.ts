@@ -6,21 +6,22 @@ import {
   NO_CONTENT,
   UNAUTHORIZED,
 } from "../constants/http-status-code.js";
-import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 import { users } from "../database/mongo-client.js";
 import { ApiError } from "../types/api-error.enum.js";
+import { parsePassword } from "../validation/ajv/password.js";
 
 export const deleteAccount: RequestHandler = async (req, res, next) => {
   try {
     const userId = req.user!.id;
     const _id = new ObjectId(userId);
-    const { password } = req.body;
+    const credentials = parsePassword(req.body);
 
-    if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
-      res.status(BAD_REQUEST).json("Invalid password");
+    if (!credentials) {
+      res.status(BAD_REQUEST).json(ApiError.VALIDATION_MISMATCH);
       return;
     }
 
+    const { password } = credentials;
     const user = await users.findOne({ _id }, { projection: { password: 1 } });
 
     if (!user) {

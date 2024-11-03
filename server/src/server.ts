@@ -20,7 +20,12 @@ app.set("trust proxy", 1);
 
 const middleware = [
   cookieParser(),
-  express.json(), // Parse JSON requests
+  // ajv specialized JSON parsers are used instead of `express.json`
+  // If the request has a JSON payload, `express.text` will parse it as a raw string.
+  // @see https://ajv.js.org/guide/getting-started.html#parsing-and-serializing-json
+  express.text({
+    type: "application/json",
+  }),
 ];
 
 if (isProduction) middleware.unshift(cors); // Enable CORS

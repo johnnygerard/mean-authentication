@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { expect, Page } from "@playwright/test";
 import { CREATED } from "_server/constants/http-status-code";
+import { Credentials } from "_server/types/credentials";
 
 /**
  * Fill out and submit the registration form while verifying the response status.
@@ -10,10 +11,7 @@ import { CREATED } from "_server/constants/http-status-code";
  */
 export const registerUser = async (
   page: Page,
-  credentials?: Partial<{
-    username: string;
-    password: string;
-  }>,
+  credentials?: Partial<Credentials>,
   expectedStatus = CREATED,
 ): Promise<void> => {
   await page.goto("/register");

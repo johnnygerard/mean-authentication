@@ -2,13 +2,13 @@ import { faker } from "@faker-js/faker";
 import assert from "node:assert/strict";
 import { suite, test } from "node:test";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
-import { appDictionary, isPasswordStrong } from "./password.js";
+import { appDictionary, isValidPassword } from "./password.js";
 
-suite("The isPasswordStrong function", () => {
+suite("The isValidPassword function", () => {
   test("returns true for a strong password", async () => {
     const username = faker.internet.userName();
     const password = faker.internet.password({ length: 20 });
-    const isStrong = await isPasswordStrong(password, username);
+    const isStrong = await isValidPassword(password, username);
 
     assert(isStrong);
   });
@@ -18,7 +18,7 @@ suite("The isPasswordStrong function", () => {
     // Reusing the username in the password is vulnerable to dictionary attacks
     // while adding LUDS characters is not enough to make it strong
     const password = username + "aB1@";
-    const isStrong = await isPasswordStrong(password, username);
+    const isStrong = await isValidPassword(password, username);
 
     assert(!isStrong);
   });

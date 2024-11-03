@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { generateCSRFToken } from "../auth/csrf.js";
+import { isLeakedPassword } from "../auth/is-leaked-password.js";
 import { hashPassword } from "../auth/password-hashing.js";
-import { isPasswordExposed } from "../auth/pwned-passwords-api.js";
 import {
   BAD_REQUEST,
   CONFLICT,
@@ -11,12 +11,11 @@ import { users } from "../database/mongo-client.js";
 import { User } from "../models/user.js";
 import { sessionStore } from "../session/redis-session-store.js";
 import { generateSessionCookie } from "../session/session-cookie.js";
+import { ApiError } from "../types/api-error.enum.js";
 import { ServerSession } from "../types/server-session.js";
-import { isPasswordStrong } from "../validation/password.js";
-import {
-  usernameHasValidType,
-  usernameHasValidValue,
-} from "../validation/username.js";
+import { parseCredentials } from "../validation/ajv/credentials.js";
+import { isValidPassword } from "../validation/password.js";
+import { isValidUsername } from "../validation/username.js";
 
 const isUsernameTaken = async (username: string): Promise<boolean> => {
   const user = await users.findOne({ username }, { projection: { _id: 1 } });
@@ -25,10 +24,17 @@ const isUsernameTaken = async (username: string): Promise<boolean> => {
 
 export const createAccount: RequestHandler = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const credentials = parseCredentials(req.body);
 
-    if (!usernameHasValidType(username) || !usernameHasValidValue(username)) {
-      res.status(BAD_REQUEST).json("Invalid username");
+    if (!credentials) {
+      res.status(BAD_REQUEST).json(ApiError.VALIDATION_MISMATCH);
+      return;
+    }
+
+    const { username, password } = credentials;
+
+    if (!isValidUsername(username)) {
+      res.status(BAD_REQUEST).json(ApiError.VALIDATION_MISMATCH);
       return;
     }
 
@@ -38,16 +44,13 @@ export const createAccount: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    if (
-      typeof password !== "string" ||
-      !(await isPasswordStrong(password, username))
-    ) {
-      res.status(BAD_REQUEST).json("Invalid password");
+    if (!(await isValidPassword(password, username))) {
+      res.status(BAD_REQUEST).json(ApiError.VALIDATION_MISMATCH);
       return;
     }
 
-    if (await isPasswordExposed(password)) {
-      res.status(BAD_REQUEST).json("Your password was leaked in a data breach");
+    if (await isLeakedPassword(password)) {
+      res.status(BAD_REQUEST).json(ApiError.LEAKED_PASSWORD);
       return;
     }
 

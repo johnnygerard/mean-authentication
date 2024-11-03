@@ -6,30 +6,23 @@ import {
   CREATED,
   UNAUTHORIZED,
 } from "../constants/http-status-code.js";
-import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 import { users } from "../database/mongo-client.js";
 import { sessionStore } from "../session/redis-session-store.js";
 import { generateSessionCookie } from "../session/session-cookie.js";
 import { ApiError } from "../types/api-error.enum.js";
 import { ServerSession } from "../types/server-session.js";
-import {
-  usernameHasValidType,
-  usernameHasValidValue,
-} from "../validation/username.js";
+import { parseCredentials } from "../validation/ajv/credentials.js";
 
 export const createSession: RequestHandler = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    const credentials = parseCredentials(req.body);
 
-    if (!usernameHasValidType(username) || !usernameHasValidValue(username)) {
-      res.status(BAD_REQUEST).json("Invalid username");
+    if (!credentials) {
+      res.status(BAD_REQUEST).json(ApiError.VALIDATION_MISMATCH);
       return;
     }
 
-    if (typeof password !== "string" || password.length > PASSWORD_MAX_LENGTH) {
-      res.status(BAD_REQUEST).json("Invalid password");
-      return;
-    }
+    const { username, password } = credentials;
 
     // Retrieve user from database
     const user = await users.findOne(
