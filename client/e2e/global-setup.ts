@@ -3,11 +3,11 @@ import ms from "ms";
 import child_process from "node:child_process";
 import { promisify } from "node:util";
 import { globalCredentials } from "./global-credentials";
-import { registerUser } from "./register-user.function";
+import { registerUserViaApi } from "./register-user.function";
 
 const exec = promisify(child_process.exec);
 
-test("Global setup", async ({ page }) => {
+test("Global setup", async ({ page, request }) => {
   test.setTimeout(ms("20 seconds"));
   await exec("docker compose up --detach");
 
@@ -15,6 +15,6 @@ test("Global setup", async ({ page }) => {
   await exec("npm run wait:servers");
   console.log("Servers are ready ✔");
 
-  await registerUser(page, globalCredentials);
+  await registerUserViaApi(request, globalCredentials);
   console.log("Global setup complete ✔");
 });

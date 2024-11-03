@@ -1,5 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { UNAUTHORIZED } from "_server/constants/http-status-code";
+import { test } from "../fixtures";
 import { globalCredentials } from "../global-credentials";
 import { logInUser } from "../log-in-user.function";
 

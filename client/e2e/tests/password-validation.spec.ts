@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { expect, Locator, test } from "@playwright/test";
+import { expect, Locator } from "@playwright/test";
 import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
+import { test } from "../fixtures";
 
 test.describe("Password validation", () => {
   let username: string;

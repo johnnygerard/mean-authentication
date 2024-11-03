@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { expect, Locator, test } from "@playwright/test";
+import { expect, Locator } from "@playwright/test";
+import { test } from "../fixtures";
 
 test.describe("Username validation", () => {
   let usernameInput: Locator;
