@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 import "https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js";
 import { APP_NAME } from "_server/constants/app";
-import { ZxcvbnInput } from "_server/types/zxcvbn-input";
+import type { ZxcvbnInput } from "_server/types/zxcvbn-input";
 import type zxcvbn from "zxcvbn";
 
 declare global {
