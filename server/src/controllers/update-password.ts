@@ -1,64 +1,68 @@
 import type { RequestHandler } from "express";
 import { ObjectId } from "mongodb";
 import { isLeakedPassword } from "../auth/is-leaked-password.js";
-import { hashPassword } from "../auth/password-hashing.js";
+import { hashPassword, verifyPassword } from "../auth/password-hashing.js";
 import {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   NO_CONTENT,
+  UNAUTHORIZED,
 } from "../constants/http-status-code.js";
-import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 import { users } from "../database/mongo-client.js";
+import { ApiError } from "../types/api-error.enum.js";
+import { parseNewPassword } from "../validation/ajv/new-password.js";
 import { isValidPassword } from "../validation/password.js";
-import { USERNAME_MAX_LENGTH } from "../validation/username.js";
 
 export const updatePassword: RequestHandler = async (req, res, next) => {
   try {
-    const { oldPassword, newPassword, username } = req.body;
+    const _id = new ObjectId(req.user!.id);
+    const credentials = parseNewPassword(req.body);
 
-    if (
-      typeof oldPassword !== "string" ||
-      typeof newPassword !== "string" ||
-      typeof username !== "string"
-    ) {
-      res.status(BAD_REQUEST).json("Invalid payload structure");
+    if (!credentials) {
+      res.status(BAD_REQUEST).json(ApiError.VALIDATION_MISMATCH);
       return;
     }
 
-    if (
-      newPassword.length > PASSWORD_MAX_LENGTH ||
-      oldPassword.length > PASSWORD_MAX_LENGTH ||
-      username.length > USERNAME_MAX_LENGTH
-    ) {
-      res.status(BAD_REQUEST).json("Maximum input size exceeded");
+    const { oldPassword, newPassword } = credentials;
+
+    const [digest, isLeaked, isValid, user] = await Promise.all([
+      hashPassword(newPassword),
+      isLeakedPassword(newPassword),
+      isValidPassword(newPassword, oldPassword),
+      users.findOne({ _id }, { projection: { password: 1 } }),
+    ]);
+
+    if (!isValid) {
+      res.status(BAD_REQUEST).json(ApiError.VALIDATION_MISMATCH);
       return;
     }
 
-    const isLeakedPasswordPromise = isLeakedPassword(newPassword);
-    const digestPromise = hashPassword(newPassword);
-    const isPasswordStrongPromise = isValidPassword(
-      newPassword,
-      oldPassword,
-      username,
+    if (isLeaked) {
+      res.status(BAD_REQUEST).json(ApiError.LEAKED_PASSWORD);
+      return;
+    }
+
+    if (!user) {
+      console.error(`User not found (ID: ${req.user!.id})`);
+      res.status(INTERNAL_SERVER_ERROR).json(ApiError.DATABASE_ERROR);
+      return;
+    }
+
+    const matches = await verifyPassword(user.password, oldPassword);
+
+    if (!matches) {
+      res.status(UNAUTHORIZED).json(ApiError.WRONG_PASSWORD);
+      return;
+    }
+
+    const updateResult = await users.updateOne(
+      { _id },
+      { $set: { password: digest } },
     );
 
-    if (!(await isPasswordStrongPromise)) {
-      res.status(BAD_REQUEST).json("Weak password");
-      return;
-    }
-
-    if (await isLeakedPasswordPromise) {
-      res.status(BAD_REQUEST).json("Your password was leaked in a data breach");
-      return;
-    }
-
-    const result = await users.updateOne(
-      { _id: new ObjectId(req.user!.id) },
-      { $set: { password: await digestPromise } },
-    );
-
-    if (result.modifiedCount !== 1) {
-      res.status(INTERNAL_SERVER_ERROR).json("Failed to update password");
+    if (updateResult.modifiedCount !== 1) {
+      console.error("Failed to update password", updateResult);
+      res.status(INTERNAL_SERVER_ERROR).json(ApiError.DATABASE_ERROR);
       return;
     }
 
