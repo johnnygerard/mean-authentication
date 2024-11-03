@@ -1,7 +1,10 @@
 import { readFile } from "node:fs/promises";
 import { Piscina } from "piscina";
 import { APP_NAME } from "../constants/app.js";
-import { PASSWORD_MAX_LENGTH, ZXCVBN_MIN_SCORE } from "../constants/password.js";
+import {
+  PASSWORD_MAX_LENGTH,
+  ZXCVBN_MIN_SCORE,
+} from "../constants/password.js";
 
 /**
  * Application-specific vocabulary for password strength validation
