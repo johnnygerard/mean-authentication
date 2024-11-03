@@ -4,16 +4,15 @@ import { Credentials } from "_server/types/credentials";
 import { UserMessage } from "../../src/app/types/user-message.enum";
 import { test } from "../fixtures";
 import { logInUser } from "../log-in-user.function";
-import { registerUser } from "../register-user.function";
+import { registerUserViaApi } from "../register-user.function";
 
 test.describe("Session revocation", () => {
   let credentials: Credentials;
 
-  test.beforeEach(async ({ browser, page }) => {
-    const context = await browser.newContext();
+  test.beforeEach(async ({ page, request }) => {
     credentials = getFakeCredentials();
 
-    await registerUser(await context.newPage(), credentials);
+    await registerUserViaApi(request, credentials);
     await logInUser(page, credentials);
   });
 
