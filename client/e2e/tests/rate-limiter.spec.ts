@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { test } from "@playwright/test";
 import { TOO_MANY_REQUESTS } from "_server/constants/http-status-code";
+import { test } from "../fixtures";
 
 // This test should be run separately. To run it:
 // - Replace `describe.skip` with `describe.only`

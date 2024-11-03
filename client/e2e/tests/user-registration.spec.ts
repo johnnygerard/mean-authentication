@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { expect, test } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { CONFLICT } from "_server/constants/http-status-code";
+import { test } from "../fixtures";
 import { globalCredentials } from "../global-credentials";
 import { registerUser } from "../register-user.function";
 
