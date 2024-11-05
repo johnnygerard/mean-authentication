@@ -3,18 +3,25 @@ import { ValidationErrors } from "@angular/forms";
 import { ZXCVBN_MIN_SCORE } from "_server/constants/password";
 import { zxcvbnDefaultResult } from "_server/constants/zxcvbn-default-result";
 import { ZxcvbnResult } from "_server/types/zxcvbn-result";
+import { BehaviorSubject, first } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class PasswordStrengthService {
   result = signal(zxcvbnDefaultResult);
+  #isReady$ = new BehaviorSubject(false);
 
-  get #worker(): Worker {
-    return new Worker(
-      new URL("../workers/password-strength.worker.js", import.meta.url),
-      { type: "module" },
-    );
+  #worker = new Worker(
+    new URL("../workers/password-strength.worker.js", import.meta.url),
+    { type: "module" },
+  );
+
+  constructor() {
+    this.#worker.onmessage = (event: MessageEvent<string>): void => {
+      console.log(event.data);
+      this.#isReady$.next(true);
+    };
   }
 
   getValidationErrors(result: ZxcvbnResult): ValidationErrors | null {
@@ -27,27 +34,25 @@ export class PasswordStrengthService {
     password: string,
     userInputs: string[] = [],
   ): Promise<ValidationErrors | null> {
-    const worker = this.#worker;
-
     return new Promise((resolve, reject) => {
-      const validationListener = (event: MessageEvent<ZxcvbnResult>): void => {
-        this.result.set(event.data);
-        resolve(this.getValidationErrors(event.data));
-        worker.terminate();
-      };
+      this.#isReady$.pipe(first((isReady) => isReady)).subscribe(() => {
+        this.#isReady$.next(false);
 
-      const errorListener = (error: ErrorEvent): void => {
-        reject(error);
-        worker.terminate();
-      };
+        this.#worker.onmessage = (event: MessageEvent<ZxcvbnResult>): void => {
+          const result = event.data;
 
-      // Wait for the worker to initialize
-      worker.onmessage = (event: MessageEvent<string>): void => {
-        console.log(event.data);
-        worker.onmessage = validationListener;
-        worker.onerror = errorListener;
-        worker.postMessage({ password, userInputs });
-      };
+          this.result.set(result);
+          resolve(this.getValidationErrors(result));
+          this.#isReady$.next(true);
+        };
+
+        this.#worker.onerror = (error: ErrorEvent): void => {
+          reject(error);
+          this.#isReady$.next(true);
+        };
+
+        this.#worker.postMessage({ password, userInputs });
+      });
     });
   }
 }
