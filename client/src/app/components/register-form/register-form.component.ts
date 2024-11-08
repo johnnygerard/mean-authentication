@@ -32,7 +32,7 @@ import { NotificationService } from "../../services/notification.service";
 import { PasswordStrengthService } from "../../services/password-strength.service";
 import { SessionService } from "../../services/session.service";
 import { UserMessage } from "../../types/user-message.enum";
-import { passwordValidatorFactory } from "../../workers/password-validator-factory";
+import { passwordValidatorFactory } from "../../validators/password-validator-factory";
 import { PasswordFieldComponent } from "../password-field/password-field.component";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 
