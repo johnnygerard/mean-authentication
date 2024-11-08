@@ -4,8 +4,10 @@ import {
   computed,
   inject,
 } from "@angular/core";
+import { toSignal } from "@angular/core/rxjs-interop";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
+import { zxcvbnDefaultResult } from "_server/constants/zxcvbn-default-result";
 import { PasswordStrengthService } from "../../services/password-strength.service";
 
 @Component({
@@ -17,7 +19,10 @@ import { PasswordStrengthService } from "../../services/password-strength.servic
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordStrengthMeterComponent {
-  result = inject(PasswordStrengthService).result;
+  result = toSignal(inject(PasswordStrengthService).result$, {
+    initialValue: zxcvbnDefaultResult,
+  });
+
   score = computed(() => this.result().score);
   ariaValueText = computed(() => this.#scoreLabel);
   isPasswordValid = computed(() => this.score() >= 3);

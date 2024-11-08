@@ -1,6 +1,4 @@
 import { Injectable } from "@angular/core";
-import { toSignal } from "@angular/core/rxjs-interop";
-import { zxcvbnDefaultResult } from "_server/constants/zxcvbn-default-result";
 import { ZxcvbnResult } from "_server/types/zxcvbn-result";
 import {
   BehaviorSubject,
@@ -15,8 +13,7 @@ import {
   providedIn: "root",
 })
 export class PasswordStrengthService {
-  #result$ = new Subject<ZxcvbnResult>();
-  result = toSignal(this.#result$, { initialValue: zxcvbnDefaultResult });
+  result$ = new Subject<ZxcvbnResult>();
   #isReady$ = new BehaviorSubject(false);
   #worker = new Worker(
     new URL("../workers/password-strength.worker.js", import.meta.url),
@@ -28,7 +25,7 @@ export class PasswordStrengthService {
       console.log(event.data);
 
       this.#worker.onmessage = (event: MessageEvent<ZxcvbnResult>): void => {
-        this.#result$.next(event.data);
+        this.result$.next(event.data);
       };
 
       this.#isReady$.next(true);
@@ -45,7 +42,7 @@ export class PasswordStrengthService {
         this.#isReady$.next(false);
         this.#worker.postMessage({ password, userInputs });
 
-        return this.#result$.pipe(
+        return this.result$.pipe(
           first(),
           tap(() => this.#isReady$.next(true)),
         );
