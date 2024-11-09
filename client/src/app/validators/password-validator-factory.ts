@@ -11,15 +11,16 @@ const getValidationErrors = (result: ZxcvbnResult): ValidationErrors | null =>
 
 export const passwordValidatorFactory = (
   passwordStrength: PasswordStrengthService,
+  ...otherControls: AbstractControl[]
 ) => {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
-    const username = control.get("username")?.value;
-    const password = control.get("password")?.value;
+    const password = control.value;
 
-    if (typeof password !== "string" || typeof username !== "string")
-      return of(null);
+    if (typeof password !== "string") return of(null);
 
-    const userInputs = username ? [username] : [];
+    const userInputs = otherControls
+      .map((control) => control.value)
+      .filter((value) => value && typeof value === "string") as string[];
 
     return passwordStrength
       .validate(password, userInputs)

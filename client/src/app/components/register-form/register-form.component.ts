@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
+  FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -59,32 +60,47 @@ import { PasswordStrengthMeterComponent } from "../password-strength-meter/passw
 export class RegisterFormComponent {
   readonly USERNAME_MAX_LENGTH = USERNAME_MAX_LENGTH;
   isLoading = signal(false);
-  form = inject(NonNullableFormBuilder).group(
-    {
-      username: [
-        "",
-        [
-          Validators.required,
-          Validators.minLength(USERNAME_MIN_LENGTH),
-          Validators.maxLength(USERNAME_MAX_LENGTH),
-        ],
-      ],
-      password: [
-        "",
-        [Validators.required, Validators.maxLength(PASSWORD_MAX_LENGTH)],
-      ],
-    },
-    {
-      asyncValidators: passwordValidatorFactory(
-        inject(PasswordStrengthService),
-      ),
-    },
-  );
+
+  usernameControl = new FormControl("", {
+    nonNullable: true,
+    validators: [
+      Validators.required,
+      Validators.minLength(USERNAME_MIN_LENGTH),
+      Validators.maxLength(USERNAME_MAX_LENGTH),
+    ],
+  });
+
+  passwordControl = new FormControl("", {
+    nonNullable: true,
+    validators: [
+      Validators.required,
+      Validators.maxLength(PASSWORD_MAX_LENGTH),
+    ],
+    asyncValidators: passwordValidatorFactory(
+      inject(PasswordStrengthService),
+      this.usernameControl,
+    ),
+  });
+
+  form = inject(NonNullableFormBuilder).group({
+    username: this.usernameControl,
+    password: this.passwordControl,
+  });
+
   #destroyRef = inject(DestroyRef);
   #http = inject(HttpClient);
   #notifier = inject(NotificationService);
   #router = inject(Router);
   #session = inject(SessionService);
+
+  constructor() {
+    // Re-evaluate the password strength whenever the username changes
+    this.usernameControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        this.passwordControl.updateValueAndValidity();
+      });
+  }
 
   onSubmit(): void {
     if (!this.form.valid || this.isLoading()) return;

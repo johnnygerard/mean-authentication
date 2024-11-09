@@ -18,13 +18,11 @@
           spellcheck="false"
           type="text"
         />
-        <mat-error
-          >{{ form.controls.username.errors | usernameError }}
-        </mat-error>
+        <mat-error>{{ usernameControl.errors | usernameError }} </mat-error>
       </mat-form-field>
 
       <app-password-field
-        [passwordControl]="form.controls.password"
+        [passwordControl]="passwordControl"
         autocomplete="new-password"
       />
       <app-password-strength-meter />
