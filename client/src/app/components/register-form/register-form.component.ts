@@ -33,6 +33,7 @@ import { PasswordStrengthService } from "../../services/password-strength.servic
 import { SessionService } from "../../services/session.service";
 import { UserMessage } from "../../types/user-message.enum";
 import { passwordValidatorFactory } from "../../validators/password-validator-factory";
+import { usernamePatternValidator } from "../../validators/username-pattern-validator";
 import { PasswordFieldComponent } from "../password-field/password-field.component";
 import { PasswordStrengthMeterComponent } from "../password-strength-meter/password-strength-meter.component";
 
@@ -65,6 +66,7 @@ export class RegisterFormComponent {
       Validators.required,
       Validators.minLength(USERNAME_MIN_LENGTH),
       Validators.maxLength(USERNAME_MAX_LENGTH),
+      usernamePatternValidator,
     ],
   });
 
