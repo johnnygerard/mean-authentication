@@ -21,13 +21,13 @@ export class PasswordStrengthService {
   );
 
   constructor() {
+    const mainListener = (event: MessageEvent<ZxcvbnResult>): void => {
+      this.result$.next(event.data);
+    };
+
     this.#worker.onmessage = (event: MessageEvent<string>): void => {
       console.log(event.data);
-
-      this.#worker.onmessage = (event: MessageEvent<ZxcvbnResult>): void => {
-        this.result$.next(event.data);
-      };
-
+      this.#worker.onmessage = mainListener;
       this.#isReady$.next(true);
     };
   }
