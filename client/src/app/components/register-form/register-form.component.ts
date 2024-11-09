@@ -27,7 +27,6 @@ import {
   USERNAME_MIN_LENGTH,
 } from "_server/validation/username";
 import { finalize } from "rxjs";
-import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { NotificationService } from "../../services/notification.service";
 import { PasswordStrengthService } from "../../services/password-strength.service";
@@ -51,7 +50,6 @@ import { PasswordStrengthMeterComponent } from "../password-strength-meter/passw
     ReactiveFormsModule,
     RouterLink,
     UsernameErrorPipe,
-    UsernameValidatorDirective,
   ],
   templateUrl: "./register-form.component.html",
   styleUrl: "./register-form.component.scss",
