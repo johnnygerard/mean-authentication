@@ -12,6 +12,8 @@ export const enum UserMessage {
   LOGIN_FAILED = "Sign-in failed. Please try again later.",
   LOGOUT_FAILED = "Sign-out failed. Please try again later.",
   LOGOUT_SUCCESS = "You’ve successfully signed out. Have a nice day!",
+  PASSWORD_UPDATE_FAILED = "Failed to change password. Please try again later.",
+  PASSWORD_UPDATE_SUCCESS = "Password changed successfully!",
   REGISTRATION_FAILED = "Registration failed. Please try again later.",
   SERVICE_UNAVAILABLE = "Sorry, the server is currently unavailable. Please try again later.",
   SESSIONS_PAGE_LOAD_FAILED = "Failed to load session data. Please try reloading the page.",
