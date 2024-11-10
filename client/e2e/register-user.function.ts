@@ -25,6 +25,8 @@ export const registerUser = async (
 
   await usernameInput.fill(username);
   await passwordInput.fill(password);
+  // Wait for asynchronous validation to complete
+  await expect(passwordInput).toHaveClass(/ng-valid/);
   await page.keyboard.press("Enter");
 
   await responsePromise.then((response) => {

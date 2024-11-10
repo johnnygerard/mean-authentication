@@ -18,12 +18,8 @@ import { UNAUTHORIZED } from "_server/constants/http-status-code";
 import { PASSWORD_MAX_LENGTH } from "_server/constants/password";
 import { ApiError } from "_server/types/api-error.enum";
 import { ClientSession } from "_server/types/client-session";
-import {
-  USERNAME_MAX_LENGTH,
-  USERNAME_MIN_LENGTH,
-} from "_server/validation/username";
+import { USERNAME_MAX_LENGTH } from "_server/validation/username";
 import { finalize } from "rxjs";
-import { UsernameValidatorDirective } from "../../directives/username-validator.directive";
 import { UsernameErrorPipe } from "../../pipes/username-error.pipe";
 import { NotificationService } from "../../services/notification.service";
 import { SessionService } from "../../services/session.service";
@@ -43,7 +39,6 @@ import { PasswordFieldComponent } from "../password-field/password-field.compone
     ReactiveFormsModule,
     RouterLink,
     UsernameErrorPipe,
-    UsernameValidatorDirective,
   ],
   templateUrl: "./sign-in-form.component.html",
   styleUrl: "./sign-in-form.component.scss",
@@ -54,11 +49,7 @@ export class SignInFormComponent {
   form = inject(FormBuilder).group({
     username: [
       "",
-      [
-        Validators.required,
-        Validators.minLength(USERNAME_MIN_LENGTH),
-        Validators.maxLength(USERNAME_MAX_LENGTH),
-      ],
+      [Validators.required, Validators.maxLength(USERNAME_MAX_LENGTH)],
     ],
     password: [
       "",

@@ -16,5 +16,6 @@ export const enum UserMessage {
   SERVICE_UNAVAILABLE = "Sorry, the server is currently unavailable. Please try again later.",
   SESSIONS_PAGE_LOAD_FAILED = "Failed to load session data. Please try reloading the page.",
   UNEXPECTED_ERROR = "An unknown error has occurred. Please try again later.",
+  UNEXPECTED_WORKER_ERROR = "An unknown error has occurred. Please try reloading the page.",
   USERNAME_TAKEN = "Sorry, this username is not available.",
 }

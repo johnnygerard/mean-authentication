@@ -10,7 +10,6 @@
         <mat-label>Username</mat-label>
         <input
           [attr.maxlength]="USERNAME_MAX_LENGTH"
-          appUsernameValidator
           autocomplete="username"
           data-testid="username"
           formControlName="username"
@@ -18,13 +17,11 @@
           spellcheck="false"
           type="text"
         />
-        <mat-error
-          >{{ form.controls.username.errors | usernameError }}
-        </mat-error>
+        <mat-error>{{ usernameControl.errors | usernameError }}</mat-error>
       </mat-form-field>
 
       <app-password-field
-        [passwordControl]="form.controls.password"
+        [passwordControl]="passwordControl"
         autocomplete="new-password"
       />
       <app-password-strength-meter />
