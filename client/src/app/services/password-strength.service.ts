@@ -1,8 +1,10 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { ZxcvbnInput } from "_server/types/zxcvbn-input";
 import { ZxcvbnResult } from "_server/types/zxcvbn-result";
 import { Observable, Subject } from "rxjs";
 import { Queue } from "../types/queue.class";
+import { UserMessage } from "../types/user-message.enum";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: "root",
@@ -10,41 +12,13 @@ import { Queue } from "../types/queue.class";
 export class PasswordStrengthService {
   result$ = new Subject<ZxcvbnResult>();
   #isWorkerInitialized = false;
+  #notifier = inject(NotificationService);
+  #worker = this.#createWorker();
 
   #queue = new Queue<{
     input: ZxcvbnInput;
     result$: Subject<ZxcvbnResult>;
   }>();
-
-  #worker = new Worker(
-    new URL("../workers/password-strength.worker.js", import.meta.url),
-    { type: "module" },
-  );
-
-  constructor() {
-    const mainListener = (event: MessageEvent<ZxcvbnResult>): void => {
-      this.result$.next(event.data);
-
-      if (this.#queue.size === 1) {
-        const { result$ } = this.#queue.dequeue();
-
-        result$.next(event.data);
-        result$.complete();
-        return;
-      }
-
-      this.#handleWork();
-    };
-
-    this.#worker.onmessage = (event: MessageEvent<string>): void => {
-      console.log(event.data);
-      this.#worker.onmessage = mainListener;
-      this.#isWorkerInitialized = true;
-
-      if (this.#queue.isEmpty) return;
-      this.#handleWork();
-    };
-  }
 
   validate(
     password: string,
@@ -59,6 +33,42 @@ export class PasswordStrengthService {
       this.#worker.postMessage(input);
 
     return result$.asObservable();
+  }
+
+  #createWorker(): Worker {
+    const worker = new Worker(
+      new URL("../workers/password-strength.worker.js", import.meta.url),
+      { type: "module" },
+    );
+
+    const mainListener = (event: MessageEvent<ZxcvbnResult>): void => {
+      this.result$.next(event.data);
+
+      if (this.#queue.size === 1) {
+        const { result$ } = this.#queue.dequeue();
+
+        result$.next(event.data);
+        result$.complete();
+        return;
+      }
+
+      this.#handleWork();
+    };
+
+    worker.onmessage = (event: MessageEvent<string>): void => {
+      console.log(event.data);
+      this.#worker.onmessage = mainListener;
+      this.#isWorkerInitialized = true;
+
+      if (this.#queue.isEmpty) return;
+      this.#handleWork();
+    };
+
+    worker.onerror = (): void => {
+      this.#notifier.send(UserMessage.UNEXPECTED_WORKER_ERROR);
+    };
+
+    return worker;
   }
 
   /**
