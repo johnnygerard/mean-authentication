@@ -42,6 +42,7 @@ import { PasswordStrengthService } from "../../services/password-strength.servic
 export class PasswordFieldComponent implements OnInit {
   readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
   autocomplete = input.required<"new-password" | "current-password">();
+  label = input("Password");
   isPasswordVisible = signal(false);
   passwordControl = input.required<FormControl>();
   visibilityTooltip = computed(
