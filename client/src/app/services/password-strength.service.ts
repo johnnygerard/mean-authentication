@@ -1,20 +1,21 @@
 import { Injectable } from "@angular/core";
+import { ZxcvbnInput } from "_server/types/zxcvbn-input";
 import { ZxcvbnResult } from "_server/types/zxcvbn-result";
-import {
-  BehaviorSubject,
-  first,
-  Observable,
-  Subject,
-  switchMap,
-  tap,
-} from "rxjs";
+import { Observable, Subject } from "rxjs";
+import { Queue } from "../types/queue.class";
 
 @Injectable({
   providedIn: "root",
 })
 export class PasswordStrengthService {
   result$ = new Subject<ZxcvbnResult>();
-  #isReady$ = new BehaviorSubject(false);
+  #isWorkerInitialized = false;
+
+  #queue = new Queue<{
+    input: ZxcvbnInput;
+    result$: Subject<ZxcvbnResult>;
+  }>();
+
   #worker = new Worker(
     new URL("../workers/password-strength.worker.js", import.meta.url),
     { type: "module" },
@@ -23,12 +24,25 @@ export class PasswordStrengthService {
   constructor() {
     const mainListener = (event: MessageEvent<ZxcvbnResult>): void => {
       this.result$.next(event.data);
+
+      if (this.#queue.size === 1) {
+        const { result$ } = this.#queue.dequeue();
+
+        result$.next(event.data);
+        result$.complete();
+        return;
+      }
+
+      this.#handleWork();
     };
 
     this.#worker.onmessage = (event: MessageEvent<string>): void => {
       console.log(event.data);
       this.#worker.onmessage = mainListener;
-      this.#isReady$.next(true);
+      this.#isWorkerInitialized = true;
+
+      if (this.#queue.isEmpty) return;
+      this.#handleWork();
     };
   }
 
@@ -36,17 +50,25 @@ export class PasswordStrengthService {
     password: string,
     userInputs: string[] = [],
   ): Observable<ZxcvbnResult> {
-    return this.#isReady$.pipe(
-      first(Boolean),
-      switchMap(() => {
-        this.#isReady$.next(false);
-        this.#worker.postMessage({ password, userInputs });
+    const input: ZxcvbnInput = { password, userInputs };
+    const result$ = new Subject<ZxcvbnResult>();
 
-        return this.result$.pipe(
-          first(),
-          tap(() => this.#isReady$.next(true)),
-        );
-      }),
-    );
+    this.#queue.enqueue({ input, result$ });
+
+    if (this.#queue.size === 1 && this.#isWorkerInitialized)
+      this.#worker.postMessage(input);
+
+    return result$.asObservable();
+  }
+
+  /**
+   * Handle work items that were enqueued while the worker was busy.
+   */
+  #handleWork(): void {
+    // Abort all previous requests
+    while (this.#queue.size > 1) this.#queue.dequeue().result$.complete();
+
+    // Send the last user input to the worker
+    this.#worker.postMessage(this.#queue.peek().input);
   }
 }
