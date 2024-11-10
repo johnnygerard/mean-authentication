@@ -18,7 +18,7 @@ export class AppComponent {
   #sanitizer = inject(DomSanitizer);
 
   constructor() {
-    for (const name of ["visibility", "visibility_off", "info"]) {
+    for (const name of ["error", "info", "visibility", "visibility_off"]) {
       this.#registerIcon(name);
     }
 

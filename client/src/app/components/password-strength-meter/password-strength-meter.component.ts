@@ -28,6 +28,7 @@ export class PasswordStrengthMeterComponent {
   isPasswordValid = computed(() => this.score() >= 3);
   suggestions = computed(() => this.result().feedback.suggestions);
   tooltip = computed(() => this.#tooltipText);
+  warning = computed(() => this.result().feedback.warning);
 
   get #scoreLabel(): string {
     const score = this.score();
