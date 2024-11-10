@@ -30,6 +30,17 @@ export const routes: Routes = [
     title: "Session Management",
   },
   {
+    path: "user/change-password",
+    loadComponent: async () =>
+      (
+        await import(
+          "./pages/update-password-page/update-password-page.component"
+        )
+      ).UpdatePasswordPageComponent,
+    canActivate: [isAuthenticatedGuard],
+    title: "Update Password",
+  },
+  {
     path: "sign-in",
     loadComponent: async () =>
       (await import("./pages/sign-in-page.component")).SignInPageComponent,
