@@ -56,7 +56,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             return of(true).pipe(delay(computeDelay(retryCount)));
 
           case BAD_REQUEST:
-            console.error("Input validation mismatch", response);
+            if (response.error !== ApiError.VALIDATION_MISMATCH)
+              return throwError(() => response);
+            console.error(response);
             notifier.send(response.error);
             break;
 
