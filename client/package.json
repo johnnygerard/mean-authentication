@@ -47,5 +47,6 @@
     "test": "ng test",
     "wait:servers": "wait-on tcp:3000 tcp:4200 tcp:6379 tcp:27017"
   },
+  "type": "module",
   "version": "0.0.0"
 }
