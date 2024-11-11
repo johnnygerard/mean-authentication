@@ -3,7 +3,10 @@ import { readFile } from "node:fs/promises";
 import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 const leakedPasswords = (
-  await readFile("src/test-helpers/NordVPN.txt", "utf-8")
+  await readFile(
+    new URL("../../data/test/NordVPN.txt", import.meta.url),
+    "utf-8",
+  )
 )
   .split("\n")
   .filter((line) => line && line.length <= PASSWORD_MAX_LENGTH);
