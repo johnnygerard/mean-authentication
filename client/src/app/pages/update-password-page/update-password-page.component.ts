@@ -27,6 +27,7 @@ import { NotificationService } from "../../services/notification.service";
 import { PasswordStrengthService } from "../../services/password-strength.service";
 import { UserMessage } from "../../types/user-message.enum";
 import { confirmNewPasswordValidator } from "../../validators/confirm-new-password-validator";
+import { distinctPasswordValidator } from "../../validators/distinct-password-validator";
 import { passwordValidatorFactory } from "../../validators/password-validator-factory";
 
 @Component({
@@ -59,7 +60,11 @@ export class UpdatePasswordPageComponent {
     oldPassword: this.#oldPasswordControl,
     newPassword: [
       "",
-      [Validators.required, Validators.maxLength(PASSWORD_MAX_LENGTH)],
+      [
+        Validators.required,
+        Validators.maxLength(PASSWORD_MAX_LENGTH),
+        distinctPasswordValidator,
+      ],
       passwordValidatorFactory(
         inject(PasswordStrengthService),
         this.#oldPasswordControl,

@@ -14,6 +14,7 @@ export class PasswordErrorPipe implements PipeTransform {
     if (errors["maxlength"]) return "Maximum length exceeded";
     if (errors["strength"]) return "Vulnerable password";
     if (errors["passwordMismatch"]) return "Passwords do not match";
+    if (errors["samePassword"]) return "Cannot reuse old password";
 
     throw new Error(`Unexpected validation error: ${JSON.stringify(errors)}`);
   }
