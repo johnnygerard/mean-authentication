@@ -14,31 +14,34 @@ export const routes: Routes = [
     title: APP_NAME,
   },
   {
-    path: "user/account",
-    loadComponent: async () =>
-      (await import("./pages/account-page/account-page.component"))
-        .AccountPageComponent,
+    path: "user",
     canActivate: [isAuthenticatedGuard],
-    title: "Account",
-  },
-  {
-    path: "user/sessions",
-    loadComponent: async () =>
-      (await import("./pages/sessions-page/sessions-page.component"))
-        .SessionsPageComponent,
-    canActivate: [isAuthenticatedGuard],
-    title: "Session Management",
-  },
-  {
-    path: "user/change-password",
-    loadComponent: async () =>
-      (
-        await import(
-          "./pages/update-password-page/update-password-page.component"
-        )
-      ).UpdatePasswordPageComponent,
-    canActivate: [isAuthenticatedGuard],
-    title: "Update Password",
+    children: [
+      {
+        path: "account",
+        loadComponent: async () =>
+          (await import("./pages/account-page/account-page.component"))
+            .AccountPageComponent,
+        title: "Account",
+      },
+      {
+        path: "sessions",
+        loadComponent: async () =>
+          (await import("./pages/sessions-page/sessions-page.component"))
+            .SessionsPageComponent,
+        title: "Session Management",
+      },
+      {
+        path: "change-password",
+        loadComponent: async () =>
+          (
+            await import(
+              "./pages/update-password-page/update-password-page.component"
+            )
+          ).UpdatePasswordPageComponent,
+        title: "Update Password",
+      },
+    ],
   },
   {
     path: "sign-in",
