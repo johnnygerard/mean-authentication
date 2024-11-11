@@ -62,6 +62,16 @@ export const routes: Routes = [
     component: NotFoundPageComponent,
     title: "Not Found",
   },
+  // Redirects for well-known URIs (see https://datatracker.ietf.org/doc/html/rfc8615)
+  {
+    path: ".well-known",
+    children: [
+      {
+        path: "change-password",
+        redirectTo: "/user/change-password",
+      },
+    ],
+  },
   {
     path: "**",
     redirectTo: "not-found",
