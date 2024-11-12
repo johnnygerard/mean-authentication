@@ -33,7 +33,7 @@ export const logInUser = async (
 };
 
 /**
- * Log in a user via API request.
+ * Log in a user via API request and verify the response status.
  * @param request - The API request context
  * @param credentials - The user's login credentials
  * @param expectedStatus - The expected response status code

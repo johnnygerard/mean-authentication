@@ -37,7 +37,7 @@ export const registerUser = async (
 };
 
 /**
- * Register a user via the API while verifying the response status.
+ * Register a user via API request and verify the response status.
  * @param request - The API request context
  * @param credentials - The user's credentials to register with
  * @param expectedStatus  - The expected response status code
