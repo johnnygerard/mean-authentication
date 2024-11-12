@@ -42,6 +42,7 @@ import { PasswordStrengthService } from "../../services/password-strength.servic
 export class PasswordFieldComponent implements OnInit {
   readonly PASSWORD_MAX_LENGTH = PASSWORD_MAX_LENGTH;
   autocomplete = input.required<"new-password" | "current-password">();
+  label = input("Password");
   isPasswordVisible = signal(false);
   passwordControl = input.required<FormControl>();
   visibilityTooltip = computed(
@@ -59,11 +60,13 @@ export class PasswordFieldComponent implements OnInit {
    * @see https://angular.dev/guide/forms/form-validation#creating-asynchronous-validators
    */
   ngOnInit(): void {
-    this.passwordControl()
-      .valueChanges.pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe((value) => {
-        if (value === "") this.#strength.result$.next(zxcvbnDefaultResult);
-      });
+    if (this.label() === "Password" || this.label() === "New password") {
+      this.passwordControl()
+        .valueChanges.pipe(takeUntilDestroyed(this.#destroyRef))
+        .subscribe((value) => {
+          if (value === "") this.#strength.result$.next(zxcvbnDefaultResult);
+        });
+    }
   }
 
   togglePasswordVisibility(event: MouseEvent): void {

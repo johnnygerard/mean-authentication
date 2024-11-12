@@ -1,12 +1,29 @@
 import { faker } from "@faker-js/faker";
 import { readFile } from "node:fs/promises";
-import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 const leakedPasswords = (
-  await readFile("src/test-helpers/NordVPN.txt", "utf-8")
-)
-  .split("\n")
-  .filter((line) => line && line.length <= PASSWORD_MAX_LENGTH);
+  await readFile(
+    new URL("../../data/test/NordVPN.txt", import.meta.url),
+    "utf-8",
+  )
+).split("\n");
+
+/**
+ * Strong leaked passwords.
+ *
+ * `NordVPN_strong.txt` was created from the following function:
+ * ```ts
+ * leakedPasswords.filter(
+ *   (password) => zxcvbn(password).score >= ZXCVBN_MIN_SCORE,
+ * );
+ * ```
+ */
+const strongLeakedPasswords = (
+  await readFile(
+    new URL("../../data/test/NordVPN_strong.txt", import.meta.url),
+    "utf-8",
+  )
+).split("\n");
 
 /**
  * Get a random leaked password.
@@ -16,4 +33,14 @@ const leakedPasswords = (
  */
 export const getLeakedPassword = (): string => {
   return faker.helpers.arrayElement(leakedPasswords);
+};
+
+/**
+ * Get a random strong leaked password.
+ *
+ * Source: NordVPN data breach.
+ * @see https://github.com/danielmiessler/SecLists/blob/master/Passwords/Leaked-Databases/NordVPN.txt
+ */
+export const getStrongLeakedPassword = (): string => {
+  return faker.helpers.arrayElement(strongLeakedPasswords);
 };

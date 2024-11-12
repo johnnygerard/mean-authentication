@@ -1,4 +1,4 @@
-import { expect, Page } from "@playwright/test";
+import { APIRequestContext, expect, Page } from "@playwright/test";
 import { CREATED } from "_server/constants/http-status-code";
 import { Credentials } from "_server/types/credentials";
 
@@ -30,4 +30,19 @@ export const logInUser = async (
     expect(response.status()).toBe(expectedStatus);
     return response.finished();
   });
+};
+
+/**
+ * Log in a user via API request and verify the response status.
+ * @param request - The API request context
+ * @param credentials - The user's login credentials
+ * @param expectedStatus - The expected response status code
+ */
+export const logInUserViaApi = async (
+  request: APIRequestContext,
+  credentials: Credentials,
+  expectedStatus = CREATED,
+): Promise<void> => {
+  const response = await request.post("/api/session", { data: credentials });
+  expect(response.status()).toBe(expectedStatus);
 };

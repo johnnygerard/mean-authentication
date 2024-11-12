@@ -7,6 +7,6 @@ export const usernamePatternValidator: ValidatorFn = (
   const username = control.value;
 
   return typeof username === "string" && !hasValidUsernameCharacters(username)
-    ? { pattern: "Invalid characters" }
+    ? { pattern: true }
     : null;
 };

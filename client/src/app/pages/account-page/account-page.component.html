@@ -4,11 +4,8 @@
   <p>Username: {{ username() }}</p>
 }
 <div class="buttons">
-  <a
-    class="sessions-link"
-    data-testid="sessions-link"
-    mat-stroked-button
-    routerLink="/user/sessions"
+  <a mat-stroked-button routerLink="/user/change-password">Change password</a>
+  <a data-testid="sessions-link" mat-stroked-button routerLink="/user/sessions"
     >Session management</a
   >
 
