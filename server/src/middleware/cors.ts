@@ -19,7 +19,7 @@ export default cors({
   allowedHeaders: ["Content-Type", CSRF_HEADER],
   exposedHeaders: rateLimitingHeaders,
   maxAge: ms("1 hour") / 1000,
-  methods: ["GET", "POST", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   optionsSuccessStatus: NO_CONTENT,
   origin: "https://mean-authentication.app.jgerard.dev",
   preflightContinue: false,
