@@ -1,15 +1,12 @@
 import { faker } from "@faker-js/faker";
 import { readFile } from "node:fs/promises";
-import { PASSWORD_MAX_LENGTH } from "../constants/password.js";
 
 const leakedPasswords = (
   await readFile(
     new URL("../../data/test/NordVPN.txt", import.meta.url),
     "utf-8",
   )
-)
-  .split("\n")
-  .filter((line) => line && line.length <= PASSWORD_MAX_LENGTH);
+).split("\n");
 
 /**
  * Get a random leaked password.
