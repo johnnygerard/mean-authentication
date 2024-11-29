@@ -1,6 +1,6 @@
 # AuthMEAN
 
-![project status](https://img.shields.io/badge/project_status-active_development-green?style=for-the-badge)
+![project status](https://img.shields.io/badge/project_status-inactive-lightgray?style=for-the-badge)
 
 This project provides a reusable authentication system for applications built on
 the [MEAN stack](https://www.mongodb.com/resources/languages/mean-stack).
